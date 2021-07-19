@@ -1,0 +1,23 @@
+{
+  "name": "critter",
+  "version": "1.0.0",
+  "description": "Social micro-blogging website",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CBC12-Project/critter.git"
+  },
+  "author": "Critter Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CBC12-Project/critter/issues"
+  },
+  "homepage": "https://github.com/CBC12-Project/critter#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}
