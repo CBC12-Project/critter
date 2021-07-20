@@ -1,0 +1,46 @@
+*{
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr .75fr;
+    grid-template-rows: 0.5fr  1.8fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas: 
+    "logo timeline search"
+    "side-menu timeline results"; 
+}
+.logo { grid-area: logo; }
+.side-menu { grid-area: side-menu; }
+.results { grid-area: results; }
+.timeline { grid-area: timeline; }
+.search { grid-area: search; }
+    
+    
+    
+    .logo { border: 1px rgb(0, 166, 255) solid;
+        height: 25vh;
+    }
+    
+    .side-menu { border: 1px rgb(48, 70, 46) solid; 
+        height: 75vh;
+    }
+    
+    .results { border: 1px rgb(39, 20, 37) solid;
+        height: 75vh;
+    }
+    
+    .timeline { border: 1px rgb(147, 127, 127) solid; 
+        height: 100vh;
+    }
+    
+    
+    .search { border: 1px rgb(114, 19, 174) solid;
+        height: 25vh; 
+    }
+
+
