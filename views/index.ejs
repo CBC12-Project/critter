@@ -68,8 +68,23 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- general container used for keeping the element relative like the other elements, but making the child absolute to adjust its position -->
+            <div id="profile-header" class="card">
+                <div id="header-image"></div>
+                <div class="parent-container divider">
+                    <div id="profile-pic"></div>
+                </div>
+                <div class="parent-container" id="header-text">
+                    <p id="name">lia</p>
+                    <p id="handle">@liaaa</p>
+                    <p id="bio">i love cute things, please be friendly!</p>
+                    <div class="divider">
+                        <a href="#"><span id="Following">100</span> following</a>
+                        <a href="#"><span id="Followers">200</span> followers</a>
+                    </div>
+                </div>
+            </div>
             <div class="parent-container"> 
-                <p id="pinned-crit">Pinned Crit:</p>
+                
             </div>
             <div class="crit card">
                 <div class="divider">
@@ -86,24 +101,13 @@
                 </div>
             </div>
         </div>
-        <div class="tweet-location">
-            <div id="profile-header" class="card">
-                <div id="header-image"></div>
-                <div class="parent-container divider">
-                    <div id="profile-pic"></div>
-                </div>
-                <div class="parent-container" id="header-text">
-                    <p id="name">lia</p>
-                    <p id="handle">@liaaa</p>
-                    <p id="bio">i love cute things, please be friendly!</p>
-                    <div class="divider">
-                        <a href="#"><span id="Following">100</span> following</a>
-                        <a href="#"><span id="Followers">200</span> followers</a>
-                    </div>
-                </div>
-            </div>
+        
+        <div class="search"> 
+            <div>
+                <input id="search" name="search-btn" type="text" placeholder="Search...">
+                <button id="search-btn">Search</button>
         </div>
-        <div class="search"></div>
+    </div>
     </div>
 </body>
 </html>
