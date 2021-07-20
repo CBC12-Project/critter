@@ -7,6 +7,7 @@
 body{
     background-color: rgb(177, 177, 177);
 }
+
 h1{
     color: lightslategrey;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,12 +19,6 @@ h1{
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-}
-
-
-.main-flex {
-    
-    
 }
 
 .crit-timeline {
@@ -41,20 +36,20 @@ h1{
 }
 
 .crit-timeline p {
-    margin: 20px;
-    
+    margin: 20px;    
 }
+
 .crit-timeline h3 {
     margin-left: 15px;
 }
 
-button {
-   
+button {   
     border-radius: 5px;
     background-color: rgb(18, 33, 41);
     margin-bottom: 10px;
     color: linen;
 }
+
 .btn-flex {
     display: flex;
     width: 100%;
