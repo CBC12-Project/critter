@@ -1,57 +1,48 @@
-* {
-    margin: none;
-    padding: none;
-    box-sizing: border-box;
+
+.container {
+    display: grid;
+    grid-template-columns: 0.5fr 1fr 1fr;
+    grid-template-rows: 0.5fr 0fr 1.8fr;
+    gap: 0px 0px;
+    grid-auto-flow: row;
+    grid-template-areas:
+    "logo tweet-location search"
+    ". . ."
+    "side-menu timeline results";
 }
 
-body{
-    background-color: rgb(177, 177, 177);
+.logo { 
+    grid-area: logo; 
 }
 
-h1{
-    color: lightslategrey;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 30px;
+.side-menu { 
+    grid-area: side-menu; 
 }
 
-.header-flex {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+ul {
+    list-style: none;
+    margin-left: 10px;
+    padding: 0;
+    font-weight: 600;
 }
 
-.crit-timeline {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    height: 25%;
-    margin: 20px 20px;
-    color: rgb(3, 20, 26);
-    border: 1px solid rgb(199, 196, 176);
-    background-color: rgb(225, 223, 223);
-    border-radius: 8px;
-    box-shadow: lightslategrey 5px 5px;
-    align-items: flex-start;
+ul a {
+    text-decoration: none;
+    color: black;
 }
 
-.crit-timeline p {
-    margin: 20px;    
+.results { 
+    grid-area: results; 
 }
 
-.crit-timeline h3 {
-    margin-left: 15px;
+.timeline { 
+    grid-area: timeline; 
 }
 
-button {   
-    border-radius: 5px;
-    background-color: rgb(18, 33, 41);
-    margin-bottom: 10px;
-    color: linen;
+.tweet-location { 
+    grid-area: tweet-location; 
 }
 
-.btn-flex {
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
+.search { 
+    grid-area: search; 
 }

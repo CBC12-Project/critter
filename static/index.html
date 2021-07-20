@@ -1,60 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Critter</title>
-		<link rel="stylesheet" href="/static/css/index.css">
-	</head>
-	<body>
-		<header>
-			<nav class="header-flex">
-				<img src="" alt="profile picture">
-				<h1>Home</h1>
-			</nav>
-		</header>
-		
-		<main class="main-flex"> 
-
-			<div id="submit-crit">
-				<form action="post">
-					<label for="create-crit">Send a Crit!</label>
-					<input id="create-crit" type="text" name="create-crit">
-				</form>
-			</div>
-
-			<div class="crit-timeline">
-				<h3>Some User @imSomeUser22</h3>
-				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla numquam dolore rerum facere dicta repudiandae aperiam incidunt, blanditiis sed, voluptatem autem maxime animi amet architecto!</p>
-
-				<div class="btn-flex">
-					<button>Like</button>
-					<button>Comment</button>
-				</div>
-			</div>
-
-			<div class="crit-timeline">
-				<h3>Some User @catFiend56</h3>
-				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla numquam dolore rerum facere dicta repudiandae aperiam incidunt, blanditiis sed, voluptatem autem maxime animi amet architecto!</p>
-
-				<div class="btn-flex">
-					<button>Like</button>
-					<button>Comment</button>
-				</div>
-			</div>
-
-
-			<div class="crit-timeline">
-				<h3>Some User @eatMoreCow11</h3>
-				<p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Nulla numquam dolore rerum facere dicta repudiandae aperiam incidunt, blanditiis sed, voluptatem autem maxime animi amet architecto!</p>
-				
-				<div class="btn-flex">
-					<button>Like</button>
-					<button>Comment</button>
-				</div>
-			</div>
-		</main>
-		
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
+        </div>
+        <br>
+        <div class="side-menu">
+            <ul>
+                <li>
+                    <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
+                    <a href="/static/index.html">Home</a>
+                </li>
+                <br>
+                <li><img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
+                    <a href="/static/profile.html">Profile</a>
+                </li>
+                <br>
+                <li>
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
+                    <a href="">Settings</a>
+                </li>
+            </ul>
+        </div>
+        <div class="results"></div>
+        <div class="timeline"></div>
+        <div class="tweet-location"></div>
+        <div class="search"></div>
+    </div>
+</body>
 </html>
