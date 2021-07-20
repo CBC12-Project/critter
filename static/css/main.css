@@ -1,9 +1,12 @@
-*{
-    padding: 0px;
-    margin: 0px;
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+
 }
 
+/* CSS grid layout */
 .container {
     display: grid;
     grid-template-columns: 0.5fr 1fr .75fr;
@@ -43,4 +46,226 @@
         height: 25vh; 
     }
 
+  /* Lias code  */
+
+    
+    
+    body {
+        margin: 1rem;
+        background-color: aliceblue;
+    }
+    
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    
+    #profile-header {
+        width: 90%;
+        padding: 1rem;
+        padding-bottom: 60px;
+        /* margin: 1rem 0 1rem 0; */
+    }
+    
+    #header-image {
+        width: 100%;
+        height: 100px;
+        background-color: hsl(240, 66%, 71%);
+        padding: 0 !important;
+    }
+    
+    #Following, #Followers {
+        font-weight: bold;
+    }
+    
+    #name {
+        font-weight: bold;
+    }
+    
+    .parent-container {
+        position: relative;
+    }
+    
+    #header-text {
+        top: 60px;
+    }
+    
+    #pinned-crit {
+        font-size: .9rem;
+        position: absolute;
+        top: -5px;
+    }
+    
+    #header-text>p {
+        padding: .25rem 0 .25rem 0;
+    }
+    
+    #profile-pic {
+        height: 80px;
+        width: 80px;
+        border-radius: 80px;
+        min-width: 80px;
+        background-color: hsl(0, 53%, 69%);
+        position: absolute;
+        top: -40px;
+    }
+    
+    #profile-header>div>div {
+        padding: .5rem;
+    }
+    
+    #profile-header>div>div>a {
+        padding: .5rem;
+        text-decoration: none;
+        color: black;
+    }
+    
+    #new-crit-textbox {
+        padding: 1rem;
+        font-size: 1.5rem;
+    }
+    
+    .crit {
+        width: 90%;
+        padding: 1rem;
+        margin: 1rem 0 1rem 0;
+    }
+    
+    .crit-btns {
+        justify-content: space-between;
+    }
+    
+    .crit-btns>a {
+        font-weight: bold;
+    }
+    
+    .crit-btns>a>i {
+        padding: 0 .5rem 0 .5rem;
+    }
+    
+    .crit-replies-num {
+        font-weight: bold;
+    }
+    
+    .reply {
+        width: 75% !important;
+        justify-self: right;
+    }
+    
+    .reply-text>.divider {
+        justify-content: space-between;
+    }
+    
+    .reply-textbox {
+        width: 80%;
+        font-size: 1.2rem;
+        padding: .5rem;
+        border: none;
+    }
+    
+    .card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 5px 5px hsl(180, 46%, 82%);
+    }
+    
+    .crit>div>p {
+        padding-left: .5rem;
+    }
+    
+    .crit>p {
+        padding: .5rem 0 .5rem 0;
+    }
+    
+    button.like-btn {
+        background-color: transparent;
+        border: none;
+        font-size: 1.5rem;
+    }
+    
+    button.like-btn:hover {
+        cursor: pointer;
+    }
+    
+    .divider {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .crit-pfp {
+        height: 40px;
+        width: 40px;
+        border-radius: 40px;
+        min-width: 40px;
+        background-color: hsl(0, 53%, 69%);
+    }
+    
+    .crit-name {
+        font-weight: bold;
+    }
+    
+    .crit-name, .crit-handle {
+        padding-left: .5rem;
+    }
+    
+    .crit-txt {
+        padding: 1rem;
+        margin: none;
+        padding: none;
+        box-sizing: border-box;
+    }
+    
+    .header-flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .crit-timeline {
+        display: flex;
+        flex-direction: column;
+        width: 80%;
+        height: 25%;
+        margin: 20px 20px;
+        color: rgb(3, 20, 26);
+        border: 1px solid rgb(199, 196, 176);
+        background-color: rgb(225, 223, 223);
+        border-radius: 8px;
+        box-shadow: lightslategrey 5px 5px;
+        align-items: flex-start;
+    }
+    
+    .crit-timeline p {
+        margin: 20px;
+    }
+    
+    .crit-timeline h3 {
+        margin-left: 15px;
+    }
+    
+    .btn-flex {
+        display: flex;
+        width: 100%;
+        justify-content: space-evenly;
+    }
+    
+    .container {
+        display: grid;
+        grid-template-columns: 0.5fr 1fr 1fr;
+        grid-template-rows: 0.5fr 0fr 1.8fr;
+        gap: 0px 0px;
+        grid-auto-flow: row;
+        grid-template-areas: "logo tweet-location search" ". . ." "side-menu timeline results";
+    }
+    
+    .container>div { padding: 1rem; }
+    .logo { grid-area: logo; }
+    .side-menu { grid-area: side-menu; }
+    .results { grid-area: results; }
+    .timeline { grid-area: timeline; }
+    .tweet-location { grid-area: tweet-location; }
+    .search { grid-area: search; }
 
