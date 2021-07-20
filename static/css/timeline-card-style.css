@@ -1,0 +1,23 @@
+#timeline-card {
+    border: 1px solid black;
+    height: 25vh;
+    width: 80vw;
+}
+
+#timeline-text{
+    margin:20px;
+    color: black;
+}
+
+#timeline-buttons{
+    
+}
+
+#timeline-profile-pic{
+
+}
+
+#timeline-profile-name{
+    text-decoration: none;
+    color: black;
+}
