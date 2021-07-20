@@ -12,6 +12,9 @@ Critter is a social micro-blogging website built by CBC 12
    1. home button - time line 
     1. profile button- show your own tweets/ displays profile picture
     2. logo at top of menu
+    3. setting button
+
+- build tweet bar to send tweet to timeline 
     
 3. Right hand column
    1. search bar at the top
@@ -27,3 +30,7 @@ Critter is a social micro-blogging website built by CBC 12
 
 6. color pallete and typogoraphy 
 7. classes and ids with hyphen, such as 'profile-button'
+
+get awards for fixing bugs like XP in a game, shows on your profile
+
+'Courier New', Courier, monospace, monospace
