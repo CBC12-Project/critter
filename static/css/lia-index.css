@@ -22,11 +22,10 @@ ul {
 }
 
 #profile-header {
-    width: 400px;
+    width: 90%;
     padding: 1rem;
     padding-bottom: 60px;
-    /* margin: 1rem; */
-    margin: 1rem 0 1rem 0;
+    /* margin: 1rem 0 1rem 0; */
 }
 
 #header-image {
@@ -34,7 +33,6 @@ ul {
     height: 100px;
     background-color: hsl(240, 66%, 71%);
     padding: 0 !important;
-    /* margin: 0; */
 }
 
 #Following, #Followers {
@@ -45,7 +43,7 @@ ul {
     font-weight: bold;
 }
 
-.header-container {
+.parent-container {
     position: relative;
 }
 
@@ -54,11 +52,12 @@ ul {
 }
 
 #pinned-crit {
-    margin-bottom: -.75rem;
     font-size: .9rem;
+    position: absolute;
+    top: -5px;
 }
 
-#header-text > p {
+#header-text>p {
     padding: .25rem 0 .25rem 0;
 }
 
@@ -66,15 +65,17 @@ ul {
     height: 80px;
     width: 80px;
     border-radius: 80px;
+    min-width: 80px;
     background-color: hsl(0, 53%, 69%);
     position: absolute;
     top: -40px;
 }
 
-#profile-header > div > div {
+#profile-header>div>div {
     padding: .5rem;
 }
-#profile-header > div > div > a {
+
+#profile-header>div>div>a {
     padding: .5rem;
     text-decoration: none;
     color: black;
@@ -86,8 +87,7 @@ ul {
 }
 
 .crit {
-    /* border: 1px solid black; */
-    width: 400px;
+    width: 90%;
     padding: 1rem;
     margin: 1rem 0 1rem 0;
 }
@@ -96,11 +96,11 @@ ul {
     justify-content: space-between;
 }
 
-.crit-btns > a {
+.crit-btns>a {
     font-weight: bold;
 }
 
-.crit-btns > a > i {
+.crit-btns>a>i {
     padding: 0 .5rem 0 .5rem;
 }
 
@@ -109,18 +109,17 @@ ul {
 }
 
 .reply {
-    width: 300px !important;
+    width: 75% !important;
     justify-self: right;
 }
 
-.reply-text > .divider {
+.reply-text>.divider {
     justify-content: space-between;
 }
 
 .reply-textbox {
     width: 80%;
     font-size: 1.2rem;
-    /* padding-left: 1rem; */
     padding: .5rem;
     border: none;
 }
@@ -131,11 +130,11 @@ ul {
     box-shadow: 5px 5px hsl(180, 46%, 82%);
 }
 
-.crit > div > p {
+.crit>div>p {
     padding-left: .5rem;
 }
 
-.crit > p {
+.crit>p {
     padding: .5rem 0 .5rem 0;
 }
 
@@ -151,13 +150,16 @@ button.like-btn:hover {
 
 .divider {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    text-align: center;
 }
 
 .crit-pfp {
     height: 40px;
     width: 40px;
     border-radius: 40px;
+    min-width: 40px;
     background-color: hsl(0, 53%, 69%);
 }
 
@@ -175,16 +177,6 @@ button.like-btn:hover {
     padding: none;
     box-sizing: border-box;
 }
-/* 
-body{
-    background-color: rgb(177, 177, 177);
-} */
-
-/* h1{
-    color: lightslategrey;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 30px;
-} */
 
 .header-flex {
     display: flex;
@@ -208,18 +200,11 @@ body{
 }
 
 .crit-timeline p {
-    margin: 20px;    
+    margin: 20px;
 }
 
 .crit-timeline h3 {
     margin-left: 15px;
-}
-
-button {   
-    border-radius: 5px;
-    background-color: rgb(18, 33, 41);
-    margin-bottom: 10px;
-    color: linen;
 }
 
 .btn-flex {
@@ -234,11 +219,10 @@ button {
     grid-template-rows: 0.5fr 0fr 1.8fr;
     gap: 0px 0px;
     grid-auto-flow: row;
-    grid-template-areas:
-    "logo tweet-location search"
-    ". . ."
-    "side-menu timeline results";
+    grid-template-areas: "logo tweet-location search" ". . ." "side-menu timeline results";
 }
+
+.container>div { padding: 1rem; }
 .logo { grid-area: logo; }
 .side-menu { grid-area: side-menu; }
 .results { grid-area: results; }
