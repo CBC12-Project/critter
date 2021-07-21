@@ -287,9 +287,11 @@
     #create-crit {
         border: none;
         border-radius: 6px;
-        color: whitesmoke;
-        box-shadow: 5px 5px hsl(180, 46%, 82%);
+        color: black;
+        box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 5px;
+        width: 75%;
+       ;
     }
 
     #create-crit-btn {
@@ -297,9 +299,9 @@
         border: none;
         border-radius: 6px;
         color: rgb(111, 108, 108);
-        box-shadow: 5px 5px hsl(180, 46%, 82%);
+        box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 10px;
-        margin: 7% 0 0 15%;
+        margin: 7% 0 0 5%;
     }
 
     #crit-logo {
