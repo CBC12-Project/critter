@@ -1,0 +1,13 @@
+<div class="crit card reply" id="<%= crit.crit_reply_id %>_critReply"> 
+    <div class="divider">
+        <div class="crit-pfp"><%= user.picture %></div>
+        <p class="crit-name"><%= user.display_name %></p>
+        <p class="crit-handle"><%= user.username %></p>
+        <p><strong>·</strong></p>
+        <p id="crit-time-ago"><%= crit.created_on %></p>
+    </div>
+    <p class="crit-text"><%= crit.message %></p>
+    <div class="divider crit-btns">
+        <a href="#"><i class="fas fa-bug"><%= crit.likes %></i></a>
+    </div>
+</div>
