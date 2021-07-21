@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="/static/css/logo.css">
     <title>Critter</title>
 </head>
-<!-- <%- include('/head.ejs',{page{name:'Home'}})%>  HEAD EJS -->
+<%- include('/head.ejs',{page{name:'Home'}})%>  
+<!-- HEAD EJS -->
 <body>
     
     <!-- grid container for overall layout -->
@@ -55,7 +56,8 @@
                     <a href="#"><i class="far fa-comment"></i>2</a>
                 </div>
             </div>
-            <!-- <%- include('/reply.ejs'{user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'} crit:{created_on: '', message:'Hey You', likes: 1}});%>              REPLY EJS-->
+            <%- include('/reply.ejs'{user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'} crit:{created_on: '', message:'Hey You', likes: 1}});%>              
+            <!-- REPLY EJS -->
             <div class="crit card reply"> 
                 <div class="divider">
                     <div class="crit-pfp"></div>
