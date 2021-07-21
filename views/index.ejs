@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/lia-index.css">
+    <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous"/>
     <title>Critter</title>
 </head>
@@ -12,8 +12,30 @@
     
     <!-- grid container for overall layout -->
     <div class="container"> 
-        <div class="logo"></div>
-        <div class="side-menu"></div>
+        <div class="logo">
+            <div class="logo">
+            <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
+            <br><br>
+            
+        </div> 
+    </div>
+        <div class="side-menu">
+            <ul>
+                <li>
+                    <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
+                    <a href="/static/index.html">Home</a>
+                </li>
+                
+                <li>
+                    <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
+                    <a href="/static/profile.html">Profile</a>
+                </li>
+                <li>
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
+                    <a href="">Settings</a>
+                </li>
+            </ul>
+        </div>
         <div class="results">
             <!-- template for crits and card design  -->
             <div class="crit card"> 
@@ -67,26 +89,13 @@
         </div>
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
+            <!-- Send a Crit -->
+            <form action="/" method="post">
+                <input type="text" id="create-crit" name="create-crit" >
+                <button id="create-crit-btn">CRIT!</button>
+            </form>
+
             <!-- general container used for keeping the element relative like the other elements, but making the child absolute to adjust its position -->
-            <div class="parent-container"> 
-                <p id="pinned-crit">Pinned Crit:</p>
-            </div>
-            <div class="crit card">
-                <div class="divider">
-                    <div class="crit-pfp"></div>
-                    <p class="crit-name">lia</p>
-                    <p class="crit-handle">@liaaa</p>
-                    <p><strong>·</strong></p>
-                    <p id="crit-time-ago">13 min</p>
-                </div>
-                <p class="crit-text">hiiiii this is my first crit!</p>
-                <div class="divider crit-btns">
-                    <a href="#"><i class="fas fa-bug"></i>1</a>
-                    <a href="#"><i class="far fa-comment"></i>2</a>
-                </div>
-            </div>
-        </div>
-        <div class="tweet-location">
             <div id="profile-header" class="card">
                 <div id="header-image"></div>
                 <div class="parent-container divider">
@@ -102,8 +111,29 @@
                     </div>
                 </div>
             </div>
+            
+            <div class="crit card">
+                <div class="divider">
+                    <div class="crit-pfp"></div>
+                    <p class="crit-name">lia</p>
+                    <p class="crit-handle">@liaaa</p>
+                    <p><strong>·</strong></p>
+                    <p id="crit-time-ago">13 min</p>
+                </div>
+                <p class="crit-text">hiiiii this is my first crit!</p>
+                <div class="divider crit-btns">
+                    <a href="#"><i class="fas fa-bug"></i>1</a>
+                    <a href="#"><i class="far fa-comment"></i>2</a>
+                </div>
+            </div>
         </div>
-        <div class="search"></div>
+        
+        <div class="search"> 
+            <div>
+                <input id="search" name="search-btn" type="text" placeholder="Search...">
+                <button id="search-btn">Search</button>
+        </div>
+    </div>
     </div>
 </body>
 </html>

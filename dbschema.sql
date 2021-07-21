@@ -7,6 +7,7 @@ CREATE TABLE `crits` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;	
 
+
 CREATE TABLE `crit_likes` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `crit_id` int(11) NOT NULL,
