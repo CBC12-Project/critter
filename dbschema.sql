@@ -5,7 +5,8 @@ CREATE TABLE `crits` (
     `message` text NOT NULL,
     `created_on` datetime NOT NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;	
+
 
 CREATE TABLE `crit_likes` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -23,4 +24,4 @@ CREATE TABLE `users` (
     `display_name` varchar(255) NOT NULL,
     `created_on` datetime NOT NULL DEFAULT current_timestamp(),
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
