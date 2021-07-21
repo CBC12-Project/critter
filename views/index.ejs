@@ -12,8 +12,35 @@
     
     <!-- grid container for overall layout -->
     <div class="container"> 
-        <div class="logo"></div>
-        <div class="side-menu"></div>
+        <div class="logo">
+            <div class="logo">
+            <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
+            <br><br>
+            <form action="/" method="post">
+                
+                <input type="text" id="create-crit" name="create-crit" >
+                <br>
+                <button id="create-crit-btn">CRIT!</button>
+            </form>
+        </div> 
+    </div>
+        <div class="side-menu">
+            <ul>
+                <li>
+                    <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
+                    <a href="/static/index.html">Home</a>
+                </li>
+                
+                <li>
+                    <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
+                    <a href="/static/profile.html">Profile</a>
+                </li>
+                <li>
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
+                    <a href="">Settings</a>
+                </li>
+            </ul>
+        </div>
         <div class="results">
             <!-- template for crits and card design  -->
             <div class="crit card"> 
@@ -83,9 +110,7 @@
                     </div>
                 </div>
             </div>
-            <div class="parent-container"> 
-                
-            </div>
+            
             <div class="crit card">
                 <div class="divider">
                     <div class="crit-pfp"></div>
