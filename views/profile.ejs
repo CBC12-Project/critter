@@ -10,7 +10,7 @@
         <%= user.display_name %>
     </title>
 </head>
-<body>
+<>
     <div class="crit-pfp"></div> 
     <!-- make a way for the datebase can change this to match crit-handle -->
     <div class="crit-pfp"><%= user.picture %></div>
@@ -22,9 +22,13 @@
 <!-- the last time they was online -->
     <p id="crit-time-live"><%= crit.time_alive %></p>
     <p><strong>·</strong></p>
-
+<br>
     <p class="Crit-Bio"><%= user.bio %></p>
     <class class=Crit-Contact><%= user.github %></class>
-    </div>
+<br>
+<br>
+<div class="timeline"><%=User.post%></div>
+
+
 </body>
 </html>
