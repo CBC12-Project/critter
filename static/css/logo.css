@@ -1,0 +1,7 @@
+.logo{
+        background: url("/static/images/critter\ logo.svg");
+        height: 9px;
+        width: 30px;
+        display: block;
+        /* Other styles here */
+}
