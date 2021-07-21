@@ -40,6 +40,7 @@
             </ul>
         </div>
         <div class="results">
+            <%- include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %> 
             <!-- template for crits and card design  -->
             <div class="crit card"> 
                 <!-- divider: general class for display: flex and align center -->
@@ -83,6 +84,8 @@
                     <a href="#"><i class="fas fa-bug"></i></a>
                 </div>
             </div>
+            <%- include('/single-crit', {user: { display_name: 'Liaaaa', picture: src="", username: '@Lia'}, crit:{created_on: '', message:'This is a reply', likes: 1, replies:0 }}); %> 
+
             <div class="crit card reply reply-text">
                 <div class="divider">
                     <div class="crit-pfp"></div>
@@ -114,7 +117,8 @@
                     </div>
                 </div>
             </div>
-            
+            <%- include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %>    
+                <!-- SINGLE CRIT EJS -->
             <div class="crit card">
                 <div class="divider">
                     <div class="crit-pfp"></div>
