@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('partials/head.ejs',{page:{name:'Home'}}) %>  
+<!-- HEAD EJS -->
+<body>
+    
+    <!-- grid container for overall layout -->
+    <div class="container"> 
+        <div class="logo">
+            <div class="logo">
+            <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
+            <br><br>
+            
+        </div> 
+    </div>
+        <div class="side-menu">
+            <ul>
+                <li>
+                    <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
+                    <a href="/static/index.html">Home</a>
+                </li>
+                
+                <li>
+                    <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
+                    <a href="/static/profile.html">Profile</a>
+                </li>
+                <li>
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
+                    <a href="">Settings</a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- grid section that shows timeline of crits -->
+        <div class="timeline">
+            <!-- Send a Crit -->
+            <form action="/" method="post">
+                <input type="text" id="create-crit" name="create-crit" >
+                <button id="create-crit-btn">CRIT!</button>
+            </form>
+
+            
+            <%- include('partials/single-crit', { user: user, crit: crit }); %>    
+                <!-- SINGLE CRIT EJS -->
+            
+        </div>
+        
+        <div class="search"> 
+            <div>
+                <input id="search" name="search-btn" type="text" placeholder="Search...">
+                <button id="search-btn">Search</button>
+        	</div>
+    	</div>
+
+		<div class="results">
+            <%# include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %> 
+            <!-- template for crits and card design  -->
+            
+            <!-- reply: template for replies to crits -->
+            
+            <%# TODO(implement replies) %>
+            <%# include('partials/single-crit', { user: user, crit: crit }); %> 
+
+			<!-- 
+            <div class="crit card reply reply-text">
+                <div class="divider">
+                    <div class="crit-pfp"></div>
+                    <input type="text" class="reply-textbox" placeholder="Write reply">
+                </div>
+            </div>
+			-->
+        </div>
+
+    </div>
+</body>
+</html>
