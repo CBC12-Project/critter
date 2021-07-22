@@ -6,9 +6,9 @@
         <p><strong>·</strong></p>
         <p id="crit-time-ago"><%= crit.created_on %></p>
     </div>
-    <p class="crit-text"><a href="/crit/<%= crit.id %>"><%= crit.message %></a></p>
+    <p class="crit-text"><%= crit.message %></p>
     <div class="divider crit-btns">
         <a href="#"><i class="fas fa-bug"></i><%= crit.likes %></a>
-        <a href="#"><i class="far fa-comment"></i><%= crit.replies %></a>
+        <a href="/crit/<%= crit.id %>"><i class="far fa-comment"></i><%= crit.replies %></a>
     </div>
 </div>
