@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/main.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="/static/css/logo.css">
-    <title>Critter</title>
-</head>
-<%- include('/head.ejs',{page{name:'Home'}})%>  
+
+<%- include('partials/head.ejs',{page:{name:'Home'}}) %>  
 <!-- HEAD EJS -->
 <body>
     
@@ -40,51 +32,13 @@
             </ul>
         </div>
         <div class="results">
-            <%- include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %> 
+            <%# include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %> 
             <!-- template for crits and card design  -->
-            <div class="crit card"> 
-                <!-- divider: general class for display: flex and align center -->
-                <div class="divider">
-                    <div class="crit-pfp"></div>
-                    <p class="crit-name">lia</p>
-                    <p class="crit-handle">@liaaa</p>
-                    <p><strong>·</strong></p>
-                    <p id="crit-time-ago">13 min</p>
-                </div>
-                <p class="crit-text">hiiiii this is my first crit!</p>
-                <div class="divider crit-btns">
-                    <a href="#"><i class="fas fa-bug"></i>1</a>
-                    <a href="#"><i class="far fa-comment"></i>2</a>
-                </div>
-            </div>
+            
             <!-- reply: template for replies to crits -->
-            <div class="crit card reply"> 
-                <div class="divider">
-                    <div class="crit-pfp"></div>
-                    <p class="crit-name">someone</p>
-                    <p class="crit-handle">@cookies</p>
-                    <p><strong>·</strong></p>
-                    <p id="crit-time-ago">11 min</p>
-                </div>
-                <p class="crit-text">hi lia!</p>
-                <div class="divider crit-btns">
-                    <a href="#"><i class="fas fa-bug"></i></a>
-                </div>
-            </div>
-            <div class="crit card reply">
-                <div class="divider">
-                    <div class="crit-pfp"></div>
-                    <p class="crit-name">evil</p>
-                    <p class="crit-handle">@unfriendly</p>
-                    <p><strong>·</strong></p>
-                    <p id="crit-time-ago">9 min</p>
-                </div>
-                <p class="crit-text">go away</p>
-                <div class="divider crit-btns">
-                    <a href="#"><i class="fas fa-bug"></i></a>
-                </div>
-            </div>
-            <%- include('/single-crit', {user: { display_name: 'Liaaaa', picture: src="", username: '@Lia'}, crit:{created_on: '', message:'This is a reply', likes: 1, replies:0 }}); %> 
+            
+            
+            <%- include('partials/single-crit', {user: { display_name: 'Liaaaa', picture: src="", username: '@Lia'}, crit:{created_on: '', message:'This is a reply', likes: 1, replies:0 }}); %> 
 
             <div class="crit card reply reply-text">
                 <div class="divider">
@@ -117,22 +71,9 @@
                     </div>
                 </div>
             </div>
-            <%- include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %>    
+            <%- include('partials/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %>    
                 <!-- SINGLE CRIT EJS -->
-            <div class="crit card">
-                <div class="divider">
-                    <div class="crit-pfp"></div>
-                    <p class="crit-name">lia</p>
-                    <p class="crit-handle">@liaaa</p>
-                    <p><strong>·</strong></p>
-                    <p id="crit-time-ago">13 min</p>
-                </div>
-                <p class="crit-text">hiiiii this is my first crit!</p>
-                <div class="divider crit-btns">
-                    <a href="#"><i class="fas fa-bug"></i>1</a>
-                    <a href="#"><i class="far fa-comment"></i>2</a>
-                </div>
-            </div>
+            
         </div>
         
         <div class="search"> 

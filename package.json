@@ -20,7 +20,8 @@
   "homepage": "https://github.com/CBC12-Project/critter#readme",
   "dependencies": {
     "ejs": "^3.1.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
