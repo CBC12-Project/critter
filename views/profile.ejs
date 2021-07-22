@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/logo.css">
-    <!-- Make a way to link Profile name in the title -->
-    <title>
-        <%= user.display_name %>
-    </title>
-</head>
-<body>
+
+
     <!-- make a way for the datebase can change this to match crit-handle -->
     <div class="crit-pfp"><%= user.picture %></div>
         <p class="crit-name"><%= user.display_name %></p>
@@ -29,5 +18,3 @@
     <div class="timeline"><%=User.post%></div>
 
 
-</body>
-</html>
