@@ -41,6 +41,12 @@ app.get('/crit/:crit_id', (req, res) => {
 	});
 	
 });
+//welcome page route
+app.get('/', (req, res) => {
+	res.render('NEWUSER');
+        //route for profile
+app.get('/Profile', (req, res) => {
+	res.render('profile');
 
 const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
