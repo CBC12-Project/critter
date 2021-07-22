@@ -42,11 +42,11 @@ app.get('/crit/:crit_id', (req, res) => {
 	
 });
 //welcome page route
-app.get('/Welcome', (req, res) => {
+app.get('/welcome', (req, res) => {
 	res.render('newusers');
 })
 //route for profile
-app.get('/Profile', (req, res) => {
+app.get('/profile', (req, res) => {
 	res.render('profile');
 })
 
