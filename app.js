@@ -7,8 +7,40 @@ app.use( express.static('static') );
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-        res.render('index')
-})
+	// todo: render timeline
+	res.render('index');
+});
+
+app.get('/crit/:crit_id', (req, res) => {
+	let crit_query = `
+		SELECT 
+			crits.id, crits.user_id, users.display_name, 
+			users.username, crits.crit_reply_id,
+			crits.message, crits.created_on 
+		FROM crits 
+		LEFT JOIN users 
+		ON crits.user_id = users.id 
+		WHERE crits.id = ?;
+	`;
+	connection.query(crit_query, req.params.crit_id, (err, results) => {
+		let crit = {
+			user: {
+				display_name: results[0].display_name,
+				picture: '',
+				username: '@' + results[0].username
+			},
+			crit: {
+				id: results[0].id,
+				created_on: results[0].created_on,
+				likes: 0,
+				replies: 0,
+				message: results[0].message
+			}
+		};
+		res.render('crit', crit);
+	});
+	
+});
 
 const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
