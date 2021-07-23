@@ -3,8 +3,12 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
+
+input:focus{
+    outline: none;
+}
+
 
 /* CSS grid layout */
 .container {
@@ -258,7 +262,7 @@
         background-color:white;
         border: none;
         border-radius: 6px;
-        color: whitesmoke;
+        color: black;
         box-shadow: 5px 5px hsl(180, 46%, 82%);
         padding: 5px;
         margin: 5px;
