@@ -6,11 +6,6 @@ require('dotenv').config();
 app.use( express.static('static') );
 app.set('view engine', 'ejs');
 
-app.get('/', (req, res) => {
-	// todo: render timeline
-	res.render('index');
-});
-
 app.get('/crit/:crit_id', (req, res) => {
 	let crit_query = `
 		SELECT 
@@ -41,6 +36,47 @@ app.get('/crit/:crit_id', (req, res) => {
 	});
 	
 });
+
+// Route for Timeline
+
+app.get('/', (req, res) => {
+	let crit_query = `
+		SELECT 
+			crits.id, crits.user_id, users.display_name, 
+			users.username, crits.crit_reply_id,
+			crits.message, crits.created_on 
+		FROM crits 
+		LEFT JOIN users 
+		ON crits.user_id = users.id
+		ORDER BY crits.created_on DESC
+		LIMIT 10
+	`;
+	connection.query(crit_query, req.params.crits, (err, results) => {
+		let crits = [];
+		for (let i = 0; i<results.length; i++){
+			crits.push({
+				user: {
+					display_name: results[i].display_name,
+					picture: '',
+					username: '@' + results[i].username
+				},
+				crit: {
+					id: results[i].id,
+					created_on: results[i].created_on,
+					likes: 0,
+					replies: 0,
+					message: results[i].message
+				}
+			})
+		}
+		
+		res.render('timeline', {crits:crits});
+	});
+	
+});
+
+
+
 
 const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
