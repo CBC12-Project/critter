@@ -4,14 +4,14 @@
 <%- include('partials/head.ejs',{page:{name:'Home'}}) %>  
 <!-- HEAD EJS -->
 <body>
-    
+
     <!-- grid container for overall layout -->
     <div class="container"> 
         <div class="logo">
             <div class="logo">
             <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
             <br><br>
-            
+
         </div> 
     </div>
         <div class="side-menu">
@@ -20,7 +20,7 @@
                     <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
                     <a href="/static/index.html">Home</a>
                 </li>
-                
+
                 <li>
                     <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
                     <a href="/static/profile.html">Profile</a>
@@ -32,13 +32,12 @@
             </ul>
         </div>
         <div class="results">
-            <%# include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %> 
+            <% for (let i = 0; i<crit_results.length; i++){ %>
+                <%- include('partials/single-crit', {crit: crit_results[i].crit, user:crit_results[i].user})%>
+            <% } %>
             <!-- template for crits and card design  -->
-            
+
             <!-- reply: template for replies to crits -->
-            
-            
-            <%- include('partials/single-crit', {user: { display_name: 'Liaaaa', picture: src="", username: '@Lia'}, crit:{created_on: '', message:'This is a reply', likes: 1, replies:0 }}); %> 
 
             <div class="crit card reply reply-text">
                 <div class="divider">
@@ -50,21 +49,17 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- Send a Crit -->
-            <form action="/create" method="post">
-                <input type="text" id="create-crit" name="createCrit" >
+            <form action="/" method="post">
+                <input type="text" id="create-crit" name="create-crit" >
                 <button id="create-crit-btn">CRIT!</button>
             </form>
 
-            <% for (let i = 0; i<crits.length; i++){ %>
-                <%- include('partials/single-crit', {crit: crits[i].crit, user:crits[i].user})%>
-           <% } %>
-
             <!-- general container used for keeping the element relative like the other elements, but making the child absolute to adjust its position -->
-            
-            
-            
+
+
+
         </div>
-        
+
         <%- include('partials/search') %>
     </div>
 </body>

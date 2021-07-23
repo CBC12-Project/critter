@@ -83,12 +83,47 @@ app.get('/', (req, res) => {
 				}
 			})
 		}
-		
 		res.render('timeline', {crits:crits});
 	});
 	
 });
 
+//search route 
+
+app.get('/search', (req, res) => {
+    let searchParam = `%${req.query.search}%`;
+	let search_query = `
+    SELECT 
+        crits.id, crits.user_id, users.display_name, 
+        users.username, crits.crit_reply_id,
+        crits.message, crits.created_on 
+    FROM crits 
+    LEFT JOIN users 
+    ON crits.user_id = users.id 
+    WHERE crits.message 
+    lIKE ?`;
+	connection.query(search_query, searchParam, (err, results) => {
+		let crit_results = [];
+		for(let i = 0; i < results.length; i++){
+			crit_results.push({
+				user: {
+					display_name: results[i].display_name,
+					picture: '',
+					username: '@' + results[i].username
+				},
+				crit: {
+					id: results[i].id,
+					created_on: results[i].created_on,
+					likes: 0,
+					replies: 0,
+					message: results[i].message
+				}
+			});
+        };
+		res.render('search', {crit_results:crit_results});
+	});
+	
+});
 
 
 
