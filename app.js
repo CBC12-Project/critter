@@ -11,14 +11,14 @@ app.set('view engine', 'ejs');
 app.get('/welcome', (req, res) => {
         console.log("loaded welcome page")
 	res.render('newusers.ejs');
-})
+});
 //route for profile
 app.get('/profile', (req, res) => {
 	res.render('profile');
-})
+});
 app.get('*', (req, res) => {
 	res.render('404');
-})
+});
 
 app.get('/crit/:crit_id', (req, res) => {
 	let crit_query = `
