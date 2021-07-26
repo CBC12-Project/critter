@@ -1,8 +1,20 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
+const session = require('express-session')
 require('dotenv').config();
 app.use(express.urlencoded({extended:true}));
+
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(function(req, res, next) {
+	res.locals.user = req.session.userId;
+	next();
+});
 
 app.use( express.static('static') );
 app.set('view engine', 'ejs');
@@ -54,6 +66,7 @@ app.post('/create', (req, res) => {
 // Route for Timeline
 
 app.get('/', (req, res) => {
+	console.log(req.session.loggedin)
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
@@ -83,10 +96,10 @@ app.get('/', (req, res) => {
 				}
 			})
 		}
+		console.log(req.session.UserId)
 		
 		res.render('timeline', {crits:crits});
 	});
-	
 });
 
 //search route 
@@ -126,7 +139,28 @@ app.get('/search', (req, res) => {
 	
 });
 
-
+app.post('/auth', (req, res) => {
+	let loginEmail = `${req.body.email}`
+	let loginPassword = `${req.body.password}`
+	let login_query = `
+	SELECT id 
+	FROM users 
+	WHERE users.email = ? 
+	AND users.password = ?;
+	`;
+	connection.query(login_query, [loginEmail, loginPassword], (err, results, fields) => {
+		if (results.length > 0) {
+			req.session.loggedin = true;
+			req.session.UserId = results[0].id;
+			console.log(req.session.loggedin)
+			res.redirect('/');
+		} else {
+			res.send('Incorrect Username and/or Password!');
+		}
+		res.end();
+		console.log(results)
+	})
+})
 
 const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
