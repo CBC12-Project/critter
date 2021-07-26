@@ -4,20 +4,20 @@
 
     <body>
         <!-- make a way for the datebase can change this to match crit-handle. -->
-        <div class="crit-pfp">user.picture </div>
-            <p class="crit-name">user.display_name </p>
-            <p class="Scrit-handle">user.username </p>
-            <p class="Crit-Points">user.Crit-Points</p>
-            <p class="Crit-location"> user.location </p>
+        <div class="crit-pfp"><%user.picture%> </div>
+            <p class="crit-name"><%user.display_name%></p>
+            <p class="Scrit-handle"><%user.username%> </p>
+            <p class="Crit-Points"><%user.Crit-Points%></p>
+            <p class="Crit-location"> <%user.location%></p>
 
     <!-- the last time they was online. -->
-            <p id="crit-time-live">crit.time_alive </p>
+            <p id="crit-time-live"><%crit.time_alive%></p>
             <p><strong>·</strong></p>
                 <br>
-                        <p class="Crit-Bio"> user.bio </p>
-                            <class class=Crit-Contact>user.github </class>
+                        <p class="Crit-Bio"> <%user.bio%></p>
+                            <class class=Crit-Contact><%user.github%></class>
                 <br>
                 <br>
-                    <div class="timeline">User.post</div>
+                    <div class="timeline"><%User.post%></div>
     </body>
 </html>
