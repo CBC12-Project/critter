@@ -28,5 +28,6 @@ CREATE TABLE `users` (
 CREATE TABLE `followers` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`user_id` INT(11) NOT NULL,
-	`following_id` INT(11) NOT NULL
+	`following_id` INT(11) NOT NULL,
+	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB CHARSET=utf8mb4;
