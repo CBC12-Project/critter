@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mysql = require('mysql');
 require('dotenv').config();
+app.use(express.urlencoded({extended:true}));
 
 app.use( express.static('static') );
 app.set('view engine', 'ejs');
@@ -34,9 +35,22 @@ app.get('/crit/:crit_id', (req, res) => {
 		};
 		res.render('crit', crit);
 	});
-	
 });
 
+app.post('/create', (req, res) => {
+        let currentUserId = 1;
+        let createCrit = req.body.createCrit;
+        let crit_query = `
+        INSERT INTO crits 
+                (id, user_id, crit_reply_id, message, created_on)
+        VALUES
+                (NULL, ?, NULL, ?, current_timestamp());
+        `;
+        connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, res) {
+                if (err) throw err;
+        })
+        res.redirect('/');
+})
 // Route for Timeline
 
 app.get('/', (req, res) => {
@@ -69,6 +83,7 @@ app.get('/', (req, res) => {
 				}
 			})
 		}
+		
 		res.render('timeline', {crits:crits});
 	});
 	
