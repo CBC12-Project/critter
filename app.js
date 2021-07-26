@@ -83,6 +83,7 @@ app.get('/', (req, res) => {
 				}
 			})
 		}
+		
 		res.render('timeline', {crits:crits});
 	});
 	
