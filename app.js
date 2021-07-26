@@ -89,6 +89,48 @@ app.get('/', (req, res) => {
 	
 });
 
+app.all('/user/:following_id/follow', (req, res) => {
+	let query = `
+		INSERT INTO followers (user_id, following_id) VALUES (?, ?)
+	`;
+
+	// TODO(erh): grab the current user ID from the session 
+	// when Lia finishes coding the login system.
+	let my_user_id = 1; 
+
+	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+
+		// TODO(erh): we'll need to write a JSON route for this for our front-end
+		// until then, simply reload the current page.
+		res.redirect('back');
+	});
+});
+
+app.all('/user/:following_id/unfollow', (req, res) => {
+	let query = `
+		DELETE FROM followers WHERE user_id = ? AND following_id = ?
+	`;
+
+	// TODO(erh): grab the current user ID from the session 
+	// when Lia finishes coding the login system.
+	let my_user_id = 1; 
+
+	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+
+		// TODO(erh): we'll need to write a JSON route for this for our front-end
+		// until then, simply reload the current page.
+		res.redirect('back');
+	});
+});
+
 //search route 
 
 app.get('/search', (req, res) => {
