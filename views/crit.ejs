@@ -26,16 +26,17 @@
                 <button id="create-crit-btn">CRIT!</button>
             </form>
             
-            <%- include('partials/single-crit', { user: user, crit: crit }); %>    
+            <%- include('partials/single-crit', { user: user, crit: crit }); %>  
+            <form action="/crit/<%= crit.id %>" method="post">
+                <input type="text" id="reply-crit" name="replyCrit" >
+                <button id="reply-crit-btn">Reply!</button>
+            </form>  
                 <!-- REPLY -->
-                <% for (let i = 0; i<crits.length; i++){ %>
-                    <%- include('partials/single-crit', {crit: crits[i].replies, user:crits[i].user})%>
+                <% for (let i = 0; i<crit.replyCrits.length; i++){ %>
+                    <%- include('partials/single-crit', {crit: crit.replyCrits[i].crit, user:crit.replyCrits[i].user})%>
                <% } %>
 
-                <form action="/crit/<%= crit.id %>" method="post">
-                    <input type="text" id="reply-crit" name="replyCrit" >
-                    <button id="reply-crit-btn">Reply!</button>
-                </form>
+               
             
         </div>
         
