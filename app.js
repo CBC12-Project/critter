@@ -1,10 +1,10 @@
+
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
 const session = require('express-session')
 require('dotenv').config();
 app.use(express.urlencoded({extended:true}));
-
 
 app.use(session({
 	secret: 'secret',
@@ -18,54 +18,12 @@ app.use(function(req, res, next) {
 	next();
 });
 
+const critRoute = require('./critRouter');
+app.use('/crit', critRoute);
+
 app.use( express.static('static') );
 app.set('view engine', 'ejs');
 
-app.get('/crit/:crit_id', (req, res) => {
-	let crit_query = `
-		SELECT 
-			crits.id, crits.user_id, users.display_name, 
-			users.username, crits.crit_reply_id,
-			crits.message, crits.created_on 
-		FROM crits 
-		LEFT JOIN users 
-		ON crits.user_id = users.id 
-		WHERE crits.id = ?;
-	`;
-	connection.query(crit_query, req.params.crit_id, (err, results) => {
-		let crit = {
-			user: {
-				display_name: results[0].display_name,
-				picture: '',
-				username: '@' + results[0].username
-			},
-			crit: {
-				id: results[0].id,
-				created_on: results[0].created_on,
-				likes: 0,
-				replies: 0,
-				message: results[0].message
-			}
-		};
-		res.render('crit', crit);
-	});
-});
-
-app.post('/create', (req, res) => {
-		if (req.session.UserId) {
-			let createCrit = req.body.createCrit;
-			let crit_query = `
-			INSERT INTO crits 
-					(id, user_id, crit_reply_id, message, created_on)
-			VALUES
-					(NULL, ?, NULL, ?, current_timestamp());
-			`;
-			connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
-					if (err) throw err;
-			})
-			res.redirect('/');	
-		}
-})
 // Route for Timeline
 
 app.get('/', (req, res) => {
@@ -213,13 +171,68 @@ app.post('/logout', (req, res) => {
 				res.status(400).send('Unable to log out');
 			} else {
 				res.redirect('/');
-			};
+			}
 		});
 	} else {
-		res.end();
-	};
+		res.end()
+	}
+})
+
+//welcome page route
+app.get('/welcome', (req, res) => {
+        console.log("loaded welcome page")
+	res.render('newusers.ejs');
+});
+//route for profile
+app.get('/profile', (req, res) => {
+	res.render('profile');
 });
 
+app.all('/user/:following_id/follow', (req, res) => {
+	let query = `
+		INSERT INTO followers (user_id, following_id) VALUES (?, ?)
+	`;
+
+	// TODO(erh): grab the current user ID from the session 
+	// when Lia finishes coding the login system.
+	let my_user_id = 1; 
+
+	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+
+		// TODO(erh): we'll need to write a JSON route for this for our front-end
+		// until then, simply reload the current page.
+		res.redirect('back');
+	});
+});
+
+app.all('/user/:following_id/unfollow', (req, res) => {
+	let query = `
+		DELETE FROM followers WHERE user_id = ? AND following_id = ?
+	`;
+
+	// TODO(erh): grab the current user ID from the session 
+	// when Lia finishes coding the login system.
+	let my_user_id = 1; 
+
+	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+
+		// TODO(erh): we'll need to write a JSON route for this for our front-end
+		// until then, simply reload the current page.
+		res.redirect('back');
+	});
+});
+
+app.get('*', (req, res) => {
+	res.render('404');
+});
 
 const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
