@@ -32,9 +32,11 @@
                 <button id="reply-crit-btn">Reply!</button>
             </form>  
                 <!-- REPLY -->
-                <% for (let i = 0; i<crit.replyCrits.length; i++){ %>
-                    <%- include('partials/single-crit', {crit: crit.replyCrits[i].crit, user:crit.replyCrits[i].user})%>
-               <% } %>
+            <% for ( let i = 0; i<crit.replyCrits.length; i++ ) { %>
+                <%- include('partials/single-crit', 
+                {crit: crit.replyCrits[i].crit, 
+                 user: crit.replyCrits[i].user})%>
+            <% } %>
 
                
             
