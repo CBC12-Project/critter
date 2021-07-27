@@ -30,7 +30,7 @@ router.get('/:crit_id',(req, res) => {
 				id: results[0].id,
 				created_on: results[0].created_on,
 				likes: 0,
-				replies: 0,
+				replies: results[0].crit_reply_id,
 				message: results[0].message
 			}
 		};
@@ -64,7 +64,7 @@ router.post('/:crit_id',(req, res) => {
 connection.query(crit_query, [currentUserId, replyCrit, req.body.replyCrit], function(err, result) {
         if (err) throw err;
 		res.redirect('/crit/' + result.insertId);
-        console.log(result);
+    
     });
 });
 
