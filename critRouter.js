@@ -48,7 +48,7 @@ router.post('/',(req, res) => {
     VALUES
             (NULL, ?, NULL, ?, current_timestamp());
     `;
-    connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, res) {
+    connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, result) {
             if (err) throw err;
             res.redirect('/');
     })
