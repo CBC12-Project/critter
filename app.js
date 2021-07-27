@@ -12,7 +12,9 @@ app.use(session({
 	saveUninitialized: true
 }));
 app.use(function(req, res, next) {
-	res.locals.user = req.session.userId;
+	res.locals.userId = req.session.UserId;
+	res.locals.display_name = req.session.display_name;
+	res.locals.username = req.session.username;
 	next();
 });
 
@@ -50,18 +52,19 @@ app.get('/crit/:crit_id', (req, res) => {
 });
 
 app.post('/create', (req, res) => {
-        let currentUserId = 1;
-        let createCrit = req.body.createCrit;
-        let crit_query = `
-        INSERT INTO crits 
-                (id, user_id, crit_reply_id, message, created_on)
-        VALUES
-                (NULL, ?, NULL, ?, current_timestamp());
-        `;
-        connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, res) {
-                if (err) throw err;
-        })
-        res.redirect('/');
+		if (req.session.UserId) {
+			let createCrit = req.body.createCrit;
+			let crit_query = `
+			INSERT INTO crits 
+					(id, user_id, crit_reply_id, message, created_on)
+			VALUES
+					(NULL, ?, NULL, ?, current_timestamp());
+			`;
+			connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
+					if (err) throw err;
+			})
+			res.redirect('/');	
+		}
 })
 // Route for Timeline
 
@@ -139,28 +142,83 @@ app.get('/search', (req, res) => {
 	
 });
 
+app.post('/signup', (req, res) => {
+	let signupEmail = `${req.body.email}`
+	let signupUsername = `${req.body.username}`
+	let signupDisplayname= `${req.body.display_name}`
+	let signupPassword = `${req.body.password}`
+	let signup_verify_email_query = `
+	SELECT id
+	FROM users
+	WHERE users.email = ? 
+	;`
+	let signup_verify_username_query = `
+	SELECT id
+	FROM users
+	WHERE users.username = ? 
+	;`
+	let signup_query = `
+	INSERT INTO users 
+		(id, username, email, password, display_name, created_on) 
+	VALUES 
+		(NULL, ?, ?, ?, ?, current_timestamp());`;
+	connection.query(signup_verify_email_query, signupEmail, (err, results) => {
+		if (!results[0]) {
+			connection.query(signup_verify_username_query, signupUsername, (err, results) => {
+				if (!results[0]) {
+					connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
+						if (err) throw err;
+					})		
+				} else {
+					res.send('Username already in use!')
+				}
+			})
+		} else {
+			res.send('Email already in use!');
+		}
+	})
+})
+
 app.post('/auth', (req, res) => {
 	let loginEmail = `${req.body.email}`
 	let loginPassword = `${req.body.password}`
 	let login_query = `
-	SELECT id 
+	SELECT users.id, users.display_name, users.username
 	FROM users 
 	WHERE users.email = ? 
 	AND users.password = ?;
 	`;
-	connection.query(login_query, [loginEmail, loginPassword], (err, results, fields) => {
+	connection.query(login_query, [loginEmail, loginPassword], (err, results) => {
+		
 		if (results.length > 0) {
 			req.session.loggedin = true;
 			req.session.UserId = results[0].id;
-			console.log(req.session.loggedin)
+			req.session.display_name = results[0].display_name;
+			req.session.username = results[0].username;
+			console.log(req.session.loggedin);
 			res.redirect('/');
 		} else {
 			res.send('Incorrect Username and/or Password!');
-		}
+		};
 		res.end();
 		console.log(results)
-	})
+	});
+});
+
+app.post('/logout', (req, res) => {
+	if (req.session) {
+		req.session.destroy(err => {
+			if (err) {
+				res.status(400).send('Unable to log out')
+			} else {
+				res.redirect('/');
+			}
+		});
+	} else {
+		res.end()
+	}
 })
+
 
 const connection = mysql.createConnection({
         host     : process.env.DB_HOST,

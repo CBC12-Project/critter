@@ -11,7 +11,6 @@
             <div class="logo">
             <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
             <br><br>
-            <p>Current User: <%= res.locals.user %>  </p>
         </div> 
     </div>
         <div class="side-menu">
@@ -29,11 +28,7 @@
                     <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
                     <a href="">Settings</a>
                 </li>
-                <li>
-                    <img src="https://img.icons8.com/ios-filled/30/000000/login-rounded-right.png"/>
-                    <a href="#" id="login-btn">Login</a>
-                    <%- include('partials/login') %>
-                </li>
+                <%- include('partials/login') %>
             </ul>
         </div>
         <div class="results">
