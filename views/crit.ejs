@@ -52,6 +52,10 @@
             <!-- template for crits and card design  -->
             
             <!-- reply: template for replies to crits -->
+            <form action="/crit/<%= crit.id %>" method="post">
+                <input type="text" id="reply-crit" name="replyCrit" >
+                <button id="reply-crit-btn">CRIT!</button>
+            </form>
             
             <%# TODO(implement replies) %>
             <%# include('partials/single-crit', { user: user, crit: crit }); %> 
