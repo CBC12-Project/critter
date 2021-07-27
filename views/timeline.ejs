@@ -14,22 +14,10 @@
         </div> 
     </div>
         <div class="side-menu">
-            <ul>
-                <li>
-                    <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
-                    <a href="/static/index.html">Home</a>
-                </li>
-                
-                <li>
-                    <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
-                    <a href="/static/profile.html">Profile</a>
-                </li>
-                <li>
-                    <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
-                    <a href="">Settings</a>
-                </li>
-                <%- include('partials/login') %>
-            </ul>
+        
+            <%-include('partials/sidebar') %>
+            <%- include('partials/login') %>
+
         </div>
         <div class="results">
             <%# include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %> 
@@ -50,7 +38,7 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- Send a Crit -->
-            <form action="/create" method="post">
+            <form action="/crit/create" method="post">
                 <input type="text" id="create-crit" name="createCrit" >
                 <button id="create-crit-btn">CRIT!</button>
             </form>
