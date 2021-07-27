@@ -11,11 +11,12 @@
             <div class="logo">
             <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
             <br><br>
-            
         </div> 
     </div>
         <div class="side-menu">
+        
             <%-include('partials/sidebar') %>
+
         </div>
         <div class="results">
             <%# include('/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %> 
@@ -36,7 +37,7 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- Send a Crit -->
-            <form action="/crit" method="post">
+            <form action="/crit/create" method="post">
                 <input type="text" id="create-crit" name="createCrit" >
                 <button id="create-crit-btn">CRIT!</button>
             </form>
