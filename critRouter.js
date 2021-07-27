@@ -47,13 +47,13 @@ router.post('/',(req, res) => {
             (id, user_id, crit_reply_id, message, created_on)
     VALUES
             (NULL, ?, NULL, ?, current_timestamp());
-    `;
+    `
     connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, res) {
             if (err) throw err;
             res.redirect('/');
     })
-   
 });
+
 router.post('/:crit_id',(req, res) => {
     let currentUserId = 1;
     let replyCrit = req.params.crit_id;
@@ -66,6 +66,7 @@ router.post('/:crit_id',(req, res) => {
     connection.query(crit_query, [currentUserId, replyCrit, req.body.replyCrit], function(err, result) {
             if (err) throw err;
 			res.redirect('/crit/' + result.insertId);
+            console.log(result);
     })
     
 });
