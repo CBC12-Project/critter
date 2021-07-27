@@ -168,17 +168,17 @@ app.post('/signup', (req, res) => {
 				if (!results[0]) {
 					connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
 						if (err) throw err;
-						res.redirect('/')
+						res.redirect('/');
 					})		
 				} else {
-					res.send('Username already in use!')
-				}
-			})
+					res.send('Username already in use!');
+				};
+			});
 		} else {
 			res.send('Email already in use!');
-		}
-	})
-})
+		};
+	});
+});
 
 app.post('/auth', (req, res) => {
 	let loginEmail = `${req.body.email}`
@@ -202,7 +202,7 @@ app.post('/auth', (req, res) => {
 			res.send('Incorrect Username and/or Password!');
 		};
 		res.end();
-		console.log(results)
+		console.log(results);
 	});
 });
 
@@ -210,7 +210,7 @@ app.post('/logout', (req, res) => {
 	if (req.session) {
 		req.session.destroy(err => {
 			if (err) {
-				res.status(400).send('Unable to log out')
+				res.status(400).send('Unable to log out');
 			} else {
 				res.redirect('/');
 			}
