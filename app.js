@@ -32,10 +32,25 @@ app.get('/', (req, res) => {
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
 			users.username, crits.crit_reply_id,
-			crits.message, crits.created_on 
+			crits.message, crits.created_on, 
+			count(crit_replies.id) AS replies,
+			ifnull(
+				(
+					SELECT count(crit_likes.id) 
+					FROM crit_likes 
+					WHERE crit_likes.crit_id = crits.id 
+					GROUP BY crit_likes.crit_id
+				), 0
+			) AS likes
 		FROM crits 
+		LEFT JOIN crits AS crit_replies
+			ON crit_replies.crit_reply_id = crits.id 
+		LEFT JOIN crit_likes
+			ON crit_likes.crit_id = crits.id
 		LEFT JOIN users 
-		ON crits.user_id = users.id
+			ON crits.user_id = users.id
+		WHERE crits.crit_reply_id is null
+		GROUP BY crits.id
 		ORDER BY crits.created_on DESC
 		LIMIT 10
 	`;
@@ -51,8 +66,8 @@ app.get('/', (req, res) => {
 				crit: {
 					id: results[i].id,
 					created_on: results[i].created_on,
-					likes: 0,
-					replies: 0,
+					likes: results[i].likes,
+					replies: results[i].replies,
 					message: results[i].message
 				}
 			})
@@ -193,9 +208,7 @@ app.all('/user/:following_id/follow', (req, res) => {
 		INSERT INTO followers (user_id, following_id) VALUES (?, ?)
 	`;
 
-	// TODO(erh): grab the current user ID from the session 
-	// when Lia finishes coding the login system.
-	let my_user_id = 1; 
+	let my_user_id = req.session.UserId; 
 
 	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
 		if ( err ) {
@@ -214,9 +227,7 @@ app.all('/user/:following_id/unfollow', (req, res) => {
 		DELETE FROM followers WHERE user_id = ? AND following_id = ?
 	`;
 
-	// TODO(erh): grab the current user ID from the session 
-	// when Lia finishes coding the login system.
-	let my_user_id = 1; 
+	let my_user_id = req.session.UserId; 
 
 	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
 		if ( err ) {
