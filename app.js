@@ -213,12 +213,12 @@ app.post('/logout', (req, res) => {
 				res.status(400).send('Unable to log out');
 			} else {
 				res.redirect('/');
-			}
+			};
 		});
 	} else {
-		res.end()
-	}
-})
+		res.end();
+	};
+});
 
 
 const connection = mysql.createConnection({
