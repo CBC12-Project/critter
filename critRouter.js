@@ -45,11 +45,7 @@ router.post('/create',(req, res) => {
             (id, user_id, crit_reply_id, message, created_on)
     VALUES
             (NULL, ?, NULL, ?, current_timestamp())
-<<<<<<< HEAD
-    `
-=======
     `;
->>>>>>> a2713d4c58392f3ce7a853df0fe778fdb0a20052
     connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, result) {
             if (err) throw err;
             res.redirect('/');
