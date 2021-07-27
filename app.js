@@ -9,20 +9,7 @@ app.set('view engine', 'ejs');
 const critRoute = require('./critRouter');
 app.use('/crit', critRoute);
 
-app.post('/crit/:crit_id',(req, res) => {
-    let currentUserId = 1;
-    let createCrit = req.body.replyCrit;
-    let crit_query = `
-    INSERT INTO crits 
-            (id, user_id, crit_reply_id, message, created_on)
-    VALUES
-            (NULL, ?, NULL, ?, current_timestamp());
-    `;
-    connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, res) {
-            if (err) throw err;
-    })
-    res.redirect('/:crit_id');
-});
+
 
 
 // Route for Timeline
