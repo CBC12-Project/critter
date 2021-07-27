@@ -100,7 +100,7 @@ app.get('/search', (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-	if (validator.validate(req.body.email)) {
+	if (validator.validate(req.body.email) && (req.body.username) && (req.body.display_name)) {
 		try {
 			const salt = await bcrypt.genSalt();
 			const signupPassword = `${await bcrypt.hash(req.body.password, salt)}`;
@@ -143,7 +143,7 @@ app.post('/signup', async (req, res) => {
 			res.status(500).send();
 		}
 	} else {
-		res.send('Email invalid!')
+		res.send('Invalid!')
 	}
 });
 
