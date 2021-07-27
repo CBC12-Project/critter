@@ -4,6 +4,7 @@ const app = express();
 const mysql = require('mysql');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
+const validator = require("email-validator");
 require('dotenv').config();
 app.use(express.urlencoded({extended:true}));
 
@@ -99,46 +100,50 @@ app.get('/search', (req, res) => {
 });
 
 app.post('/signup', async (req, res) => {
-	try {
-		const salt = await bcrypt.genSalt();
-		const signupPassword = `${await bcrypt.hash(req.body.password, salt)}`;
-			let signupEmail = `${req.body.email}`;
-			let signupUsername = `${req.body.username}`;
-			let signupDisplayname= `${req.body.display_name}`;
-			let signup_verify_email_query = `
-		SELECT id
-		FROM users
-		WHERE users.email = ? 
-		;`
-		let signup_verify_username_query = `
-		SELECT id
-		FROM users
-		WHERE users.username = ? 
-		;`
-		let signup_query = `
-		INSERT INTO users 
-			(id, username, email, password, display_name, created_on) 
-		VALUES 
-			(NULL, ?, ?, ?, ?, current_timestamp())
-		;`
-		connection.query(signup_verify_email_query, signupEmail, (err, results) => {
-			if (!results[0]) {
-				connection.query(signup_verify_username_query, signupUsername, (err, results) => {
-					if (!results[0]) {
-						connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
-							if (err) throw err;
-							res.redirect('/');
-						})		
-					} else {
-						res.send('Username already in use!');
-					};
-				});
-			} else {
-				res.send('Email already in use!');
-			};
-		});
-	} catch {
-		res.status(500).send();
+	if (validator.validate(req.body.email)) {
+		try {
+			const salt = await bcrypt.genSalt();
+			const signupPassword = `${await bcrypt.hash(req.body.password, salt)}`;
+				let signupEmail = `${req.body.email}`;
+				let signupUsername = `${req.body.username}`;
+				let signupDisplayname= `${req.body.display_name}`;
+				let signup_verify_email_query = `
+			SELECT id
+			FROM users
+			WHERE users.email = ? 
+			;`
+			let signup_verify_username_query = `
+			SELECT id
+			FROM users
+			WHERE users.username = ? 
+			;`
+			let signup_query = `
+			INSERT INTO users 
+				(id, username, email, password, display_name, created_on) 
+			VALUES 
+				(NULL, ?, ?, ?, ?, current_timestamp())
+			;`
+			connection.query(signup_verify_email_query, signupEmail, (err, results) => {
+				if (!results[0]) {
+					connection.query(signup_verify_username_query, signupUsername, (err, results) => {
+						if (!results[0]) {
+							connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
+								if (err) throw err;
+								res.redirect('/');
+							})		
+						} else {
+							res.send('Username already in use!');
+						};
+					});
+				} else {
+					res.send('Email already in use!');
+				};
+			});
+		} catch {
+			res.status(500).send();
+		}
+	} else {
+		res.send('Email invalid!')
 	}
 });
 
