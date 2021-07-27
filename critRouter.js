@@ -3,11 +3,9 @@ const router = express.Router();
 const mysql = require('mysql');
 require('dotenv').config();
 
-
-
 router.get('/', (req, res) => {
-    res.redirect('/')
-})
+    res.redirect('/');
+});
 
 
 router.get('/:crit_id',(req, res) => {
@@ -19,7 +17,7 @@ router.get('/:crit_id',(req, res) => {
 		FROM crits 
 		LEFT JOIN users 
 		ON crits.user_id = users.id 
-		WHERE crits.id = ?;
+		WHERE crits.id = ?
 	`;
 	connection.query(crit_query, req.params.crit_id, (err, results) => {
 		let crit = {
@@ -46,12 +44,16 @@ router.post('/create',(req, res) => {
     INSERT INTO crits 
             (id, user_id, crit_reply_id, message, created_on)
     VALUES
-            (NULL, ?, NULL, ?, current_timestamp());
+            (NULL, ?, NULL, ?, current_timestamp())
+<<<<<<< HEAD
     `
+=======
+    `;
+>>>>>>> a2713d4c58392f3ce7a853df0fe778fdb0a20052
     connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, result) {
             if (err) throw err;
             res.redirect('/');
-    })
+    });
 });
 
 router.post('/:crit_id',(req, res) => {
@@ -63,16 +65,12 @@ router.post('/:crit_id',(req, res) => {
     VALUES
             (NULL, ?,?,?, current_timestamp())
     `;
-    connection.query(crit_query, [currentUserId, replyCrit, req.body.replyCrit], function(err, result) {
-            if (err) throw err;
-			res.redirect('/crit/' + result.insertId);
-            console.log(result);
-    })
-    
+connection.query(crit_query, [currentUserId, replyCrit, req.body.replyCrit], function(err, result) {
+        if (err) throw err;
+		res.redirect('/crit/' + result.insertId);
+        console.log(result);
+    });
 });
-
-
-
 
 const connection = mysql.createConnection({
     host     : process.env.DB_HOST,
