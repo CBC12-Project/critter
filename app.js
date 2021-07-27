@@ -2,7 +2,8 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const session = require('express-session')
+const session = require('express-session');
+const bcrypt = require('bcrypt');
 require('dotenv').config();
 app.use(express.urlencoded({extended:true}));
 
@@ -24,10 +25,12 @@ app.use('/crit', critRoute);
 app.use( express.static('static') );
 app.set('view engine', 'ejs');
 
+console.log(bcrypt);
+
 // Route for Timeline
 
 app.get('/', (req, res) => {
-	console.log(req.session.loggedin)
+	console.log(req.session.loggedin);
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
@@ -56,9 +59,7 @@ app.get('/', (req, res) => {
 					message: results[i].message
 				}
 			})
-		}
-		console.log(req.session.UserId)
-		
+		}		
 		res.render('timeline', {crits:crits});
 	});
 });
@@ -100,67 +101,77 @@ app.get('/search', (req, res) => {
 	
 });
 
-app.post('/signup', (req, res) => {
-	let signupEmail = `${req.body.email}`
-	let signupUsername = `${req.body.username}`
-	let signupDisplayname= `${req.body.display_name}`
-	let signupPassword = `${req.body.password}`
-	let signup_verify_email_query = `
-	SELECT id
-	FROM users
-	WHERE users.email = ? 
-	;`
-	let signup_verify_username_query = `
-	SELECT id
-	FROM users
-	WHERE users.username = ? 
-	;`
-	let signup_query = `
-	INSERT INTO users 
-		(id, username, email, password, display_name, created_on) 
-	VALUES 
-		(NULL, ?, ?, ?, ?, current_timestamp());`;
-	connection.query(signup_verify_email_query, signupEmail, (err, results) => {
-		if (!results[0]) {
-			connection.query(signup_verify_username_query, signupUsername, (err, results) => {
-				if (!results[0]) {
-					connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
-						if (err) throw err;
-						res.redirect('/');
-					})		
-				} else {
-					res.send('Username already in use!');
-				};
-			});
-		} else {
-			res.send('Email already in use!');
-		};
-	});
+app.post('/signup', async (req, res) => {
+	try {
+		const salt = await bcrypt.genSalt();
+		const signupPassword = `${await bcrypt.hash(req.body.password, salt)}`;
+		let signupEmail = `${req.body.email}`;
+		let signupUsername = `${req.body.username}`;
+		let signupDisplayname= `${req.body.display_name}`;
+		let signup_verify_email_query = `
+		SELECT id
+		FROM users
+		WHERE users.email = ? 
+		;`
+		let signup_verify_username_query = `
+		SELECT id
+		FROM users
+		WHERE users.username = ? 
+		;`
+		let signup_query = `
+		INSERT INTO users 
+			(id, username, email, password, display_name, created_on) 
+		VALUES 
+			(NULL, ?, ?, ?, ?, current_timestamp())
+		;`
+		connection.query(signup_verify_email_query, signupEmail, (err, results) => {
+			if (!results[0]) {
+				connection.query(signup_verify_username_query, signupUsername, (err, results) => {
+					if (!results[0]) {
+						connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
+							if (err) throw err;
+							res.redirect('/');
+						})		
+					} else {
+						res.send('Username already in use!');
+					};
+				});
+			} else {
+				res.send('Email already in use!');
+			};
+		});
+	} catch {
+		res.status(500).send();
+	}
 });
 
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
 	let loginEmail = `${req.body.email}`
 	let loginPassword = `${req.body.password}`
 	let login_query = `
-	SELECT users.id, users.display_name, users.username
+	SELECT users.id, users.display_name, users.username, users.password
 	FROM users 
-	WHERE users.email = ? 
-	AND users.password = ?;
+	WHERE users.email = ?;
 	`;
-	connection.query(login_query, [loginEmail, loginPassword], (err, results) => {
-		
+	connection.query(login_query, loginEmail, async (err, results) => {
 		if (results.length > 0) {
-			req.session.loggedin = true;
-			req.session.UserId = results[0].id;
-			req.session.display_name = results[0].display_name;
-			req.session.username = results[0].username;
-			console.log(req.session.loggedin);
-			res.redirect('/');
+			try {
+				if (await bcrypt.compare(loginPassword, results[0].password)) {
+					console.log('passwords match')
+					req.session.loggedin = true;
+					req.session.UserId = results[0].id;
+					req.session.display_name = results[0].display_name;
+					req.session.username = results[0].username;
+					res.redirect('/');
+				} else {
+					res.send('Incorrect Username and/or Password!');
+				}
+			} catch {
+				res.status(500).send();
+			}
 		} else {
 			res.send('Incorrect Username and/or Password!');
 		};
-		res.end();
-		console.log(results);
 	});
 });
 
@@ -174,7 +185,7 @@ app.post('/logout', (req, res) => {
 			}
 		});
 	} else {
-		res.end()
+		res.end();
 	}
 })
 
