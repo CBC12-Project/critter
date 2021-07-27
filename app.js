@@ -168,6 +168,7 @@ app.post('/signup', (req, res) => {
 				if (!results[0]) {
 					connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
 						if (err) throw err;
+						res.redirect('/')
 					})		
 				} else {
 					res.send('Username already in use!')
