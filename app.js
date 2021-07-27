@@ -19,9 +19,6 @@ app.get('/welcome', (req, res) => {
 app.get('/profile', (req, res) => {
 	res.render('profile');
 });
-app.get('*', (req, res) => {
-	res.render('404');
-});
 
 // Route for Timeline
 
@@ -140,7 +137,9 @@ app.get('/search', (req, res) => {
 	
 });
 
-
+app.get('*', (req, res) => {
+	res.render('404');
+});
 
 const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
