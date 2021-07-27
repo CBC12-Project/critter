@@ -31,3 +31,7 @@ CREATE TABLE `followers` (
 	`following_id` INT(11) NOT NULL,
 	PRIMARY KEY(`id`)
 ) ENGINE=InnoDB CHARSET=utf8mb4;
+
+ALTER TABLE users ADD COLUMN bio TEXT(500) AFTER display_name;
+ALTER TABLE users ADD COLUMN profile_pic_url TEXT(500) AFTER bio;
+ALTER TABLE users ADD COLUMN header_image_url TEXT(500) AFTER profile_pic_url;
