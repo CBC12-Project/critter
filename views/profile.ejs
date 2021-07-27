@@ -3,20 +3,27 @@
 <%- include('partials/head.ejs',{page:{name:'users Profile'}}) %>
 
     <body>
-        <!-- make a way for the datebase can change this to match crit-handle. -->
-        <div class="crit-pfp"><%= user.picture %> </div>
-            <p class="crit-name"><%= user.display_name %></p>
-            <p class="Scrit-handle"><%= user.username %></p>
-            <p class="Crit-Points">user.Crit-Points</p>
-            <p class="Crit-location">user.location</p>
-
-    <!-- the last time they was online. -->
-            <p id="crit-time-live">crit.time_alive</p>
-            <p><strong>·</strong></p>
-                        <p class="Crit-Bio">user.bio</p>
-                            <class class=Crit-Contact>user.github</class>
-                <br>
-                <br>
-                    <div class="timeline">User.post</div>
+        <div class="timeline">
+        <div id="profile-header" class="card">
+            <div id="header-image"></div>
+            <div class="parent-container divider">
+                <div id="profile-pic"></div>
+            </div>
+            <div class="parent-container" id="header-text">
+                <p id="name">
+                    <%= user.display_name %>
+                </p>
+                <p id="handle">
+                    <%= user.username %>
+                </p>
+                <p id="bio">i love cute things, please be friendly!</p>
+                <div class="divider">
+                    <a href="#"><span id="Following">100</span> following</a>
+                    <a href="#"><span id="Followers">200</span> followers</a>
+                </div>
+            </div>
+            <!-- make a way for the datebase can change this to match crit-handle. -->
+        </div>
+    
     </body>
 </html>
