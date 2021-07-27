@@ -25,12 +25,9 @@ app.use('/crit', critRoute);
 app.use( express.static('static') );
 app.set('view engine', 'ejs');
 
-console.log(bcrypt);
-
 // Route for Timeline
 
 app.get('/', (req, res) => {
-	console.log(req.session.loggedin);
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
@@ -105,10 +102,10 @@ app.post('/signup', async (req, res) => {
 	try {
 		const salt = await bcrypt.genSalt();
 		const signupPassword = `${await bcrypt.hash(req.body.password, salt)}`;
-		let signupEmail = `${req.body.email}`;
-		let signupUsername = `${req.body.username}`;
-		let signupDisplayname= `${req.body.display_name}`;
-		let signup_verify_email_query = `
+			let signupEmail = `${req.body.email}`;
+			let signupUsername = `${req.body.username}`;
+			let signupDisplayname= `${req.body.display_name}`;
+			let signup_verify_email_query = `
 		SELECT id
 		FROM users
 		WHERE users.email = ? 
@@ -157,7 +154,6 @@ app.post('/auth', async (req, res) => {
 		if (results.length > 0) {
 			try {
 				if (await bcrypt.compare(loginPassword, results[0].password)) {
-					console.log('passwords match')
 					req.session.loggedin = true;
 					req.session.UserId = results[0].id;
 					req.session.display_name = results[0].display_name;
@@ -191,7 +187,6 @@ app.post('/logout', (req, res) => {
 
 //welcome page route
 app.get('/welcome', (req, res) => {
-        console.log("loaded welcome page")
 	res.render('newusers.ejs');
 });
 //route for profile
