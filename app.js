@@ -234,9 +234,6 @@ app.all('/like/:crit_id', (req, res) => {
 	let query = `
 	INSERT INTO crit_likes (user_id, crit_id) VALUES (?, ?)
 	`;
-
-	// TODO(erh): grab the current user ID from the session 
-	// when Lia finishes coding the login system.
 	let my_user_id = req.session.UserId;  
 
 	connection.query(query, [ my_user_id, req.params.crit_id ], (err, results) => {
@@ -245,7 +242,7 @@ app.all('/like/:crit_id', (req, res) => {
 			throw err;
 		}
 
-		// TODO(erh): we'll need to write a JSON route for this for our front-end
+		// TODO: we'll need to write a JSON route for this for our front-end
 		// until then, simply reload the current page.
 		res.redirect('back');
 	});
