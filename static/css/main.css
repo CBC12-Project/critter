@@ -370,3 +370,10 @@ input:focus{
         padding: 5px;
         margin-top: 30%;
     }
+textarea {
+  border: 2px solid;
+  padding: 20px; 
+  width: 300px;
+  resize: both;
+  overflow: auto;
+}
