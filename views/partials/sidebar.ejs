@@ -1,18 +1,9 @@
-<% if (userId === undefined) { %>
     <ul>
         <li>
             <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
             <a href="/">Home</a>
         </li>
-        <%- include('login') %>
-    </ul>
-<% } else { %>
-    <ul>
-        <li>
-            <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
-            <a href="/">Home</a>
-        </li>
-        
+        <% if (userId) { %>
         <li>
             <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
             <a href="/profile">Profile</a>
@@ -21,6 +12,6 @@
             <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
             <a href="/settings">Settings</a>
         </li>
+        <% } %>
         <%- include('login') %>
     </ul>
-<% } %>
