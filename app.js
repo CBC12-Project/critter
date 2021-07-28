@@ -263,7 +263,7 @@ app.all('/like/:crit_id', (req, res) => {
 			};
 		});
 	} else { 
-		res.send('Please log in')
+		res.send('Please log in');
 	};
 });
 
