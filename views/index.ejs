@@ -42,21 +42,7 @@
             </form>
 
             <!-- general container used for keeping the element relative like the other elements, but making the child absolute to adjust its position -->
-            <div id="profile-header" class="card">
-                <div id="header-image"></div>
-                <div class="parent-container divider">
-                    <div id="profile-pic"></div>
-                </div>
-                <div class="parent-container" id="header-text">
-                    <p id="name">lia</p>
-                    <p id="handle">@liaaa</p>
-                    <p id="bio">i love cute things, please be friendly!</p>
-                    <div class="divider">
-                        <a href="#"><span id="Following">100</span> following</a>
-                        <a href="#"><span id="Followers">200</span> followers</a>
-                    </div>
-                </div>
-            </div>
+            <%- include('partials/profile') %>
             <%- include('partials/single-crit', {user: { display_name: 'Andrew', picture: src="", username: '@AndrewB'}, crit:{created_on: '', message:'Hello', likes: 1, replies:'2' }}); %>    
                 <!-- SINGLE CRIT EJS -->
             
