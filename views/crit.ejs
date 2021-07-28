@@ -15,7 +15,7 @@
         </div> 
     </div>
         <div class="side-menu">
-            <%-include('partials/sidebar') %>
+            <%- include('partials/sidebar') %>
         </div>
         
         <!-- grid section that shows timeline of crits -->
@@ -26,12 +26,19 @@
                 <button id="create-crit-btn">CRIT!</button>
             </form>
             
-            <%- include('partials/single-crit', { user: user, crit: crit }); %>    
-                <!-- SINGLE CRIT EJS -->
-                <form action="/crit/<%= crit.id %>" method="post">
-                    <input type="text" id="reply-crit" name="replyCrit" >
-                    <button id="reply-crit-btn">Reply!</button>
-                </form>
+            <%- include('partials/single-crit', { user: user, crit: crit }); %>  
+            <form action="/crit/<%= crit.id %>" method="post">
+                <input type="text" id="reply-crit" name="replyCrit" >
+                <button id="reply-crit-btn">Reply!</button>
+            </form>  
+                <!-- REPLY -->
+            <% for ( let i = 0; i<crit.replyCrits.length; i++ ) { %>
+                <%- include('partials/single-crit', 
+                {crit: crit.replyCrits[i].crit, 
+                 user: crit.replyCrits[i].user})%>
+            <% } %>
+
+               
             
         </div>
         
