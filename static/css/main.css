@@ -201,6 +201,8 @@ input:focus{
         flex-wrap: wrap;
         align-items: center;
         text-align: center;
+        resize: AUTO;
+        overflow: auto;
     }
     
     .crit-pfp {
