@@ -110,7 +110,7 @@ app.get('/search', (req, res) => {
     LEFT JOIN users 
 		ON crits.user_id = users.id 
 	LEFT JOIN crit_likes AS user_liked
-        ON crits.user_id = ? AND crit_likes.crit_id = crits.id
+        ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
     WHERE crits.message 
     lIKE ?`;
 	let user_id = req.session.UserId || 0;
