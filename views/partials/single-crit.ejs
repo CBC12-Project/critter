@@ -8,7 +8,7 @@
     </div>
     <p class="crit-text"><%= crit.message %></p>
     <div class="divider crit-btns">
-        <a href="#"><i class="fas fa-bug"></i><%= crit.likes %></a>
+        <a id="<%= crit.id %>_like" href="/like/<%= crit.id %>"><i class="fas fa-bug"></i><%= crit.likes %></a>
         <a href="/crit/<%= crit.id %>"><i class="far fa-comment"></i><%= crit.replies %></a>
     </div>
 </div>
