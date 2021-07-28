@@ -22,23 +22,22 @@
         <div class="timeline">
             <!-- Send a Crit -->
             <form action="/crit" method="post">
-                <input type="text" id="create-crit" name="createCrit" >
+                <textarea id="reply-crit" name="replyCrit" placeholder="Rely to this crit"></textarea>
                 <button id="create-crit-btn">CRIT!</button>
             </form>
             
+
             <%- include('partials/single-crit', { user: user, crit: crit }); %>  
             <form action="/crit/<%= crit.id %>" method="post">
-                <input type="text" id="reply-crit" name="replyCrit" >
+                <textarea id="reply-crit" name="replyCrit" placeholder="Reply to this crit"></textarea>
                 <button id="reply-crit-btn">Reply!</button>
-            </form>  
+            </form>
                 <!-- REPLY -->
             <% for ( let i = 0; i<crit.replyCrits.length; i++ ) { %>
                 <%- include('partials/single-crit', 
                 {crit: crit.replyCrits[i].crit, 
                  user: crit.replyCrits[i].user})%>
             <% } %>
-
-               
             
         </div>
         
@@ -58,7 +57,7 @@
             <div class="crit card reply reply-text">
                 <div class="divider">
                     <div class="crit-pfp"></div>
-                    <input type="text" class="reply-textbox" placeholder="Write reply">
+                    <textarea class="reply-textbox" placeholder="Write reply"></textarea>
                 </div>
             </div>
 			-->

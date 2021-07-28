@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-input:focus{
+textarea:focus{
     outline: none;
 }
 
@@ -127,6 +127,8 @@ input:focus{
     #new-crit-textbox {
         padding: 1rem;
         font-size: 1.5rem;
+        resize: AUTO;
+        overflow: auto;
     }
     
     .crit {
@@ -165,6 +167,8 @@ input:focus{
         font-size: 1.2rem;
         padding: .5rem;
         border: none;
+        resize: AUTO;
+        overflow: auto;
     }
     
     .card {
@@ -241,6 +245,8 @@ input:focus{
         border-radius: 8px;
         box-shadow: lightslategrey 5px 5px;
         align-items: flex-start;
+        resize: AUTO;
+        overflow: auto;
     }
     
     .crit-timeline p {
@@ -330,19 +336,29 @@ input:focus{
         color: black;
         box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 5px;
-        width: 75%;
+        width: 90%;
+        resize: AUTO;
+        overflow: auto;
     }
 
     #create-crit-btn {
-        background-color:white;
+        background-color:#5EA9D4;
         border: none;
         border-radius: 6px;
-        color: rgb(111, 108, 108);
-        box-shadow: 5px 5px hsl(0, 53%, 69%);
+        color: rgb(241, 233, 233);
         padding: 10px;
-        margin: 7% 0 0 5%;
+        margin: 0 0 0 0;
+        position: absolute;
+        bottom:4px;
+        right:88.8px;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
     }
-
+.timeline form{ 
+    position: relative;
+}
     #crit-logo {
         margin: 0 0 0 15%;
     }
@@ -358,7 +374,9 @@ input:focus{
         padding: 5px;
         margin: 5px;
         width: 200px;
-
+        resize: AUTO;
+        overflow: auto;
+        width: 45%;
     }
 
     #reply-crit-btn {
@@ -369,8 +387,18 @@ input:focus{
         box-shadow: 5px 5px hsl(180, 46%, 82%);
         padding: 5px;
         margin-top: 30%;
+    }    
+
+    textarea {
+        border: 2px solid;
+        padding: 20px;
+        width: 45%;
+        height: 150px;
+        resize: AUTO;
+        overflow: auto;
     }
 
 	.liked {
 		color: rgb(255, 72, 72);
 	}
+

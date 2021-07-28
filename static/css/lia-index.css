@@ -77,6 +77,8 @@ a {
 #new-crit-textbox {
     padding: 1rem;
     font-size: 1.5rem;
+    resize: AUTO;
+    overflow: auto;
 }
 
 .crit {
