@@ -97,17 +97,19 @@ router.get('/:crit_id',(req, res) => {
 	});
 });
 router.post('/create',(req, res) => {
-    let createCrit = req.body.createCrit;
-    let crit_query = `
-    INSERT INTO crits 
-            (id, user_id, crit_reply_id, message, created_on)
-    VALUES
-            (NULL, ?, NULL, ?, current_timestamp())
-    `;
-    connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, result) {
-            if (err) throw err;
-            res.redirect('/');
-    });
+    if (req.session.UserId) {
+        let createCrit = req.body.createCrit;
+        let crit_query = `
+        INSERT INTO crits 
+                (id, user_id, crit_reply_id, message, created_on)
+        VALUES
+                (NULL, ?, NULL, ?, current_timestamp());
+        `;
+        connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
+                if (err) throw err;
+        })
+        res.redirect('/');	
+    }
 });
 
 router.post('/:crit_id',(req, res) => {
