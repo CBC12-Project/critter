@@ -388,6 +388,7 @@ textarea:focus{
         padding: 5px;
         margin-top: 30%;
     }    
+
     textarea {
         border: 2px solid;
         padding: 20px;
@@ -396,3 +397,8 @@ textarea:focus{
         resize: AUTO;
         overflow: auto;
     }
+
+	.liked {
+		color: rgb(255, 72, 72);
+	}
+

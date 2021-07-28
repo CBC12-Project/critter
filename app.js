@@ -2,7 +2,9 @@
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
-const session = require('express-session')
+const session = require('express-session');
+const bcrypt = require('bcrypt');
+const validator = require("email-validator");
 require('dotenv').config();
 app.use(express.urlencoded({extended:true}));
 
@@ -27,19 +29,37 @@ app.set('view engine', 'ejs');
 // Route for Timeline
 
 app.get('/', (req, res) => {
-	console.log(req.session.loggedin)
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
 			users.username, crits.crit_reply_id,
-			crits.message, crits.created_on 
+			crits.message, crits.created_on, 
+			count(crit_replies.id) AS replies,
+			ifnull(
+				(
+					SELECT count(crit_likes.id) 
+					FROM crit_likes 
+					WHERE crit_likes.crit_id = crits.id 
+					GROUP BY crit_likes.crit_id
+				), 0
+			) AS likes,
+			ifnull(user_liked.id, 0) AS isLiked
 		FROM crits 
+		LEFT JOIN crits AS crit_replies
+			ON crit_replies.crit_reply_id = crits.id 
+		LEFT JOIN crit_likes
+			ON crit_likes.crit_id = crits.id
 		LEFT JOIN users 
-		ON crits.user_id = users.id
+			ON crits.user_id = users.id
+		LEFT JOIN crit_likes AS user_liked
+        	ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
+		WHERE crits.crit_reply_id is null
+		GROUP BY crits.id
 		ORDER BY crits.created_on DESC
 		LIMIT 10
 	`;
-	connection.query(crit_query, req.params.crits, (err, results) => {
+	let user_id = req.session.UserId || 0;
+	connection.query(crit_query, user_id, (err, results) => {
 		let crits = [];
 		for (let i = 0; i<results.length; i++){
 			crits.push({
@@ -51,14 +71,14 @@ app.get('/', (req, res) => {
 				crit: {
 					id: results[i].id,
 					created_on: results[i].created_on,
-					likes: 0,
-					replies: 0,
-					message: results[i].message
+					likes: results[i].likes,
+					replies: results[i].replies,
+					message: results[i].message,
+					isLiked: results[i].isLiked
 				}
 			})
-		}
-		console.log(req.session.UserId)
-		
+		}	
+
 		res.render('timeline', {crits:crits});
 	});
 });
@@ -71,13 +91,30 @@ app.get('/search', (req, res) => {
     SELECT 
         crits.id, crits.user_id, users.display_name, 
         users.username, crits.crit_reply_id,
-        crits.message, crits.created_on 
+        crits.message, crits.created_on,
+		count(crit_replies.id) AS replies,
+		ifnull(
+			(
+				SELECT count(crit_likes.id) 
+				FROM crit_likes 
+				WHERE crit_likes.crit_id = crits.id 
+				GROUP BY crit_likes.crit_id
+			), 0
+		) AS likes,
+		ifnull(user_liked.id, 0) AS isLiked
     FROM crits 
+	LEFT JOIN crits AS crit_replies
+		ON crit_replies.crit_reply_id = crits.id 
+	LEFT JOIN crit_likes
+		ON crit_likes.crit_id = crits.id
     LEFT JOIN users 
-    ON crits.user_id = users.id 
+		ON crits.user_id = users.id 
+	LEFT JOIN crit_likes AS user_liked
+        ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
     WHERE crits.message 
     lIKE ?`;
-	connection.query(search_query, searchParam, (err, results) => {
+	let user_id = req.session.UserId || 0;
+	connection.query(search_query, [user_id, searchParam], (err, results) => {
 		let crit_results = [];
 		for(let i = 0; i < results.length; i++){
 			crit_results.push({
@@ -89,9 +126,10 @@ app.get('/search', (req, res) => {
 				crit: {
 					id: results[i].id,
 					created_on: results[i].created_on,
-					likes: 0,
-					replies: 0,
-					message: results[i].message
+					likes: results[i].likes,
+					replies: results[i].replies,
+					message: results[i].message,
+					isLiked: results[i].isLiked
 				}
 			});
         };
@@ -100,67 +138,80 @@ app.get('/search', (req, res) => {
 	
 });
 
-app.post('/signup', (req, res) => {
-	let signupEmail = `${req.body.email}`
-	let signupUsername = `${req.body.username}`
-	let signupDisplayname= `${req.body.display_name}`
-	let signupPassword = `${req.body.password}`
-	let signup_verify_email_query = `
-	SELECT id
-	FROM users
-	WHERE users.email = ? 
-	;`
-	let signup_verify_username_query = `
-	SELECT id
-	FROM users
-	WHERE users.username = ? 
-	;`
-	let signup_query = `
-	INSERT INTO users 
-		(id, username, email, password, display_name, created_on) 
-	VALUES 
-		(NULL, ?, ?, ?, ?, current_timestamp());`;
-	connection.query(signup_verify_email_query, signupEmail, (err, results) => {
-		if (!results[0]) {
-			connection.query(signup_verify_username_query, signupUsername, (err, results) => {
+app.post('/signup', async (req, res) => {
+	if (validator.validate(req.body.email) && (req.body.username) && (req.body.display_name)) {
+		try {
+			const salt = await bcrypt.genSalt();
+			const signupPassword = `${await bcrypt.hash(req.body.password, salt)}`;
+				let signupEmail = `${req.body.email}`;
+				let signupUsername = `${req.body.username}`;
+				let signupDisplayname= `${req.body.display_name}`;
+				let signup_verify_email_query = `
+			SELECT id
+			FROM users
+			WHERE users.email = ? 
+			;`
+			let signup_verify_username_query = `
+			SELECT id
+			FROM users
+			WHERE users.username = ? 
+			;`
+			let signup_query = `
+			INSERT INTO users 
+				(id, username, email, password, display_name, created_on) 
+			VALUES 
+				(NULL, ?, ?, ?, ?, current_timestamp())
+			;`
+			connection.query(signup_verify_email_query, signupEmail, (err, results) => {
 				if (!results[0]) {
-					connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
-						if (err) throw err;
-						res.redirect('/');
-					})		
+					connection.query(signup_verify_username_query, signupUsername, (err, results) => {
+						if (!results[0]) {
+							connection.query(signup_query, [signupUsername, signupEmail, signupPassword, signupDisplayname], (err, results) => {
+								if (err) throw err;
+								res.redirect('/');
+							})		
+						} else {
+							res.send('Username already in use!');
+						};
+					});
 				} else {
-					res.send('Username already in use!');
+					res.send('Email already in use!');
 				};
 			});
-		} else {
-			res.send('Email already in use!');
-		};
-	});
+		} catch {
+			res.status(500).send();
+		}
+	} else {
+		res.send('Invalid!')
+	}
 });
 
-app.post('/auth', (req, res) => {
+app.post('/auth', async (req, res) => {
 	let loginEmail = `${req.body.email}`
 	let loginPassword = `${req.body.password}`
 	let login_query = `
-	SELECT users.id, users.display_name, users.username
+	SELECT users.id, users.display_name, users.username, users.password
 	FROM users 
-	WHERE users.email = ? 
-	AND users.password = ?;
+	WHERE users.email = ?;
 	`;
-	connection.query(login_query, [loginEmail, loginPassword], (err, results) => {
-		
+	connection.query(login_query, loginEmail, async (err, results) => {
 		if (results.length > 0) {
-			req.session.loggedin = true;
-			req.session.UserId = results[0].id;
-			req.session.display_name = results[0].display_name;
-			req.session.username = results[0].username;
-			console.log(req.session.loggedin);
-			res.redirect('/');
+			try {
+				if (await bcrypt.compare(loginPassword, results[0].password)) {
+					req.session.loggedin = true;
+					req.session.UserId = results[0].id;
+					req.session.display_name = results[0].display_name;
+					req.session.username = results[0].username;
+					res.redirect('/');
+				} else {
+					res.send('Incorrect Username and/or Password!');
+				}
+			} catch {
+				res.status(500).send();
+			}
 		} else {
 			res.send('Incorrect Username and/or Password!');
 		};
-		res.end();
-		console.log(results);
 	});
 });
 
@@ -174,13 +225,12 @@ app.post('/logout', (req, res) => {
 			}
 		});
 	} else {
-		res.end()
+		res.end();
 	}
 })
 
 //welcome page route
 app.get('/welcome', (req, res) => {
-        console.log("loaded welcome page")
 	res.render('newusers.ejs');
 });
 //route for profile
@@ -193,9 +243,7 @@ app.all('/user/:following_id/follow', (req, res) => {
 		INSERT INTO followers (user_id, following_id) VALUES (?, ?)
 	`;
 
-	// TODO(erh): grab the current user ID from the session 
-	// when Lia finishes coding the login system.
-	let my_user_id = 1; 
+	let my_user_id = req.session.UserId; 
 
 	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
 		if ( err ) {
@@ -214,9 +262,7 @@ app.all('/user/:following_id/unfollow', (req, res) => {
 		DELETE FROM followers WHERE user_id = ? AND following_id = ?
 	`;
 
-	// TODO(erh): grab the current user ID from the session 
-	// when Lia finishes coding the login system.
-	let my_user_id = 1; 
+	let my_user_id = req.session.UserId; 
 
 	connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
 		if ( err ) {
@@ -229,6 +275,45 @@ app.all('/user/:following_id/unfollow', (req, res) => {
 		res.redirect('back');
 	});
 });
+
+app.all('/like/:crit_id', (req, res) => {
+	if(req.session.UserId) {
+		let all_query = ` 
+		SELECT * FROM crit_likes WHERE user_id = ? AND crit_id = ? 
+		`;
+		let my_user_id = req.session.UserId;
+
+		connection.query(all_query, [ my_user_id, req.params.crit_id], (err, results) => {
+			if (results.length > 0){
+				let unlike_query = `
+				DELETE FROM crit_likes WHERE user_id = ? AND crit_id = ?
+				`;
+				let my_user_id = req.session.UserId; 
+
+				connection.query(unlike_query, [ my_user_id, req.params.crit_id ], (err, results) => {
+					res.redirect('back');
+				});
+			} else {
+				let like_query = `
+				INSERT INTO crit_likes (user_id, crit_id) VALUES (?, ?)
+				`;
+				let my_user_id = req.session.UserId;  
+		
+				connection.query(like_query, [ my_user_id, req.params.crit_id ], (err, results) => {
+					if ( err ) {
+						console.error(err);
+						throw err;
+					}
+					res.redirect('back');
+				}); 
+			};
+		});
+	} else { 
+		res.send('Please log in');
+	};
+});
+
+
 
 app.get('*', (req, res) => {
 	res.render('404');
