@@ -43,6 +43,9 @@ input:focus{
     
     .timeline {  
         height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     
     
@@ -168,6 +171,7 @@ input:focus{
     }
     
     .card {
+        max-width: 400px;
         background-color: white;
         border-radius: 15px;
         box-shadow: 5px 5px hsl(180, 46%, 82%);
@@ -358,7 +362,6 @@ input:focus{
         padding: 5px;
         margin: 5px;
         width: 200px;
-
     }
 
     #reply-crit-btn {
@@ -370,3 +373,4 @@ input:focus{
         padding: 5px;
         margin-top: 30%;
     }
+
