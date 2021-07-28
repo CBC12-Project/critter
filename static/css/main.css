@@ -165,6 +165,8 @@ input:focus{
         font-size: 1.2rem;
         padding: .5rem;
         border: none;
+        resize: AUTO;
+        overflow: auto;
     }
     
     .card {
@@ -331,6 +333,8 @@ input:focus{
         box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 5px;
         width: 75%;
+        resize: AUTO;
+        overflow: auto;
     }
 
     #create-crit-btn {
@@ -358,7 +362,9 @@ input:focus{
         padding: 5px;
         margin: 5px;
         width: 200px;
-
+        resize: AUTO;
+        overflow: auto;
+        width: 45%;
     }
 
     #reply-crit-btn {
@@ -370,7 +376,7 @@ input:focus{
         padding: 5px;
         margin-top: 30%;
     }    
-    form {
+    textarea {
         border: 2px solid;
         padding: 20px;
         width: 45%;
