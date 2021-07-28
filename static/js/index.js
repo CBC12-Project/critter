@@ -9,4 +9,8 @@ document.getElementById('signup-btn').addEventListener('click', function() {
     signUpField.classList.toggle('fade')
     loginField.classList.add('fade')
 });
-timeago.render(document.querySelectorAll('.need_to_be_rendered'));
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+timeago.render(document.querySelectorAll('.need_to_be_rendered'
+    ));
+})
