@@ -243,6 +243,8 @@ input:focus{
         border-radius: 8px;
         box-shadow: lightslategrey 5px 5px;
         align-items: flex-start;
+        resize: AUTO;
+        overflow: auto;
     }
     
     .crit-timeline p {
