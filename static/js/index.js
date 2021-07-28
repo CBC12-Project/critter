@@ -8,4 +8,5 @@ document.getElementById('login-btn').addEventListener('click', function() {
 document.getElementById('signup-btn').addEventListener('click', function() {
     signUpField.classList.toggle('fade')
     loginField.classList.add('fade')
-})
+});
+timeago.render(document.querySelectorAll('.need_to_be_rendered'));
