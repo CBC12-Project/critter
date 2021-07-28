@@ -231,45 +231,40 @@ app.all('/user/:following_id/unfollow', (req, res) => {
 });
 
 app.all('/like/:crit_id', (req, res) => {
-	if (req.session.UserId){
-		let like_query = `
-		INSERT INTO crit_likes (user_id, crit_id) VALUES (?, ?)
+	if(req.session.UserId) {
+		let all_query = ` 
+		SELECT * FROM crit_likes WHERE user_id = ? AND crit_id = ? 
 		`;
-		let my_user_id = req.session.UserId;  
+		let my_user_id = req.session.UserId;
 
-		connection.query(like_query, [ my_user_id, req.params.crit_id ], (err, results) => {
-			if ( err ) {
-				console.error(err);
-				throw err;
-			}
+		connection.query(all_query, [ my_user_id, req.params.crit_id], (err, results) => {
+			if (results.length > 0){
+				let unlike_query = `
+				DELETE FROM crit_likes WHERE user_id = ? AND crit_id = ?
+				`;
+				let my_user_id = req.session.UserId; 
 
-			// TODO: we'll need to write a JSON route for this for our front-end
-			// until then, simply reload the current page.
-			res.redirect('back');
-		}); 
+				connection.query(unlike_query, [ my_user_id, req.params.crit_id ], (err, results) => {
+					res.redirect('back');
+				});
+			} else {
+				let like_query = `
+				INSERT INTO crit_likes (user_id, crit_id) VALUES (?, ?)
+				`;
+				let my_user_id = req.session.UserId;  
+		
+				connection.query(like_query, [ my_user_id, req.params.crit_id ], (err, results) => {
+					if ( err ) {
+						console.error(err);
+						throw err;
+					}
+					res.redirect('back');
+				}); 
+			};
+		});
 	} else { 
 		res.send('Please log in')
 	};
-});
-
-app.all('/unlike/:crit_id', (req, res) => {
-	let all_query = ` 
-	SELECT * FROM crit_likes WHERE user_id = ? AND crit_id = ? 
-	`;
-	let my_user_id = req.session.UserId;
-
-	connection.query(all_query, [ my_user_id, req.params.crit_id], (err, results) => {
-		if (results){
-			let unlike_query = `
-			DELETE FROM crit_likes WHERE user_id = ? AND crit_id = ?
-			`;
-			let my_user_id = req.session.UserId; 
-
-			connection.query(query, [ my_user_id, req.params.following_id ], (err, results) => {
-				res.redirect('back');
-			});
-		}
-	});
 });
 
 
