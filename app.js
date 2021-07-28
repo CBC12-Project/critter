@@ -187,19 +187,34 @@ app.get('/welcome', (req, res) => {
 app.get('/profile/:users_id', (req, res) => {
 	let users_query = `
 		SELECT 
-			users.id, users.display_name, 
-			users.username, users.email
-		FROM users
-		WHERE users.id = ?
+			crits.id, crits.user_id, users.display_name, 
+			users.username, crits.crit_reply_id,
+			crits.message, crits.created_on 
+		FROM crits 
+		LEFT JOIN users 
+		ON crits.user_id = users.id
+		ORDER BY crits.created_on DESC
+		LIMIT 10
 	`;
 	connection.query(users_query, req.params.users_id, (err, results) => {
-		let critters = {
-			user: {
-				display_name: results[0].display_name,
-				picture: '',
-				username: '@' + results[0].username,
-		}}
-		res.render('profile', critters)
+				let critters = [];
+		for(let i = 0; i < results.length; i++){
+			critters.push({
+				user: {
+					display_name: results[i].display_name,
+					picture: '',
+					username: '@' + results[i].username
+				},
+				crit: {
+					id: results[i].id,
+					created_on: results[i].created_on,
+					likes: 0,
+					replies: 0,
+					message: results[i].message
+				}
+			});
+        };
+		res.render('/views/partials/profile', critters)
 	})
 	
 });

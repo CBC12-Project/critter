@@ -2,7 +2,7 @@
     <div class="divider">
         <div class="crit-pfp"><%= user.picture %></div>
         <p class="crit-name"><%= user.display_name %></p>
-        <p class="crit-handle"><%= user.username %></p>
+        <a class="crit-handle" href="/views/partials/profile.ejs"><%= user.username %></a>
         <p><strong>·</strong></p>
         <p id="crit-time-ago"><%= crit.created_on %></p>
     </div>
