@@ -1,3 +1,7 @@
+<%- include('partials/head.ejs',{page:{name:'Profile'}}) %>
+
+<%- include('partials/search') %>
+<%-include('partials/sidebar') %>
 
         <div class="timeline">
         <div id="profile-header" class="card">
@@ -6,8 +10,8 @@
                 <div id="profile-pic"></div>
             </div>
             <div class="parent-container" id="header-text">
-                <p id="name"><%= user.display_name %></p>
-                <p id="handle"><%= user.username %></p>
+                <p class="crit-name" id="name"><%= user.display_name %></p>
+                <p class="crit-handle" id="handle"><%= user.username %></p>
                 <p id="bio">i love cute things, please be friendly!</p>
                 <div class="divider">
                     <a href="#"><span id="Following">100</span> following</a>

@@ -214,7 +214,7 @@ app.get('/profile/:users_id', (req, res) => {
 				}
 			});
         };
-		res.render('/views/partials/profile', critters)
+		res.render('profile', critters)
 	})
 	
 });
