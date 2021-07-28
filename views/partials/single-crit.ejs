@@ -4,7 +4,7 @@
         <p class="crit-name"><%= user.display_name %></p>
         <p class="crit-handle"><%= user.username %></p>
         <p><strong>·</strong></p>
-        <span class="need_to_be_rendered" datetime="2016-07-07T09:24:17Z" id="crit-time-ago"><%= crit.created_on %></span>
+        <span class="need_to_be_rendered" datetime="<%= crit.created_on %>" id="crit-time-ago"><%= crit.created_on %></span>
     </div>
     <p class="crit-text"><%= crit.message %></p>
     <div class="divider crit-btns">
