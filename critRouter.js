@@ -45,7 +45,7 @@ router.get('/:crit_id',(req, res) => {
                 id: results[0].id,
                 created_on: results[0].created_on,
                 likes: results[0].likes,
-                replies: results[0].replies
+                replies: results[0].replies,
                 message: results[0].message
             }
         };
