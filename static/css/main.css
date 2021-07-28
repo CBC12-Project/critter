@@ -5,7 +5,7 @@
     box-sizing: border-box;
 }
 
-input:focus{
+textarea:focus{
     outline: none;
 }
 
@@ -201,8 +201,6 @@ input:focus{
         flex-wrap: wrap;
         align-items: center;
         text-align: center;
-        resize: AUTO;
-        overflow: auto;
     }
     
     .crit-pfp {
@@ -338,7 +336,7 @@ input:focus{
         color: black;
         box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 5px;
-        width: 75%;
+        width: 500px;
         resize: AUTO;
         overflow: auto;
     }
