@@ -336,21 +336,29 @@ textarea:focus{
         color: black;
         box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 5px;
-        width: 500px;
+        width: 90%;
         resize: AUTO;
         overflow: auto;
     }
 
     #create-crit-btn {
-        background-color:white;
+        background-color:#5EA9D4;
         border: none;
         border-radius: 6px;
-        color: rgb(111, 108, 108);
-        box-shadow: 5px 5px hsl(0, 53%, 69%);
+        color: rgb(241, 233, 233);
         padding: 10px;
-        margin: 7% 0 0 5%;
+        margin: 0 0 0 0;
+        position: absolute;
+        bottom:4px;
+        right:88.8px;
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
     }
-
+.timeline form{ 
+    position: relative;
+}
     #crit-logo {
         margin: 0 0 0 15%;
     }
