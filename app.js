@@ -184,8 +184,24 @@ app.get('/welcome', (req, res) => {
 	res.render('newusers.ejs');
 });
 //route for profile
-app.get('/profile', (req, res) => {
-	res.render('profile');
+app.get('/profile/:users_id', (req, res) => {
+	let users_query = `
+		SELECT 
+			users.id, users.display_name, 
+			users.username, users.email
+		FROM users
+		WHERE users.id = ?
+	`;
+	connection.query(users_query, req.params.users_id, (err, results) => {
+		let critters = {
+			user: {
+				display_name: results[0].display_name,
+				picture: '',
+				username: '@' + results[0].username,
+		}}
+		res.render('profile', critters)
+	})
+	
 });
 
 app.all('/user/:following_id/follow', (req, res) => {
