@@ -29,7 +29,7 @@
             <%- include('partials/single-crit', { user: user, crit: crit }); %>    
                 <!-- SINGLE CRIT EJS -->
                 <form action="/crit/<%= crit.id %>" method="post">
-                    <input type="text" id="reply-crit" name="replyCrit" >
+                    <textarea id="reply-crit" name="replyCrit" placeholder="Rely to this crit"></textarea>
                     <button id="reply-crit-btn">Reply!</button>
                 </form>
             
