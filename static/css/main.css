@@ -370,3 +370,7 @@ input:focus{
         padding: 5px;
         margin-top: 30%;
     }
+
+	.liked {
+		color: rgb(255, 72, 72);
+	}

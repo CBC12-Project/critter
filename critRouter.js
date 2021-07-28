@@ -22,18 +22,22 @@ router.get('/:crit_id',(req, res) => {
 					WHERE crit_likes.crit_id = crits.id 
 					GROUP BY crit_likes.crit_id
 				), 0
-			) AS likes
+			) AS likes,
+			ifnull(user_liked.id, 0) AS isLiked
 		FROM crits 
 		LEFT JOIN crits AS crit_replies
 			ON crit_replies.crit_reply_id = crits.id 
 		LEFT JOIN crit_likes
 			ON crit_likes.crit_id = crits.id
+		LEFT JOIN crit_likes AS user_liked
+			ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
 		LEFT JOIN users 
 		ON crits.user_id = users.id 
 		WHERE crits.id = ?
 		GROUP BY crits.id
 	`;
-    connection.query(crit_query, req.params.crit_id, (err, results) => {
+	let user_id = req.session.UserId || 0;
+    connection.query(crit_query, [user_id, req.params.crit_id], (err, results) => {
         let crit = {
             user: {
                 display_name: results[0].display_name,
@@ -46,7 +50,8 @@ router.get('/:crit_id',(req, res) => {
                 created_on: results[0].created_on,
                 likes: results[0].likes,
                 replies: results[0].replies,
-                message: results[0].message
+                message: results[0].message,
+				isLiked: results[0].isLiked
             }
         };
     let replies_query=`
@@ -56,13 +61,14 @@ router.get('/:crit_id',(req, res) => {
             crits.message, crits.created_on,
             count(crit_replies.id) AS replies,
             ifnull(
-            (
-                SELECT count(crit_likes.id) 
-                FROM crit_likes 
-                WHERE crit_likes.crit_id = crits.id 
-                GROUP BY crit_likes.crit_id
-            ), 0
-        ) AS likes
+				(
+					SELECT count(crit_likes.id) 
+					FROM crit_likes 
+					WHERE crit_likes.crit_id = crits.id 
+					GROUP BY crit_likes.crit_id
+				), 0
+			) AS likes,
+			ifnull(user_liked.id, 0) AS isLiked
         FROM crits 
         LEFT JOIN crits AS crit_replies
             ON crit_replies.crit_reply_id = crits.id 
@@ -70,9 +76,12 @@ router.get('/:crit_id',(req, res) => {
             ON crit_likes.crit_id = crits.id
         LEFT JOIN users 
             ON crits.user_id = users.id 
+		LEFT JOIN crit_likes AS user_liked
+			ON crits.user_id = ? AND crit_likes.crit_id = crits.id
         WHERE crits.crit_reply_id = ?
         GROUP BY crits.id`;
-    connection.query(replies_query, req.params.crit_id, (err, result) =>{
+	let user_id = req.session.UserId || 0;
+    connection.query(replies_query, [user_id, req.params.crit_id], (err, result) =>{
 
             for ( let i = 0; i < result.length; i++ ){
                 let replyCrit = {
@@ -87,7 +96,8 @@ router.get('/:crit_id',(req, res) => {
                         created_on: result[i].created_on,
                         likes: result[i].likes,
                         replies: result[i].replies,
-                        message: result[i].message
+                        message: result[i].message,
+						isLiked: result[i].isLiked
                     }
                 };
                 crit.crit.replyCrits.push(replyCrit);
