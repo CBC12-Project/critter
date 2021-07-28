@@ -27,7 +27,6 @@ app.set('view engine', 'ejs');
 // Route for Timeline
 
 app.get('/', (req, res) => {
-	console.log(req.session.loggedin)
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
@@ -71,9 +70,7 @@ app.get('/', (req, res) => {
 					message: results[i].message
 				}
 			})
-		}
-		console.log(req.session.UserId)
-		
+		}		
 		res.render('timeline', {crits:crits});
 	});
 });
@@ -169,13 +166,11 @@ app.post('/auth', (req, res) => {
 			req.session.UserId = results[0].id;
 			req.session.display_name = results[0].display_name;
 			req.session.username = results[0].username;
-			console.log(req.session.loggedin);
 			res.redirect('/');
 		} else {
 			res.send('Incorrect Username and/or Password!');
 		};
 		res.end();
-		console.log(results);
 	});
 });
 

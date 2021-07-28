@@ -97,7 +97,6 @@ router.get('/:crit_id',(req, res) => {
 	});
 });
 router.post('/create',(req, res) => {
-    let currentUserId = 1;
     let createCrit = req.body.createCrit;
     let crit_query = `
     INSERT INTO crits 
@@ -105,14 +104,13 @@ router.post('/create',(req, res) => {
     VALUES
             (NULL, ?, NULL, ?, current_timestamp())
     `;
-    connection.query(crit_query, [currentUserId.toString(), createCrit.toString()], function(err, result) {
+    connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, result) {
             if (err) throw err;
             res.redirect('/');
     });
 });
 
 router.post('/:crit_id',(req, res) => {
-    let currentUserId = 1;
     let replyCrit = req.params.crit_id;
     let crit_query = `
     INSERT INTO crits 
@@ -120,7 +118,7 @@ router.post('/:crit_id',(req, res) => {
     VALUES
             (NULL, ?,?,?, current_timestamp())
     `;
-connection.query(crit_query, [currentUserId, replyCrit, req.body.replyCrit], function(err, result) {
+connection.query(crit_query, [req.session.UserId, replyCrit, req.body.replyCrit], function(err, result) {
         if (err) throw err;
 		res.redirect('/crit/' + replyCrit);
     
