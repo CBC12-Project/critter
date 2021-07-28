@@ -21,16 +21,28 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- Send a Crit -->
-            <form action="/crit" method="post">
+            <% if (userId === undefined) { %>
+                <div>
+
+                </div>
+            <% } else { %>
+            <form action="/crit/create" method="post">
                 <input type="text" id="create-crit" name="createCrit" >
                 <button id="create-crit-btn">CRIT!</button>
             </form>
+            <% } %>
             
             <%- include('partials/single-crit', { user: user, crit: crit }); %>  
+            <% if (userId === undefined) { %>
+                <div>
+
+                </div>
+            <% } else { %>
             <form action="/crit/<%= crit.id %>" method="post">
                 <input type="text" id="reply-crit" name="replyCrit" >
                 <button id="reply-crit-btn">Reply!</button>
-            </form>  
+            </form>
+            <% } %>  
                 <!-- REPLY -->
             <% for ( let i = 0; i<crit.replyCrits.length; i++ ) { %>
                 <%- include('partials/single-crit', 

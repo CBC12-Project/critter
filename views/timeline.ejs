@@ -37,11 +37,16 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- Send a Crit -->
+            <% if (userId === undefined) { %>
+                <div>
+
+                </div>
+            <% } else { %>
             <form action="/crit/create" method="post">
                 <input type="text" id="create-crit" name="createCrit" >
                 <button id="create-crit-btn">CRIT!</button>
             </form>
-
+            <% } %>
             <% for (let i = 0; i<crits.length; i++){ %>
                 <%- include('partials/single-crit', {crit: crits[i].crit, user:crits[i].user})%>
            <% } %>
