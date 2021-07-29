@@ -1,7 +1,8 @@
 <div class="crit card" id="<%= crit.id %>_crit">
     <div class="divider">
         <div class="crit-pfp"><img src="<%= user.picture %>?s=26"></div>
-        <p class="crit-name"><%= user.display_name %></p>
+        <p class="crit-name"><%= user.display_name %></p>  
+                <!-- removed @ from app.js -->
         <p class="crit-handle"><a href="/profile/<%= user.username%>">@<%= user.username %></p>
         <p><strong>·</strong></p>
         <span class="crit-timeago" datetime="<%= crit.created_on %>"><%= crit.created_on %></span>

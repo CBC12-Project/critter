@@ -192,7 +192,7 @@ app.post('/signup', async (req, res) => {
 		res.send('Invalid!');
 	}
 });
-// authenticate
+// authenticate user
 app.post('/auth', async (req, res) => {
 	let loginEmail = `${req.body.email}`
 	let loginPassword = `${req.body.password}`
