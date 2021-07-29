@@ -31,7 +31,7 @@
                 <% } %>
                 <% if (userId) { %>
                     <form action="/crit/<%= crit.crit.id %>" method="post">                    
-                        <input type="text" id="reply-crit" name="replyCrit" >
+                        <textarea id="reply-crit" name="replyCrit" placeholder="Reply to this crit"></textarea>
                         <button id="reply-crit-btn">Reply!</button>
                     </form>      
             <% } %>
