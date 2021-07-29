@@ -65,3 +65,15 @@ document.addEventListener('click', function(event) {
     };
 });
 
+function require()
+    if(document.getElementById("create-crit").value.length == 0)
+    {
+        alert("Crit is empty!");
+        return false;
+    };
+function require()
+    if(document.getElementById("reply-crit").value.length == 0)
+    {
+        alert("Reply is empty!");
+        return false;
+    };
