@@ -5,57 +5,101 @@
     box-sizing: border-box;
 }
 
-textarea:focus{
+input:focus{
     outline: none;
 }
 
-
-/* CSS grid layout */
-.container {
-    display: grid;
-    grid-template-columns: 0.5fr 1fr .75fr;
-    grid-template-rows: 0.5fr  1.8fr;
-    gap: 0px 0px;
-    grid-auto-flow: row;
-    grid-template-areas: 
-    "logo timeline search"
-    "side-menu timeline results"; 
-}
-.logo { grid-area: logo; }
-.side-menu { grid-area: side-menu; }
-.results { grid-area: results; }
-.timeline { grid-area: timeline; }
-.search { grid-area: search; }
-    
-    
-    
-    .logo { 
-        height: 25vh;
-    }
-    
-    .side-menu {  
-        height: 75vh;
-    }
-    
     .results { 
         height: 75vh;
     }
     
     .timeline {  
         height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* padding: 1rem; */
     }
     
     
-    .search { 
-        height: 25vh; 
+    main > .search {
+        width: 30vw;
+        max-width: 200px;
+        padding-top: 1rem;
+        /* height: 25vh;  */
     }
 
   /* Lias code  */
+    main {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
 
-    
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        margin-left: 1rem;
+        padding: 0;
+        padding-left: auto;
+        width: 200px;
+        position: sticky;
+        height: 100vh;
+        overflow: none;
+        /* clear: both; */
+    }
+
+    .sidebar > a > li {
+        /* display: block; */
+        padding: 1rem;
+    }
+
+    .sidebar > a > li > div {
+        /* float: right; */
+        padding-left: 25%;
+    }
+    .sidebar > div > li {
+        /* display: block; */
+        padding: 1rem;
+    }
+
+    .sidebar > div > li > div {
+        /* float: right; */
+        padding-left: 25%;
+    }
+
+    .sidebar-div {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        border-radius: 2rem;
+        padding: 1rem;
+        padding-right: 5rem;
+        min-width: 0;
+        margin: -1rem 0 -1rem 0;
+    }
+
+    .sidebar-div:hover, .sidebar-div:active {
+        background-color: hsl(240, 65%, 90%);
+    }
+
+    .sidebar-div > img {
+        padding-right: .5rem;
+    }
+
+    /* .login-field {
+        width: 200px;
+        height: 100px;
+    } */
+
+    /* .search-li {
+        display: none;
+    } */
     
     body {
-        margin: 1rem;
+        /* margin: 1rem; */
         background-color: aliceblue;
     }
     
@@ -127,14 +171,12 @@ textarea:focus{
     #new-crit-textbox {
         padding: 1rem;
         font-size: 1.5rem;
-        resize: AUTO;
-        overflow: auto;
     }
     
     .crit {
         width: 90%;
         padding: 1rem;
-        margin: 1rem 0 1rem 0;
+        margin: .75rem 0 .75rem 0;
     }
     
     .crit-btns {
@@ -167,15 +209,15 @@ textarea:focus{
         font-size: 1.2rem;
         padding: .5rem;
         border: none;
-        resize: AUTO;
-        overflow: auto;
     }
     
     .card {
+        width: 80%;
+        max-width: 600px;
         background-color: white;
         border-radius: 15px;
-        box-shadow: 5px 5px hsl(180, 46%, 82%);
-        margin-top: 10%;
+        box-shadow: 5px 5px hsl(180, 46%, 82%), 0 -2px 10px hsl(180, 46%, 82%);
+
     }
     
     .crit>div>p {
@@ -202,7 +244,16 @@ textarea:focus{
         align-items: center;
         text-align: center;
     }
-    
+
+    .unselectable {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -o-user-select: none;
+        user-select: none;
+    }
     .crit-pfp {
         height: 40px;
         width: 40px;
@@ -245,8 +296,6 @@ textarea:focus{
         border-radius: 8px;
         box-shadow: lightslategrey 5px 5px;
         align-items: flex-start;
-        resize: AUTO;
-        overflow: auto;
     }
     
     .crit-timeline p {
@@ -264,23 +313,25 @@ textarea:focus{
     }
     
     /* search bar css  */
-    #search{
-        background-color:white;
+    .search{
+        /* background-color:white; */
         border: none;
         border-radius: 6px;
         color: black;
-        box-shadow: 5px 5px hsl(180, 46%, 82%);
+        /* box-shadow: 5px 5px hsl(180, 46%, 82%), 0 -2px 10px hsl(180, 46%, 82%); */
+        /* background-color: hsl(180, 46%, 82%); */
         padding: 5px;
         margin: 5px;
-        width: 200px;
+        width: 90%;
+        /* min-width: 100px; */
     }
     
-    #search-btn {
+    .search-btn {
         background-color:white;
         border: none;
         border-radius: 6px;
         color: rgb(111, 108, 108);
-        box-shadow: 5px 5px hsl(180, 46%, 82%);
+        box-shadow: 5px 5px hsl(180, 46%, 82%), 0 -2px 10px hsl(180, 46%, 82%);
         padding: 5px;
         margin-top: 30%;
     }
@@ -294,20 +345,22 @@ textarea:focus{
         font-weight: 600;
     }
 
+
     .login {
         padding: 1rem;
         transition: .2s;
         opacity: 1;
-        height: auto;
+        /* height: auto; */
         transition: .3s;
-        z-index: 1;
+        /* z-index: 1; */
         display: flex;
         flex-direction: column;
         position: absolute;
         visibility: visible;
+        width: 215px;
     }
 
-    .login.fade {
+    .fade {
         opacity: 0;
         visibility: hidden;
     }
@@ -325,9 +378,14 @@ textarea:focus{
         border: none;
         border-radius: 6px;
         color: rgb(111, 108, 108);
-        box-shadow: 5px 5px hsl(180, 46%, 82%);
+        box-shadow: 5px 5px hsl(180, 46%, 82%), 0 -2px 10px hsl(180, 46%, 82%);
         padding: 5px;
         margin-top: .5rem;
+    }
+
+    #create-crit-form {
+        display: flex;
+        margin-top: 1rem;
     }
 
     #create-crit {
@@ -336,31 +394,23 @@ textarea:focus{
         color: black;
         box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 5px;
-        width: 90%;
-        resize: AUTO;
-        overflow: auto;
+        width: 75%;
+        display: flex;
+        flex-direction: row;
     }
 
     #create-crit-btn {
-        background-color:#5EA9D4;
+        background-color:white;
         border: none;
         border-radius: 6px;
-        color: rgb(241, 233, 233);
+        color: rgb(111, 108, 108);
+        box-shadow: 5px 5px hsl(0, 53%, 69%);
         padding: 10px;
-        margin: 0 0 0 0;
-        position: absolute;
-        bottom:4px;
-        right:88.8px;
-        align-items: center;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+        margin: 7% 0 0 5%;
     }
-.timeline form{ 
-    position: relative;
-}
+
     #crit-logo {
-        margin: 0 0 0 15%;
+        /* margin: 0 0 0 15%; */
     }
 
 
@@ -374,9 +424,6 @@ textarea:focus{
         padding: 5px;
         margin: 5px;
         width: 200px;
-        resize: AUTO;
-        overflow: auto;
-        width: 45%;
     }
 
     #reply-crit-btn {
@@ -387,18 +434,77 @@ textarea:focus{
         box-shadow: 5px 5px hsl(180, 46%, 82%);
         padding: 5px;
         margin-top: 30%;
-    }    
-
-    textarea {
-        border: 2px solid;
-        padding: 20px;
-        width: 45%;
-        height: 150px;
-        resize: AUTO;
-        overflow: auto;
     }
 
-	.liked {
-		color: rgb(255, 72, 72);
-	}
+    @media screen and (max-width: 1000px) {
+        .sidebar {
+            width: 50px;
+        }
+        .sidebar-div > p {
+            display: none;
+        }
+    }
 
+    @media screen and (max-width: 600px) {
+        .sidebar {
+            width: 100%;
+            height: auto;
+            position: fixed;
+            bottom: 0;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-items: center;
+            background-color: white;
+            box-shadow: 0 -2px 10px hsl(180, 46%, 82%);
+        }
+        .sidebar-div {
+            /* border: 1px solid black; */
+            padding-right: 0;
+        }
+        .sidebar > a > li {
+            padding: 1rem;
+        }
+    
+        .sidebar > a > li > div {
+            padding-left: 1rem;
+        }
+        .sidebar > div > li {
+            padding: 1rem;
+        }
+    
+        .sidebar > div > li > div {
+            padding-left: 1rem;
+        }
+    
+        main > .search {
+            display: none;
+        }
+        .logo-li {
+            display: none;
+        }
+        .search-li {
+            display: block;
+        }
+        .card {
+            width: 95%;
+        }
+        .login {
+            position: fixed;
+            width: auto;
+            bottom: 100px;
+            left: 50%;
+        }
+        .sidebar-div > img {
+            padding-right: 0;
+        }    
+
+        /* .sidebar a {float: left;}
+        div.content {margin-left: 0;} */
+    }
+    
+    @media screen and (max-width: 400px) {
+        /* .sidebar a {
+        text-align: center;
+        float: none; */
+        }
+    }
