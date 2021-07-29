@@ -8,4 +8,8 @@ document.getElementById('login-btn').addEventListener('click', function() {
 document.getElementById('signup-btn').addEventListener('click', function() {
     signUpField.classList.toggle('fade')
     loginField.classList.add('fade')
-})
+});
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM fully loaded and parsed');
+timeago.render(document.querySelectorAll('.crit-timeago'))
+});
