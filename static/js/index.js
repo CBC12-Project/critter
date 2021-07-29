@@ -64,3 +64,17 @@ document.addEventListener('click', function(event) {
             };
     };
 });
+function validateForm() {
+  var x = document.forms["Crit"]["createCrit"].value;
+  if (x == "" || x == null) {
+    alert("Crit must be filled out");
+    return false;
+  }
+};
+function validateForm() {
+  var x = document.forms["replyCrit"]["replyCrit"].value;
+  if (x == "" || x == null) {
+    alert("Reply must be filled out");
+    return false;
+  }
+};
