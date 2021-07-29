@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 require('dotenv').config();
+const md5 = require('md5');
 
 router.get('/', (req, res) => {
     res.redirect('/');
@@ -12,7 +13,7 @@ router.get('/:crit_id',(req, res) => {
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
-			users.username, crits.crit_reply_id,
+			users.username, users.email, crits.crit_reply_id,
 			crits.message, crits.created_on,
 			count(crit_replies.id) AS replies,
 			ifnull(
@@ -41,7 +42,7 @@ router.get('/:crit_id',(req, res) => {
         let crit = {
             user: {
                 display_name: results[0].display_name,
-                picture: '',
+                picture: 'https://www.gravatar.com/avatar/' + md5(results[0].email),
                 username: '@' + results[0].username
             },
             crit: {
@@ -57,7 +58,7 @@ router.get('/:crit_id',(req, res) => {
     let replies_query=`
         SELECT 
             crits.id, crits.user_id, users.display_name, 
-            users.username, crits.crit_reply_id,
+            users.username, users.email, crits.crit_reply_id,
             crits.message, crits.created_on,
             count(crit_replies.id) AS replies,
             ifnull(
@@ -87,7 +88,7 @@ router.get('/:crit_id',(req, res) => {
                 let replyCrit = {
                     user: {
                         display_name: result[i].display_name,
-                        picture: '',
+                        picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
                         username: '@' + result[i].username
                     },
                     crit: {
@@ -147,7 +148,7 @@ const connection = mysql.createConnection({
     host     : process.env.DB_HOST,
     user     : process.env.DB_USER,
     password : process.env.DB_PASS,
-    database : 'critter',
+    database : process.env.DB_SCHEMA,
     port     : process.env.DB_PORT
 });
 connection.connect();
