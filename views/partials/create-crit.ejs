@@ -1,4 +1,6 @@
-<form action="/crit" method="post">
-    <textarea id="create-crit" name="create-crit" placeholder="Create a crit!"></textarea>
-    <button id="create-crit-btn">CRIT!</button>
-</form>
+<% if (userId) { %>
+    <form action="/crit/create" method="post">
+        <textarea id="create-crit" name="createCrit" placeholder="Create a Crit!"></textarea>
+        <button id="create-crit-btn">CRIT!</button>
+    </form>
+<% } %>

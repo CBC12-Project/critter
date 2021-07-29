@@ -82,9 +82,9 @@ app.get('/', (req, res) => {
 					isLiked: results[i].isLiked
 				}
 			})
-		}	
-
-		res.render('timeline', {crits:crits});
+		}
+		let mode = 'timeline'
+		res.render('timeline', {crits:crits, mode});
 	});
 });
 
@@ -138,9 +138,9 @@ app.get('/search', (req, res) => {
 				}
 			});
         };
-		res.render('search', {crit_results:crit_results});
+		let mode = 'search'
+		res.render('timeline', {crit_results:crit_results, mode});
 	});
-	
 });
 
 app.post('/signup', async (req, res) => {
@@ -187,7 +187,7 @@ app.post('/signup', async (req, res) => {
 			res.status(500).send();
 		}
 	} else {
-		res.send('Invalid!')
+		res.send('Invalid!');
 	}
 });
 
@@ -328,7 +328,7 @@ const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
         user     : process.env.DB_USER,
         password : process.env.DB_PASS,
-        database : 'critter',
+        database : process.env.DB_SCHEMA,
         port     : process.env.DB_PORT
 });
 connection.connect();
