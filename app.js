@@ -60,6 +60,11 @@ app.get('/', (req, res) => {
 	`;
 	let user_id = req.session.UserId || 0;
 	connection.query(crit_query, user_id, (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+
 		let crits = [];
 		for (let i = 0; i<results.length; i++){
 			crits.push({
