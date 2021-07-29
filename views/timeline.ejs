@@ -30,9 +30,9 @@
                     user: crit.crit.replyCrits[i].user})%>
                 <% } %>
                 <% if (userId) { %>
-                <form name="replyCrit" action="/crit/<%= crit.crit.id %>" onsubmit="return validateForm()" method="post" required>
-                    <input type="text" id="reply-crit" name="replyCrit" >
-                    <button id="reply-crit-btn">Reply!</button>
+                    <form action="/crit/<%= crit.crit.id %>" method="post">                    
+                        <input type="text" id="reply-crit" name="replyCrit" >
+                        <button id="reply-crit-btn">Reply!</button>
                     </form>      
             <% } %>
             <% } %>
