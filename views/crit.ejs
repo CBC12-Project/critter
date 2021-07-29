@@ -30,7 +30,7 @@
 
             <%- include('partials/single-crit', { user: user, crit: crit }); %>  
             <% if (userId) { %>
-           <form name="replyCrit" action="/crit/<%= crit.id %>" onsubmit="return validateForm()" method="post" required>
+           <form action="/crit/<%= crit.id %>" method="post">
                 <textarea id="reply-crit" name="replyCrit" placeholder="Reply to this crit"></textarea>
                 <button id="reply-crit-btn">Reply!</button>
             </form>
