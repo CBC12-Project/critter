@@ -269,9 +269,7 @@ app.get('/profile', (req, res) => {
 	});
 	
 
-
-	
-	// user @handle route
+// user @handle route
 	
 	app.get('/profile/:username', (req, res) => {
 		let toProfile = ` SELECT id, username, display_name, email
