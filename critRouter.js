@@ -92,7 +92,8 @@ router.get('/:crit_id',(req, res) => {
                 };
                 crit.crit.replyCrits.push(replyCrit);
             }
-            res.render('crit', crit);
+            let mode = 'single-crit';
+            res.render('timeline', {crit, mode});
         });
 	});
 });

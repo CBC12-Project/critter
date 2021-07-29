@@ -72,8 +72,9 @@ app.get('/', (req, res) => {
 					message: results[i].message
 				}
 			})
-		}		
-		res.render('timeline', {crits:crits});
+		}
+		let mode = 'timeline'
+		res.render('timeline', {crits:crits, mode});
 	});
 });
 
@@ -109,9 +110,9 @@ app.get('/search', (req, res) => {
 				}
 			});
         };
-		res.render('search', {crit_results:crit_results});
+		let mode = 'search'
+		res.render('timeline', {crit_results:crit_results, mode});
 	});
-	
 });
 
 app.post('/signup', async (req, res) => {
