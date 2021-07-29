@@ -18,6 +18,7 @@
         </li>    
     </a>
     <!-- profile -->
+    <% if (userId) { %>
     <a href="/profile">
         <li>
             <div class="sidebar-div sidebar-profile">
@@ -26,7 +27,9 @@
             </div>
         </li>    
     </a>
+    <% } %>
     <!-- settings -->
+    <% if (userId) { %>
     <a href="/settings">
         <li>
             <div class="sidebar-div sidebar-settings">
@@ -35,6 +38,7 @@
             </div>
         </li>
     </a>
+    <% } %>
     <!-- search -->
     <div id="search-btn">
         <li class="search-li">
