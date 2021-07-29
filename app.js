@@ -318,7 +318,32 @@ app.all('/like/:crit_id', (req, res) => {
 	};
 });
 
+app.get('/settings', (req,res) =>{
+	let settings_query = `
+	SELECT users.email, users.password, users.display_name FROM users WHERE id = ?
+	`;
+	connection.query(settings_query, req.session.UserId, (err, results) => {
+		res.render('settings')
+	});
+});
 
+app.post('/edit/:userId', (req,res) => {
+	let newEmail = `${req.body.email}`;
+	let newPassword = `${req.body.password}`;
+	let newDisplayName = `${req.body.display_name}`;
+	let edit_query =`
+	UPDATE users 
+	SET users.email = ?, users.password = ?, users.display_name = ? 
+	WHERE id = ?
+	`;
+	connection.query(edit_query, [newEmail, newPassword, newDisplayName, req.session.UserId], (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		};
+		
+	})
+});
 
 app.get('*', (req, res) => {
 	res.render('404');

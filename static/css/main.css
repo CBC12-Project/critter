@@ -507,4 +507,7 @@ input:focus{
         text-align: center;
         float: none; */
         }
+    
+    .edit > form {
+        width: 90%;
     }
