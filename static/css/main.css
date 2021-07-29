@@ -205,6 +205,7 @@ input:focus{
         border-radius: 40px;
         min-width: 40px;
         background-color: hsl(0, 53%, 69%);
+        padding-top: 7px;
     }
     
     .crit-name {

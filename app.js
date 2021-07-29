@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
-			users.username, crits.crit_reply_id,
+			users.username, users.email, crits.crit_reply_id,
 			crits.message, crits.created_on, 
 			count(crit_replies.id) AS replies,
 			ifnull(
@@ -62,7 +62,7 @@ app.get('/', (req, res) => {
 			crits.push({
 				user: {
 					display_name: results[i].display_name,
-					picture: '',
+					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
 					username: '@' + results[i].username
 				},
 				crit: {
@@ -85,7 +85,7 @@ app.get('/search', (req, res) => {
 	let search_query = `
     SELECT 
         crits.id, crits.user_id, users.display_name, 
-        users.username, crits.crit_reply_id,
+        users.username, users.email, crits.crit_reply_id,
         crits.message, crits.created_on 
     FROM crits 
     LEFT JOIN users 
@@ -98,7 +98,7 @@ app.get('/search', (req, res) => {
 			crit_results.push({
 				user: {
 					display_name: results[i].display_name,
-					picture: '',
+					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
 					username: '@' + results[i].username
 				},
 				crit: {
