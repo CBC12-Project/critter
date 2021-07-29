@@ -39,6 +39,11 @@ searchBtn.addEventListener('click', function(event) {
     }
 })
 
+document.getElementById('signup-btn').addEventListener('click', function() {
+    signUpField.classList.toggle('fade')
+    loginField.classList.add('fade')
+});
+
 // fades login/signup/search field when something else is clicked on
 document.addEventListener('click', function(event) {
     if (!searchField.classList.contains('fade')) {
@@ -63,4 +68,8 @@ document.addEventListener('click', function(event) {
                 };
             };
     };
+});
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    timeago.render(document.querySelectorAll('.crit-timeago'));
 });
