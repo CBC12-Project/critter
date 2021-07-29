@@ -21,17 +21,20 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- Send a Crit -->
-            <form action="/crit" method="post">
+            <% if (userId) { %>
+           <form action="/crit" method="post">
                 <textarea id="reply-crit" name="replyCrit" placeholder="Rely to this crit"></textarea>
                 <button id="create-crit-btn">CRIT!</button>
             </form>
-            
+             <% } %>
 
             <%- include('partials/single-crit', { user: user, crit: crit }); %>  
-            <form action="/crit/<%= crit.id %>" method="post">
+            <% if (userId) { %>
+           <form action="/crit/<%= crit.id %>" method="post">
                 <textarea id="reply-crit" name="replyCrit" placeholder="Reply to this crit"></textarea>
                 <button id="reply-crit-btn">Reply!</button>
             </form>
+             <% } %>
                 <!-- REPLY -->
             <% for ( let i = 0; i<crit.replyCrits.length; i++ ) { %>
                 <%- include('partials/single-crit', 
@@ -66,3 +69,4 @@
     </div>
 </body>
 </html>
+

@@ -28,11 +28,12 @@
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
             <!-- Send a Crit -->
+            <% if (userId) { %>
             <form action="/crit/create" method="post">
                 <textarea id="create-crit" name="createCrit" placeholder="Create a Crit!"></textarea>
                 <button id="create-crit-btn">CRIT!</button>
             </form>
-
+            <% } %>
             <% for (let i = 0; i<crits.length; i++){ %>
                 <%- include('partials/single-crit', {crit: crits[i].crit, user:crits[i].user})%>
            <% } %>
