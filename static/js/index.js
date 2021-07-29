@@ -6,7 +6,7 @@ const logoutBtn = document.getElementById('logout-btn')
 const logoutField = document.getElementById('logout-field')
 const searchBtn = document.getElementById('search-btn')
 const searchField = document.getElementById('search-field')
-
+// loginBtn eventListener
 if (loginBtn) {
     loginBtn.addEventListener('click', function(event) {
         if (loginBtn.contains(event.target) && !(loginField.contains(event.target))) {
@@ -23,13 +23,14 @@ if (loginBtn) {
         }
         })
 }
-
+// logoutBtn eventListener
 if (logoutBtn) {
     logoutBtn.addEventListener('click', function(event) {
         logoutField.classList.toggle('fade')
     })
 }
 
+// searchBtn eventListener
 searchBtn.addEventListener('click', function(event) {
     if (!searchField.contains(event.target)) {
         searchField.classList.toggle('fade')
@@ -38,7 +39,7 @@ searchBtn.addEventListener('click', function(event) {
     }
 })
 
-// fades login/signup field when something else is clicked on
+// fades login/signup/search field when something else is clicked on
 document.addEventListener('click', function(event) {
     if (!searchField.classList.contains('fade')) {
         if (!searchField.contains(event.target) && !(searchBtn.contains(event.target))) {
@@ -49,7 +50,6 @@ document.addEventListener('click', function(event) {
         if (!loginField.classList.contains('fade') || !signupField.classList.contains('fade')) {
             // if something other than the login/signup field is clicked on
             if ((!loginField.contains(event.target) && !(loginBtn.contains(event.target)))) {
-                // || (!signupField.contains(event.target) && !(signupBtn.contains(event.target)))
                 if ((!signupField.contains(event.target) && !(signupBtn.contains(event.target)))) {
                     loginField.classList.add('fade')
                     signupField.classList.add('fade')
@@ -58,7 +58,6 @@ document.addEventListener('click', function(event) {
         }
     } else if (logoutField) {
         if (!logoutField.classList.contains('fade')) {
-            // if something other than the login/signup field is clicked on
             if (!logoutField.contains(event.target) && !(logoutBtn.contains(event.target))) {
                     logoutField.classList.add('fade')
                 }
