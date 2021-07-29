@@ -42,7 +42,8 @@ app.get('/', (req, res) => {
 					WHERE crit_likes.crit_id = crits.id 
 					GROUP BY crit_likes.crit_id
 				), 0
-			) AS likes
+			) AS likes,
+			ifnull(user_liked.id, 0) AS isLiked
 		FROM crits 
 		LEFT JOIN crits AS crit_replies
 			ON crit_replies.crit_reply_id = crits.id 
@@ -50,12 +51,20 @@ app.get('/', (req, res) => {
 			ON crit_likes.crit_id = crits.id
 		LEFT JOIN users 
 			ON crits.user_id = users.id
+		LEFT JOIN crit_likes AS user_liked
+			ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
 		WHERE crits.crit_reply_id is null
 		GROUP BY crits.id
 		ORDER BY crits.created_on DESC
 		LIMIT 10
 	`;
-	connection.query(crit_query, req.params.crits, (err, results) => {
+	let user_id = req.session.UserId || 0;
+	connection.query(crit_query, user_id, (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+
 		let crits = [];
 		for (let i = 0; i<results.length; i++){
 			crits.push({
@@ -69,7 +78,8 @@ app.get('/', (req, res) => {
 					created_on: results[i].created_on,
 					likes: results[i].likes,
 					replies: results[i].replies,
-					message: results[i].message
+					message: results[i].message,
+					isLiked: results[i].isLiked
 				}
 			})
 		}
@@ -86,13 +96,30 @@ app.get('/search', (req, res) => {
     SELECT 
         crits.id, crits.user_id, users.display_name, 
         users.username, crits.crit_reply_id,
-        crits.message, crits.created_on 
+        crits.message, crits.created_on,
+		count(crit_replies.id) AS replies,
+		ifnull(
+			(
+				SELECT count(crit_likes.id) 
+				FROM crit_likes 
+				WHERE crit_likes.crit_id = crits.id 
+				GROUP BY crit_likes.crit_id
+			), 0
+		) AS likes,
+		ifnull(user_liked.id, 0) AS isLiked
     FROM crits 
+	LEFT JOIN crits AS crit_replies
+		ON crit_replies.crit_reply_id = crits.id 
+	LEFT JOIN crit_likes
+		ON crit_likes.crit_id = crits.id
     LEFT JOIN users 
-    ON crits.user_id = users.id 
+		ON crits.user_id = users.id 
+	LEFT JOIN crit_likes AS user_liked
+        ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
     WHERE crits.message 
     lIKE ?`;
-	connection.query(search_query, searchParam, (err, results) => {
+	let user_id = req.session.UserId || 0;
+	connection.query(search_query, [user_id, searchParam], (err, results) => {
 		let crit_results = [];
 		for(let i = 0; i < results.length; i++){
 			crit_results.push({
@@ -104,9 +131,10 @@ app.get('/search', (req, res) => {
 				crit: {
 					id: results[i].id,
 					created_on: results[i].created_on,
-					likes: 0,
-					replies: 0,
-					message: results[i].message
+					likes: results[i].likes,
+					replies: results[i].replies,
+					message: results[i].message,
+					isLiked: results[i].isLiked
 				}
 			});
         };
@@ -252,6 +280,45 @@ app.all('/user/:following_id/unfollow', (req, res) => {
 		res.redirect('back');
 	});
 });
+
+app.all('/like/:crit_id', (req, res) => {
+	if(req.session.UserId) {
+		let all_query = ` 
+		SELECT * FROM crit_likes WHERE user_id = ? AND crit_id = ? 
+		`;
+		let my_user_id = req.session.UserId;
+
+		connection.query(all_query, [ my_user_id, req.params.crit_id], (err, results) => {
+			if (results.length > 0){
+				let unlike_query = `
+				DELETE FROM crit_likes WHERE user_id = ? AND crit_id = ?
+				`;
+				let my_user_id = req.session.UserId; 
+
+				connection.query(unlike_query, [ my_user_id, req.params.crit_id ], (err, results) => {
+					res.redirect('back');
+				});
+			} else {
+				let like_query = `
+				INSERT INTO crit_likes (user_id, crit_id) VALUES (?, ?)
+				`;
+				let my_user_id = req.session.UserId;  
+		
+				connection.query(like_query, [ my_user_id, req.params.crit_id ], (err, results) => {
+					if ( err ) {
+						console.error(err);
+						throw err;
+					}
+					res.redirect('back');
+				}); 
+			};
+		});
+	} else { 
+		res.send('Please log in');
+	};
+});
+
+
 
 app.get('*', (req, res) => {
 	res.render('404');
