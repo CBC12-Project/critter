@@ -11,6 +11,6 @@ document.getElementById('signup-btn').addEventListener('click', function() {
 });
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log('DOM fully loaded and parsed');
-timeago.render(document.querySelectorAll('.need_to_be_rendered'
+timeago.render(document.querySelectorAll('#crit-timeago'
     ));
 })
