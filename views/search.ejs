@@ -18,19 +18,7 @@
             <%-include('partials/sidebar') %>
         </div>
         <div class="results">
-            <% for (let i = 0; i<crit_results.length; i++){ %>
-                <%- include('partials/single-crit', {crit: crit_results[i].crit, user:crit_results[i].user})%>
-            <% } %>
             <!-- template for crits and card design  -->
-
-            <!-- reply: template for replies to crits -->
-
-            <div class="crit card reply reply-text">
-                <div class="divider">
-                    <div class="crit-pfp"></div>
-                    <textarea class="reply-textbox" placeholder="Write reply"></textarea>
-                </div>
-            </div>
         </div>
         <!-- grid section that shows timeline of crits -->
         <div class="timeline">
@@ -39,7 +27,17 @@
                 <textarea id="create-crit" name="createCrit" placeholder="Create a Crit!"></textarea>
                 <button id="create-crit-btn">CRIT!</button>
             </form>
+            <% for (let i = 0; i<crit_results.length; i++){ %>
+                <%- include('partials/single-crit', {crit: crit_results[i].crit, user:crit_results[i].user})%>
+            <% } %>
+                    <!-- reply: template for replies to crits -->
 
+                    <div class="crit card reply reply-text">
+                        <div class="divider">
+                            <div class="crit-pfp"></div>
+                            <textarea class="reply-textbox" placeholder="Write reply"></textarea>
+                        </div>
+                    </div>
             <!-- general container used for keeping the element relative like the other elements, but making the child absolute to adjust its position -->
 
 
