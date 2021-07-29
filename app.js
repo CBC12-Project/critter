@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 		LEFT JOIN users 
 			ON crits.user_id = users.id
 		LEFT JOIN crit_likes AS user_liked
-        	ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
+			ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
 		WHERE crits.crit_reply_id is null
 		GROUP BY crits.id
 		ORDER BY crits.created_on DESC
@@ -60,6 +60,11 @@ app.get('/', (req, res) => {
 	`;
 	let user_id = req.session.UserId || 0;
 	connection.query(crit_query, user_id, (err, results) => {
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+
 		let crits = [];
 		for (let i = 0; i<results.length; i++){
 			crits.push({
