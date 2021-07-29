@@ -328,7 +328,7 @@ const connection = mysql.createConnection({
         host     : process.env.DB_HOST,
         user     : process.env.DB_USER,
         password : process.env.DB_PASS,
-        database : 'critter',
+        database : process.env.DB_SCHEMA || 'critter',
         port     : process.env.DB_PORT
 });
 connection.connect();
