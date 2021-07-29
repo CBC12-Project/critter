@@ -110,6 +110,9 @@ router.get('/:crit_id',(req, res) => {
 router.post('/create',(req, res) => {
     if (req.session.loggedin) {
         let createCrit = req.body.createCrit;
+        if (createCrit == ""){
+            return res.redirect("back");
+        } else {
         let crit_query = `
         INSERT INTO crits 
                 (id, user_id, crit_reply_id, message, created_on)
@@ -119,7 +122,8 @@ router.post('/create',(req, res) => {
         connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
                 if (err) throw err;
         })
-        res.redirect('/');	
+        res.redirect('/');
+    }	
     } else {
         res.send("You're not logged in!")
     }
@@ -128,6 +132,9 @@ router.post('/create',(req, res) => {
 router.post('/:crit_id',(req, res) => {
     if (req.session.loggedin) {
         let replyCrit = req.params.crit_id;
+        if (req.body.replyCrit == ""){
+            return res.redirect("back");
+        } else {
         let crit_query = `
         INSERT INTO crits 
                 (id, user_id, crit_reply_id, message, created_on)
@@ -138,6 +145,7 @@ router.post('/:crit_id',(req, res) => {
             if (err) throw err;
             res.redirect('/crit/' + replyCrit);
         });
+    }
     } else {
         res.send("You're not logged in!")
     }
