@@ -98,7 +98,7 @@ router.get('/:crit_id',(req, res) => {
 	});
 });
 router.post('/create',(req, res) => {
-    if (req.session.UserId) {
+    if (req.session.loggedin) {
         let createCrit = req.body.createCrit;
         let crit_query = `
         INSERT INTO crits 
@@ -110,22 +110,27 @@ router.post('/create',(req, res) => {
                 if (err) throw err;
         })
         res.redirect('/');	
+    } else {
+        res.send("You're not logged in!")
     }
 });
 
 router.post('/:crit_id',(req, res) => {
-    let replyCrit = req.params.crit_id;
-    let crit_query = `
-    INSERT INTO crits 
-            (id, user_id, crit_reply_id, message, created_on)
-    VALUES
-            (NULL, ?,?,?, current_timestamp())
-    `;
-connection.query(crit_query, [req.session.UserId, replyCrit, req.body.replyCrit], function(err, result) {
-        if (err) throw err;
-		res.redirect('/crit/' + replyCrit);
-    
-    });
+    if (req.session.loggedin) {
+        let replyCrit = req.params.crit_id;
+        let crit_query = `
+        INSERT INTO crits 
+                (id, user_id, crit_reply_id, message, created_on)
+        VALUES
+                (NULL, ?,?,?, current_timestamp())
+        `;
+        connection.query(crit_query, [req.session.UserId, replyCrit, req.body.replyCrit], function(err, result) {
+            if (err) throw err;
+            res.redirect('/crit/' + replyCrit);
+        });
+    } else {
+        res.send("You're not logged in!")
+    }
 });
 
 const connection = mysql.createConnection({

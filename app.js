@@ -159,7 +159,7 @@ app.post('/signup', async (req, res) => {
 			res.status(500).send();
 		}
 	} else {
-		res.send('Invalid!')
+		res.send('Invalid!');
 	}
 });
 
