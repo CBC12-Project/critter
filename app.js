@@ -6,6 +6,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const validator = require("email-validator");
 require('dotenv').config();
+const md5 = require('md5');
 app.use(express.urlencoded({extended:true}));
 
 app.use(session({
@@ -32,7 +33,7 @@ app.get('/', (req, res) => {
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
-			users.username, crits.crit_reply_id,
+			users.username, users.email, crits.crit_reply_id,
 			crits.message, crits.created_on, 
 			count(crit_replies.id) AS replies,
 			ifnull(
@@ -70,7 +71,7 @@ app.get('/', (req, res) => {
 			crits.push({
 				user: {
 					display_name: results[i].display_name,
-					picture: '',
+					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
 					username: '@' + results[i].username
 				},
 				crit: {
@@ -95,18 +96,18 @@ app.get('/search', (req, res) => {
 	let search_query = `
     SELECT 
         crits.id, crits.user_id, users.display_name, 
-        users.username, crits.crit_reply_id,
-        crits.message, crits.created_on,
-		count(crit_replies.id) AS replies,
-		ifnull(
-			(
-				SELECT count(crit_likes.id) 
-				FROM crit_likes 
-				WHERE crit_likes.crit_id = crits.id 
-				GROUP BY crit_likes.crit_id
-			), 0
-		) AS likes,
-		ifnull(user_liked.id, 0) AS isLiked
+        users.username, users.email, crits.crit_reply_id,
+        crits.message, crits.created_on 
+		    count(crit_replies.id) AS replies,
+        ifnull(
+          (
+            SELECT count(crit_likes.id) 
+            FROM crit_likes 
+            WHERE crit_likes.crit_id = crits.id 
+            GROUP BY crit_likes.crit_id
+          ), 0
+        ) AS likes,
+        ifnull(user_liked.id, 0) AS isLiked
     FROM crits 
 	LEFT JOIN crits AS crit_replies
 		ON crit_replies.crit_reply_id = crits.id 
@@ -125,7 +126,7 @@ app.get('/search', (req, res) => {
 			crit_results.push({
 				user: {
 					display_name: results[i].display_name,
-					picture: '',
+					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
 					username: '@' + results[i].username
 				},
 				crit: {
@@ -317,8 +318,6 @@ app.all('/like/:crit_id', (req, res) => {
 		res.send('Please log in');
 	};
 });
-
-
 
 app.get('*', (req, res) => {
 	res.render('404');
