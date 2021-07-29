@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('partials/head.ejs',{page:{name:'Home'}}) %>  
+<body>
+    <%-include('partials/sidebar') %>
+
+   <main>
+
+   <div class="timeline">
+    <%- include('partials/profile-card', { user: userProfile[0].profile }); %>
+   </div>
+</main>
+
+
+<%# include('partials/create-crit.ejs') %>
+<%# for (let i = 0; i<crits.length; i++){ %>
+    <%# include('partials/single-crit', {crit: crits[i].crit, user:crits[i].user})%>
+<%# } %>
+</body>
+</html>
+
+
+
+

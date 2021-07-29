@@ -8,6 +8,7 @@ const validator = require("email-validator");
 require('dotenv').config();
 const md5 = require('md5');
 app.use(express.urlencoded({extended:true}));
+const md5 = require('md5')
 
 app.use(session({
 	secret: 'secret',
@@ -71,8 +72,8 @@ app.get('/', (req, res) => {
 			crits.push({
 				user: {
 					display_name: results[i].display_name,
-					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
-					username: '@' + results[i].username
+					username:results[i].username,
+					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email)
 				},
 				crit: {
 					id: results[i].id,
@@ -143,7 +144,7 @@ app.get('/search', (req, res) => {
 		res.render('timeline', {crit_results:crit_results, mode});
 	});
 });
-
+//sign up 
 app.post('/signup', async (req, res) => {
 	if (validator.validate(req.body.email) && (req.body.username) && (req.body.display_name)) {
 		try {
@@ -191,7 +192,7 @@ app.post('/signup', async (req, res) => {
 		res.send('Invalid!');
 	}
 });
-
+// authenticate
 app.post('/auth', async (req, res) => {
 	let loginEmail = `${req.body.email}`
 	let loginPassword = `${req.body.password}`
@@ -220,7 +221,7 @@ app.post('/auth', async (req, res) => {
 		};
 	});
 });
-
+// log out
 app.post('/logout', (req, res) => {
 	if (req.session) {
 		req.session.destroy(err => {
@@ -239,10 +240,68 @@ app.post('/logout', (req, res) => {
 app.get('/welcome', (req, res) => {
 	res.render('newusers.ejs');
 });
+
+
+
+
 //route for profile
 app.get('/profile', (req, res) => {
-	res.render('profile');
-});
+	let profile_query = ` SELECT id, username, display_name, email
+		From users 
+		WHERE username = ?`;
+	
+	connection.query(profile_query,  req.session.username, (err, results) =>{
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+		let userProfile = [];
+		for (let i = 0; i<results.length; i++){
+			userProfile.push({
+				profile:{
+					display_name: results[i].display_name,
+					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
+					username:results[i].username
+				}
+			});
+		};res.render('profile', {userProfile: userProfile});
+		})
+	});
+
+
+	
+	// user @handle route
+	
+	app.get('/profile/:username', (req, res) => {
+		let toProfile = ` SELECT id, username, display_name, email
+		From users 
+		WHERE username = ?`;
+		
+		connection.query(toProfile, req.params.username, (err, results) =>{
+			if ( err ) {
+				console.error(err);
+				throw err;
+			}
+			let toProfile = [];
+			for (let i = 0; i<results.length; i++){
+				toProfile.push({
+					profile:{
+						display_name: results[i].display_name,
+						picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
+						username: results[i].username
+					}
+				});
+			};res.render('profile', {userProfile: toProfile});
+			})
+		});
+
+
+
+
+
+
+
+
 
 app.all('/user/:following_id/follow', (req, res) => {
 	let query = `
