@@ -8,7 +8,7 @@ const validator = require("email-validator");
 require('dotenv').config();
 const md5 = require('md5');
 app.use(express.urlencoded({extended:true}));
-const md5 = require('md5')
+
 
 app.use(session({
 	secret: 'secret',
