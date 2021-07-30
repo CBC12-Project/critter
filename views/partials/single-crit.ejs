@@ -1,9 +1,11 @@
 <div class="crit card" id="<%= crit.id %>_crit">
     <div class="divider">
-        <div class="crit-pfp"><img src="<%= user.picture %>?s=26"></div>
-        <p class="crit-name"><%= user.display_name %></p>
-        <p class="crit-handle"><a href="/profile/<%= user.username%>">@<%= user.username %></p>
-        <p><strong>·</strong></p>
+        <a class="crit-handle divider crit-a" href="/profile/<%= user.username%>">
+            <img class="crit-pfp" src="<%= user.picture %>?s=26"></img>
+            <p class="crit-name crit-a"><%= user.display_name %></p>
+            @<%= user.username %>
+        </a>
+        <span><strong>·</strong></span>
         <span class="crit-timeago" datetime="<%= crit.created_on %>"><%= crit.created_on %></span>
     </div>
     <p class="crit-text"><%= crit.message %></p>
