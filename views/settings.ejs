@@ -8,15 +8,15 @@
         <%-include('partials/sidebar') %>
         <div class="timeline">
             <div class="edit crit card">
-                <form action="/edit" method="POST">
+                <form action="/edit/:userId" method="POST">
                     <label for="Email">Email</label>
-                    <input name="email" type="text" placeholder="Enter New Email" value="">
+                    <input name="email" type="text" placeholder="Enter New Email" value="<%= userInfo[0].user.email %>">
                     <br><br>
                     <label for="Nickname">Nickname</label>
-                    <input name="display_name" type="text" placeholder="Enter New Nickname" value="">
+                    <input name="display_name" type="text" placeholder="Enter New Nickname" value="<%= userInfo[0].user.display_name %>">
                     <br><br>
                     <label for="Password">Password</label>
-                    <input name="password" type="password" placeholder="Enter New Password" value="">
+                    <input name="password" type="password" placeholder="Enter Password" value="" required>
                     <br><br>
                     <button>Edit</button>
                 </form>
@@ -26,3 +26,4 @@
     </main>
 </body>
 </html>
+

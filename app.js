@@ -322,27 +322,36 @@ app.get('/settings', (req,res) =>{
 	let settings_query = `
 	SELECT users.email, users.password, users.display_name FROM users WHERE id = ?
 	`;
-	connection.query(settings_query, req.session.UserId, (err, results) => {
-		res.render('settings')
+	let my_user_id = req.session.UserId
+	connection.query(settings_query, my_user_id, (err, results) => {
+		let userInfo = [];
+		for(let i = 0; i < results.length; i++){
+			userInfo.push({
+				user: {
+					email: results[i].email,
+					display_name: results[i].display_name,
+					password: results[i].password
+				}
+			});
+		res.render('settings', {userInfo:userInfo})
+		};
 	});
 });
 
-app.post('/edit/:userId', (req,res) => {
+app.post('/edit/:userId', async (req,res) => {
+	const salt = await bcrypt.genSalt();
+	const newPassword = `${await bcrypt.hash(req.body.password, salt)}`;
 	let newEmail = `${req.body.email}`;
-	let newPassword = `${req.body.password}`;
-	let newDisplayName = `${req.body.display_name}`;
+    let newDisplayName = `${req.body.display_name}`;
 	let edit_query =`
-	UPDATE users 
-	SET users.email = ?, users.password = ?, users.display_name = ? 
-	WHERE id = ?
-	`;
-	connection.query(edit_query, [newEmail, newPassword, newDisplayName, req.session.UserId], (err, results) => {
-		if ( err ) {
-			console.error(err);
-			throw err;
-		};
-		
-	})
+        UPDATE users 
+        SET email = ?, password = ?, display_name = ? 
+        WHERE id = ?
+    `;
+		connection.query(edit_query, [newEmail, newPassword, newDisplayName, req.session.UserId], (err, results) => {
+			if (err) throw err;
+			res.redirect('/');
+		})
 });
 
 app.get('*', (req, res) => {
