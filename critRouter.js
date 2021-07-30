@@ -113,7 +113,7 @@ router.post('/create',(req, res) => {
         let createCrit = req.body.createCrit;
         if (createCrit == ""){
             return res.redirect("back");
-            } else {
+        } else {
             let crit_query = `
             INSERT INTO crits 
                     (id, user_id, crit_reply_id, message, created_on)
@@ -122,7 +122,7 @@ router.post('/create',(req, res) => {
             `;
             connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
                     if (err) throw err;
-            })
+            });
             res.redirect('/');
         }	
     } else {
@@ -135,7 +135,7 @@ router.post('/:crit_id',(req, res) => {
         let replyCrit = req.params.crit_id;
         if (req.body.replyCrit == ""){
             return res.redirect("back");
-            } else {
+        } else {
             let crit_query = `
             INSERT INTO crits 
                     (id, user_id, crit_reply_id, message, created_on)
