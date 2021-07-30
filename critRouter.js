@@ -111,7 +111,7 @@ router.get('/:crit_id',(req, res) => {
 router.post('/create',(req, res) => {
     if (req.session.loggedin) {
         let createCrit = req.body.createCrit;
-         if (createCrit == ""){
+        if (createCrit == ""){
             return res.redirect("back");
             } else {
             let crit_query = `
