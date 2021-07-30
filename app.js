@@ -8,7 +8,6 @@ const validator = require("email-validator");
 require('dotenv').config();
 const md5 = require('md5');
 app.use(express.urlencoded({extended:true}));
-const md5 = require('md5')
 
 app.use(session({
 	secret: 'secret',
@@ -264,7 +263,9 @@ app.get('/profile', (req, res) => {
 					username:results[i].username
 				}
 			});
-		};res.render('profile', {userProfile: userProfile});
+		};
+		let mode = 'profile' 
+		res.render('timeline', {userProfile: userProfile, mode});
 		})
 	});
 
@@ -291,7 +292,9 @@ app.get('/profile', (req, res) => {
 						username: results[i].username
 					}
 				});
-			};res.render('profile', {userProfile: toProfile});
+			};
+			let mode = 'profile'
+			res.render('timeline', {userProfile: toProfile, mode});
 			})
 		});
 

@@ -36,6 +36,9 @@
                     </form>      
             <% } %>
             <% } %>
+            <% if (mode == 'profile') { %>
+                    <%- include('partials/profile-card', { user: userProfile[0].profile }); %>
+            <% } %>
         </div>    
         <%- include('partials/search') %>
     </main>
