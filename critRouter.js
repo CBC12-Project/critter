@@ -50,7 +50,7 @@ router.get('/:crit_id',(req, res) => {
                 id: results[0].id,
                 created_on: results[0].created_on,
                 likes: results[0].likes,
-                replies: results[0].replies,
+                replies: results[0].replies - (results[0].replies > 0 ? results[0].likes : 0),
                 message: results[0].message,
 				isLiked: results[0].isLiked
             }
@@ -88,7 +88,7 @@ router.get('/:crit_id',(req, res) => {
                 let replyCrit = {
                     user: {
                         display_name: result[i].display_name,
-                        picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
+                        picture: 'https://www.gravatar.com/avatar/' + md5(result[i].email),
                         username: '@' + result[i].username
                     },
                     crit: {
@@ -96,7 +96,7 @@ router.get('/:crit_id',(req, res) => {
                         id: result[i].id,
                         created_on: result[i].created_on,
                         likes: result[i].likes,
-                        replies: result[i].replies,
+                        replies: result[i].replies - (result[i].replies > 0 ? result[i].likes : 0),
                         message: result[i].message,
 						isLiked: result[i].isLiked
                     }

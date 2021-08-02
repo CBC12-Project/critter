@@ -118,7 +118,9 @@ app.get('/search', (req, res) => {
 	LEFT JOIN crit_likes AS user_liked
         ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
     WHERE crits.message 
-    lIKE ?`;
+    lIKE ?
+	GROUP BY crits.id
+	`;
 	let user_id = req.session.UserId || 0;
 	connection.query(search_query, [user_id, searchParam], (err, results) => {
 		let crit_results = [];
@@ -133,7 +135,7 @@ app.get('/search', (req, res) => {
 					id: results[i].id,
 					created_on: results[i].created_on,
 					likes: results[i].likes,
-					replies: results[i].replies,
+					replies: results[i].replies - (results[i].replies > 0 ? results[i].likes : 0),
 					message: results[i].message,
 					isLiked: results[i].isLiked
 				}
