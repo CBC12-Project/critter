@@ -22,7 +22,6 @@ textarea:focus{
         display: flex;
         flex-direction: column;
         align-items: center;
-        /* padding: 1rem; */
     }
     
     
@@ -30,7 +29,6 @@ textarea:focus{
         width: 30vw;
         max-width: 200px;
         padding-top: 1rem;
-        /* height: 25vh;  */
     }
 
   /* Lias code  */
@@ -52,25 +50,20 @@ textarea:focus{
         position: sticky;
         height: 100vh;
         overflow: none;
-        /* clear: both; */
     }
 
     .sidebar > a > li {
-        /* display: block; */
         padding: 1rem;
     }
 
     .sidebar > a > li > div {
-        /* float: right; */
         padding-left: 25%;
     }
     .sidebar > div > li {
-        /* display: block; */
         padding: 1rem;
     }
 
     .sidebar > div > li > div {
-        /* float: right; */
         padding-left: 25%;
     }
 
@@ -80,8 +73,8 @@ textarea:focus{
         cursor: pointer;
         border-radius: 2rem;
         padding: 1rem;
-        padding-right: 5rem;
-        min-width: 0;
+        padding-right: 0;
+        padding-left: 0 !important;  
         margin: -1rem 0 -1rem 0;
     }
 
@@ -93,17 +86,17 @@ textarea:focus{
         padding-right: .5rem;
     }
 
-    /* .login-field {
-        width: 200px;
-        height: 100px;
-    } */
+    .login-field {
+        width: auto !important; 
+        min-width: 0 !important;
+    }
 
-    /* .search-li {
-        display: none;
-    } */
-    
+    li > #login-field > form {
+        display: flex;
+        flex-direction: column;
+    }
+
     body {
-        /* margin: 1rem; */
         background-color: aliceblue;
     }
     
@@ -116,7 +109,6 @@ textarea:focus{
         width: 90%;
         padding: 1rem;
         padding-bottom: 60px;
-        /* margin: 1rem 0 1rem 0; */
     }
     
     #header-image {
@@ -218,6 +210,7 @@ textarea:focus{
     .card {
         width: 80%;
         max-width: 600px;
+        min-width: 400px;
         background-color: white;
         border-radius: 15px;
         box-shadow: 5px 5px hsl(180, 46%, 82%), 0 -2px 10px hsl(180, 46%, 82%);
@@ -263,20 +256,28 @@ textarea:focus{
         width: 40px;
         border-radius: 40px;
         min-width: 40px;
-        background-color: hsl(0, 53%, 69%);
+        /* background-color: hsl(0, 53%, 69%); */
     }
     
     .crit-name {
         font-weight: bold;
     }
     
-    .crit-name, .crit-handle {
+    /* a.crit-handle {
+        padding: 0 .5rem 0 .5rem;
+    } */
+
+    .crit-a {
+        padding: 0 .5rem 0 .5rem;
+    }
+
+    .crit-timeago {
         padding-left: .5rem;
     }
     
-    .crit-txt {
-        padding: 1rem;
-        margin: none;
+    .crit-text {
+        padding: 1rem 0 1rem 0;
+        margin:  .5rem 0 .5rem 0;
         padding: none;
         box-sizing: border-box;
     }
@@ -318,16 +319,12 @@ textarea:focus{
     
     /* search bar css  */
     .search{
-        /* background-color:white; */
         border: none;
         border-radius: 6px;
         color: black;
-        /* box-shadow: 5px 5px hsl(180, 46%, 82%), 0 -2px 10px hsl(180, 46%, 82%); */
-        /* background-color: hsl(180, 46%, 82%); */
         padding: 5px;
         margin: 5px;
         width: 90%;
-        /* min-width: 100px; */
     }
     
     .search-btn {
@@ -354,9 +351,7 @@ textarea:focus{
         padding: 1rem;
         transition: .2s;
         opacity: 1;
-        /* height: auto; */
         transition: .3s;
-        /* z-index: 1; */
         display: flex;
         flex-direction: column;
         position: absolute;
@@ -394,29 +389,24 @@ textarea:focus{
 
     #create-crit {
         border: none;
-        border-radius: 6px;
+        border-radius: 1rem;
         color: black;
-        box-shadow: 5px 5px hsl(0, 53%, 69%);
-        padding: 5px;
-        width: 75%;
-        display: flex;
-        flex-direction: row;
+        padding: 1rem;
+        width: 90%;
     }
 
     #create-crit-btn {
         background-color:white;
         border: none;
         border-radius: 6px;
-        color: rgb(111, 108, 108);
-        box-shadow: 5px 5px hsl(0, 53%, 69%);
-        padding: 10px;
-        margin: 7% 0 0 5%;
+        margin: 1rem;
+        padding: 1rem;
+        width: 10%;
+        background: hsl(180, 46%, 82%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-
-    #crit-logo {
-        /* margin: 0 0 0 15%; */
-    }
-
 
 
     #reply-crit {
@@ -447,11 +437,14 @@ textarea:focus{
         .sidebar-div > p {
             display: none;
         }
+        #crit-logo {
+            margin: -25%;
+        }
     }
 
     @media screen and (max-width: 600px) {
         .sidebar {
-            width: 100%;
+            width: 100vw;
             height: auto;
             position: fixed;
             bottom: 0;
@@ -460,10 +453,11 @@ textarea:focus{
             align-items: center;
             background-color: white;
             box-shadow: 0 -2px 10px hsl(180, 46%, 82%);
+            margin-left: 0;
         }
         .sidebar-div {
-            /* border: 1px solid black; */
             padding-right: 0;
+            
         }
         .sidebar > a > li {
             padding: 1rem;
@@ -483,7 +477,7 @@ textarea:focus{
         main > .search {
             display: none;
         }
-        .logo-li {
+        #crit-logo-a {
             display: none;
         }
         .search-li {
@@ -491,6 +485,7 @@ textarea:focus{
         }
         .card {
             width: 95%;
+            min-width: 0px;
         }
         .login {
             position: fixed;
@@ -501,16 +496,21 @@ textarea:focus{
         .sidebar-div > img {
             padding-right: 0;
         }    
-
-        /* .sidebar a {float: left;}
-        div.content {margin-left: 0;} */
-    }
-    
-    @media screen and (max-width: 400px) {
-        /* .sidebar a {
-        text-align: center;
-        float: none; */
+        #crit-logo {
+            margin-left: 0;
         }
+
+        li > #login-field {
+            max-width: 50%;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .sidebar-div > img {
+            width: 200%;
+        }
+
+    }
     
     .edit > form {
         width: 90%;

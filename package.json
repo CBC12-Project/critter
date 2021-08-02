@@ -20,12 +20,12 @@
   "homepage": "https://github.com/CBC12-Project/critter#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
     "md5": "^2.3.0",
-    "dotenv": "^10.0.0",
     "mysql": "^2.18.1"
   },
   "devDependencies": {

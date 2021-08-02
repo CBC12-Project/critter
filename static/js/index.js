@@ -39,10 +39,12 @@ searchBtn.addEventListener('click', function(event) {
     }
 })
 
-document.getElementById('signup-btn').addEventListener('click', function() {
-    signUpField.classList.toggle('fade')
-    loginField.classList.add('fade')
+if (signupBtn) {
+    document.getElementById('signup-btn').addEventListener('click', function() {
+        // signUpField.classList.toggle('fade')
+        loginField.classList.add('fade')    
 });
+}
 
 // fades login/signup/search field when something else is clicked on
 document.addEventListener('click', function(event) {

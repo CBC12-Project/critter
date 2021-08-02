@@ -9,7 +9,6 @@ require('dotenv').config();
 const md5 = require('md5');
 app.use(express.urlencoded({extended:true}));
 
-
 app.use(session({
 	secret: 'secret',
 	resave: true,
@@ -101,12 +100,12 @@ app.get('/search', (req, res) => {
         crits.message, crits.created_on, 
 		    count(crit_replies.id) AS replies,
         ifnull(
-          (
+        (
             SELECT count(crit_likes.id) 
             FROM crit_likes 
             WHERE crit_likes.crit_id = crits.id 
             GROUP BY crit_likes.crit_id
-          ), 0
+        ), 0
         ) AS likes,
         ifnull(user_liked.id, 0) AS isLiked
     FROM crits 
@@ -119,7 +118,9 @@ app.get('/search', (req, res) => {
 	LEFT JOIN crit_likes AS user_liked
         ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
     WHERE crits.message 
-    lIKE ?`;
+    lIKE ?
+	GROUP BY crits.id
+	`;
 	let user_id = req.session.UserId || 0;
 	connection.query(search_query, [user_id, searchParam], (err, results) => {
 		let crit_results = [];
@@ -128,13 +129,13 @@ app.get('/search', (req, res) => {
 				user: {
 					display_name: results[i].display_name,
 					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
-					username: '@' + results[i].username
+					username: results[i].username
 				},
 				crit: {
 					id: results[i].id,
 					created_on: results[i].created_on,
 					likes: results[i].likes,
-					replies: results[i].replies,
+					replies: results[i].replies - (results[i].replies > 0 ? results[i].likes : 0),
 					message: results[i].message,
 					isLiked: results[i].isLiked
 				}
@@ -270,7 +271,6 @@ app.get('/profile', (req, res) => {
 				}
 			});
 		};
-
 		let profile_crit_query = `
 			SELECT 
 				crits.id, crits.user_id, users.display_name, 
@@ -354,7 +354,8 @@ app.get('/profile', (req, res) => {
 						username: results[i].username
 					}
 				});
-			};res.render('profile', {userProfile: toProfile});
+			};
+			res.render('timeline', {userProfile: toProfile});
 			})
 		});
 
