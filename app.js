@@ -441,6 +441,72 @@ app.all('/like/:crit_id', (req, res) => {
 	};
 });
 
+app.get('/settings', (req,res) =>{
+	let settings_query = `
+	SELECT users.email, users.password, users.display_name FROM users WHERE id = ?
+	`;
+	let my_user_id = req.session.UserId;
+	connection.query(settings_query, my_user_id, (err, results) => {
+		let userInfo = [];
+		for(let i = 0; i < results.length; i++){
+			userInfo.push({
+				user: {
+					email: results[i].email,
+					display_name: results[i].display_name,
+					password: results[i].password
+				}
+			});
+		res.render('settings', {userInfo:userInfo});
+		};
+	});
+});
+
+app.post('/settings', (req,res) => {
+	let newEmail = `${req.body.email}`;
+	let newDisplayName = `${req.body.display_name}`;
+	let edit_query =`
+		UPDATE users 
+		SET email = ?, display_name = ? 
+		WHERE id = ?
+	`;
+	connection.query(edit_query, [newEmail, newDisplayName, req.session.UserId], (err, results) => {
+		if (err) throw err;
+		res.redirect('/');
+	});
+});
+
+app.post('/user/password', async (req,res) => {
+	let oldPassword = `${req.body.old_password}`;
+	let password_query = `
+	SELECT password 
+	FROM users
+	WHERE users.id = ?
+	`;
+	connection.query(password_query, req.session.UserId,  async (err, results) => {
+		if (await bcrypt.compare(oldPassword, results[0].password)) {
+			let newPassword = `${req.body.password}`;
+			let checkPassword = `${req.body.check_password}`;
+			if(newPassword == checkPassword) {
+				const salt = await bcrypt.genSalt();
+				const changePassword = `${await bcrypt.hash(req.body.password, salt)}`;
+				let new_password_query =`
+				UPDATE users 
+				SET password = ? 
+				WHERE id = ?
+				`;
+				connection.query(new_password_query, [changePassword, req.session.UserId], (err, results) => {
+					if (err) throw err;
+					res.redirect('/');
+				});
+			} else {
+				res.send('Passwords Do Not Match');
+			};
+		} else {
+			res.send('Incorrect Password');
+		};
+	});
+});
+
 app.get('*', (req, res) => {
 	res.render('404');
 });

@@ -509,4 +509,9 @@ textarea:focus{
         .sidebar-div > img {
             width: 200%;
         }
+
+    }
+    
+    .edit > form {
+        width: 90%;
     }
