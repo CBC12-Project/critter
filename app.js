@@ -338,20 +338,34 @@ app.get('/settings', (req,res) =>{
 	});
 });
 
-app.post('/edit/:userId', async (req,res) => {
-	const salt = await bcrypt.genSalt();
-	const newPassword = `${await bcrypt.hash(req.body.password, salt)}`;
-	let newEmail = `${req.body.email}`;
-    let newDisplayName = `${req.body.display_name}`;
-	let edit_query =`
-        UPDATE users 
-        SET email = ?, password = ?, display_name = ? 
-        WHERE id = ?
-    `;
+app.post('/edit/:userId',async (req,res) => {
+	if (req.body.password){
+		const salt = await bcrypt.genSalt();
+		const newPassword = `${await bcrypt.hash(req.body.password, salt)}`;
+		let newEmail = `${req.body.email}`;
+		let newDisplayName = `${req.body.display_name}`;
+		let edit_query =`
+			UPDATE users 
+			SET email = ?, password = ?, display_name = ? 
+			WHERE id = ?
+		`;
 		connection.query(edit_query, [newEmail, newPassword, newDisplayName, req.session.UserId], (err, results) => {
 			if (err) throw err;
 			res.redirect('/');
-		})
+		});
+	} else {
+		let newEmail = `${req.body.email}`;
+		let newDisplayName = `${req.body.display_name}`;
+		let edit_query =`
+			UPDATE users 
+			SET email = ?, display_name = ? 
+			WHERE id = ?
+		`;
+		connection.query(edit_query, [newEmail, newDisplayName, req.session.UserId], (err, results) => {
+			if (err) throw err;
+			res.redirect('/');
+		});
+	}
 });
 
 app.get('*', (req, res) => {
