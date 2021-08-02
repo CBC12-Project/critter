@@ -322,7 +322,7 @@ app.get('/settings', (req,res) =>{
 	let settings_query = `
 	SELECT users.email, users.password, users.display_name FROM users WHERE id = ?
 	`;
-	let my_user_id = req.session.UserId
+	let my_user_id = req.session.UserId;
 	connection.query(settings_query, my_user_id, (err, results) => {
 		let userInfo = [];
 		for(let i = 0; i < results.length; i++){
@@ -333,39 +333,52 @@ app.get('/settings', (req,res) =>{
 					password: results[i].password
 				}
 			});
-		res.render('settings', {userInfo:userInfo})
+		res.render('settings', {userInfo:userInfo});
 		};
 	});
 });
 
-app.post('/edit/:userId',async (req,res) => {
-	if (req.body.password){
-		const salt = await bcrypt.genSalt();
-		const newPassword = `${await bcrypt.hash(req.body.password, salt)}`;
-		let newEmail = `${req.body.email}`;
-		let newDisplayName = `${req.body.display_name}`;
-		let edit_query =`
-			UPDATE users 
-			SET email = ?, password = ?, display_name = ? 
-			WHERE id = ?
-		`;
-		connection.query(edit_query, [newEmail, newPassword, newDisplayName, req.session.UserId], (err, results) => {
-			if (err) throw err;
-			res.redirect('/');
-		});
-	} else {
-		let newEmail = `${req.body.email}`;
-		let newDisplayName = `${req.body.display_name}`;
-		let edit_query =`
-			UPDATE users 
-			SET email = ?, display_name = ? 
-			WHERE id = ?
-		`;
-		connection.query(edit_query, [newEmail, newDisplayName, req.session.UserId], (err, results) => {
-			if (err) throw err;
-			res.redirect('/');
-		});
-	}
+app.post('/settings', (req,res) => {
+	let newEmail = `${req.body.email}`;
+	let newDisplayName = `${req.body.display_name}`;
+	let edit_query =`
+		UPDATE users 
+		SET email = ?, display_name = ? 
+		WHERE id = ?
+	`;
+	connection.query(edit_query, [newEmail, newDisplayName, req.session.UserId], (err, results) => {
+		if (err) throw err;
+		res.redirect('/');
+	});
+});
+
+app.post('/user/password', async (re,res) => {
+	let oldPassword = `${req.body.old_password}`;
+	let password_query = `
+	SELECT password 
+	FROM users
+	WHERE users.id = ?
+	`;
+	connection.query(password_query, req.session.userId, (err, results) => {
+		if (await bcrypt.compare(oldPassword, results[0])) {
+			let newPassword = `${req.body.password}`;
+			let checkPassword = `${req.body.check_password}`;
+			if(newPassword == checkPassword) {
+				const changePassword = `${await bcrypt.hash(req.body.password, salt)}`;
+				let new_password_query =`
+				UPDATE users 
+				password = ? 
+				WHERE id = ?
+				`;
+				connection.query(new_password_query, [changePassword, req.session.UserId], (err, results) => {
+					if (err) throw err;
+					res.redirect('/');
+				});
+			} else {
+				res.send('Passwords Do Not Match');
+			};
+		};
+	});
 });
 
 app.get('*', (req, res) => {
