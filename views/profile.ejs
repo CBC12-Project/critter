@@ -4,18 +4,17 @@
 <body>
     <%-include('partials/sidebar') %>
 
-   <main>
-
-   <div class="timeline">
+<main>
+    <div class="timeline">
     <%- include('partials/profile-card', { user: userProfile[0].profile }); %>
-   </div>
+    
+        
+        <% for (let i = 0; i < critsProfile.length; i++) { %>
+            <%- include('partials/single-crit', {crit: critsProfile[i].crit, user: critsProfile[i].user}) %>
+        <% } %>
+    </div>
 </main>
 
-
-<%# include('partials/create-crit.ejs') %>
-<%# for (let i = 0; i<crits.length; i++){ %>
-    <%# include('partials/single-crit', {crit: crits[i].crit, user:crits[i].user})%>
-<%# } %>
 </body>
 </html>
 
