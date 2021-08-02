@@ -352,22 +352,23 @@ app.post('/settings', (req,res) => {
 	});
 });
 
-app.post('/user/password', async (re,res) => {
+app.post('/user/password', async (req,res) => {
 	let oldPassword = `${req.body.old_password}`;
 	let password_query = `
 	SELECT password 
 	FROM users
 	WHERE users.id = ?
 	`;
-	connection.query(password_query, req.session.userId, (err, results) => {
-		if (await bcrypt.compare(oldPassword, results[0])) {
+	connection.query(password_query, req.session.UserId,  async (err, results) => {
+		if (await bcrypt.compare(oldPassword, results[0].password)) {
 			let newPassword = `${req.body.password}`;
 			let checkPassword = `${req.body.check_password}`;
 			if(newPassword == checkPassword) {
+				const salt = await bcrypt.genSalt();
 				const changePassword = `${await bcrypt.hash(req.body.password, salt)}`;
 				let new_password_query =`
 				UPDATE users 
-				password = ? 
+				SET password = ? 
 				WHERE id = ?
 				`;
 				connection.query(new_password_query, [changePassword, req.session.UserId], (err, results) => {
@@ -377,6 +378,8 @@ app.post('/user/password', async (re,res) => {
 			} else {
 				res.send('Passwords Do Not Match');
 			};
+		} else {
+			res.send('Incorrect Password');
 		};
 	});
 });
