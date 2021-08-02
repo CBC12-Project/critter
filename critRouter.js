@@ -111,16 +111,20 @@ router.get('/:crit_id',(req, res) => {
 router.post('/create',(req, res) => {
     if (req.session.loggedin) {
         let createCrit = req.body.createCrit;
-        let crit_query = `
-        INSERT INTO crits 
-                (id, user_id, crit_reply_id, message, created_on)
-        VALUES
-                (NULL, ?, NULL, ?, current_timestamp());
-        `;
-        connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
-                if (err) throw err;
-        })
-        res.redirect('/');	
+        if (createCrit == ""){
+            return res.redirect("back");
+        } else {
+            let crit_query = `
+            INSERT INTO crits 
+                    (id, user_id, crit_reply_id, message, created_on)
+            VALUES
+                    (NULL, ?, NULL, ?, current_timestamp());
+            `;
+            connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
+                    if (err) throw err;
+            });
+            res.redirect('/');
+        }	
     } else {
         res.send("You're not logged in!")
     }
@@ -129,16 +133,20 @@ router.post('/create',(req, res) => {
 router.post('/:crit_id',(req, res) => {
     if (req.session.loggedin) {
         let replyCrit = req.params.crit_id;
-        let crit_query = `
-        INSERT INTO crits 
-                (id, user_id, crit_reply_id, message, created_on)
-        VALUES
-                (NULL, ?,?,?, current_timestamp())
-        `;
-        connection.query(crit_query, [req.session.UserId, replyCrit, req.body.replyCrit], function(err, result) {
-            if (err) throw err;
-            res.redirect('/crit/' + replyCrit);
-        });
+        if (req.body.replyCrit == ""){
+            return res.redirect("back");
+        } else {
+            let crit_query = `
+            INSERT INTO crits 
+                    (id, user_id, crit_reply_id, message, created_on)
+            VALUES
+                    (NULL, ?,?,?, current_timestamp())
+            `;
+            connection.query(crit_query, [req.session.UserId, replyCrit, req.body.replyCrit], function(err, result) {
+                if (err) throw err;
+                res.redirect('/crit/' + replyCrit);
+            });
+        }
     } else {
         res.send("You're not logged in!")
     }
