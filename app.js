@@ -246,9 +246,14 @@ app.get('/welcome', (req, res) => {
 
 //route for profile
 app.get('/profile', (req, res) => {
-	let profile_query = ` SELECT id, username, display_name, email
-		From users 
-		WHERE username = ?`;
+	let profile_query = `
+		SELECT 
+			id, username, display_name, email
+		FROM 
+			users 
+		WHERE 
+			username = ?
+		`;
 	
 	connection.query(profile_query,  req.session.username, (err, results) =>{
 		if ( err ) {
@@ -320,9 +325,10 @@ app.get('/profile', (req, res) => {
 					}
 				});
 			}
-		res.render('profile', {userProfile: userProfile}, {critsProfile: critsProfile});
+
+			res.render('profile', {userProfile: userProfile, critsProfile: critsProfile});
 		});
-	})
+	});
 });
 
 
