@@ -1,14 +1,14 @@
 <div class="crit card" id="<%= crit.id %>_crit">
     <div class="divider">
-        <div class="crit-pfp"><%= user.picture %></div>
+        <div class="crit-pfp"><img src="<%= user.picture %>?s=26"></div>
         <p class="crit-name"><%= user.display_name %></p>
-        <p class="crit-handle"><%= user.username %></p>
+        <p class="crit-handle"><a href="/profile/<%= user.username%>">@<%= user.username %></p>
         <p><strong>·</strong></p>
-        <p id="crit-time-ago"><%= crit.created_on %></p>
+        <span class="crit-timeago" datetime="<%= crit.created_on %>"><%= crit.created_on %></span>
     </div>
     <p class="crit-text"><%= crit.message %></p>
     <div class="divider crit-btns">
-        <a id="<%= crit.id %>_like" href="/like/<%= crit.id %>" class="<%- crit.isLiked ? 'liked' : '' %>"><i class="fas fa-bug"></i><%= crit.likes %></a>
+        <a id="<%= crit.id %>_like" href="/like/<%= crit.id %>"><i class="fas fa-bug"></i><%= crit.likes %></a>
         <a href="/crit/<%= crit.id %>"><i class="far fa-comment"></i><%= crit.replies %></a>
     </div>
 </div>

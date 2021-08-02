@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql');
 require('dotenv').config();
+const md5 = require('md5');
 
 router.get('/', (req, res) => {
     res.redirect('/');
@@ -12,7 +13,7 @@ router.get('/:crit_id',(req, res) => {
 	let crit_query = `
 		SELECT 
 			crits.id, crits.user_id, users.display_name, 
-			users.username, crits.crit_reply_id,
+			users.username, users.email, crits.crit_reply_id,
 			crits.message, crits.created_on,
 			count(crit_replies.id) AS replies,
 			ifnull(
@@ -41,7 +42,7 @@ router.get('/:crit_id',(req, res) => {
         let crit = {
             user: {
                 display_name: results[0].display_name,
-                picture: '',
+                picture: 'https://www.gravatar.com/avatar/' + md5(results[0].email),
                 username: '@' + results[0].username
             },
             crit: {
@@ -57,7 +58,7 @@ router.get('/:crit_id',(req, res) => {
     let replies_query=`
         SELECT 
             crits.id, crits.user_id, users.display_name, 
-            users.username, crits.crit_reply_id,
+            users.username, users.email, crits.crit_reply_id,
             crits.message, crits.created_on,
             count(crit_replies.id) AS replies,
             ifnull(
@@ -87,7 +88,7 @@ router.get('/:crit_id',(req, res) => {
                 let replyCrit = {
                     user: {
                         display_name: result[i].display_name,
-                        picture: '',
+                        picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
                         username: '@' + result[i].username
                     },
                     crit: {
@@ -110,16 +111,20 @@ router.get('/:crit_id',(req, res) => {
 router.post('/create',(req, res) => {
     if (req.session.loggedin) {
         let createCrit = req.body.createCrit;
-        let crit_query = `
-        INSERT INTO crits 
-                (id, user_id, crit_reply_id, message, created_on)
-        VALUES
-                (NULL, ?, NULL, ?, current_timestamp());
-        `;
-        connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
-                if (err) throw err;
-        })
-        res.redirect('/');	
+        if (createCrit == ""){
+            return res.redirect("back");
+        } else {
+            let crit_query = `
+            INSERT INTO crits 
+                    (id, user_id, crit_reply_id, message, created_on)
+            VALUES
+                    (NULL, ?, NULL, ?, current_timestamp());
+            `;
+            connection.query(crit_query, [req.session.UserId.toString(), createCrit.toString()], function(err, res) {
+                    if (err) throw err;
+            });
+            res.redirect('/');
+        }	
     } else {
         res.send("You're not logged in!")
     }
@@ -128,16 +133,20 @@ router.post('/create',(req, res) => {
 router.post('/:crit_id',(req, res) => {
     if (req.session.loggedin) {
         let replyCrit = req.params.crit_id;
-        let crit_query = `
-        INSERT INTO crits 
-                (id, user_id, crit_reply_id, message, created_on)
-        VALUES
-                (NULL, ?,?,?, current_timestamp())
-        `;
-        connection.query(crit_query, [req.session.UserId, replyCrit, req.body.replyCrit], function(err, result) {
-            if (err) throw err;
-            res.redirect('/crit/' + replyCrit);
-        });
+        if (req.body.replyCrit == ""){
+            return res.redirect("back");
+        } else {
+            let crit_query = `
+            INSERT INTO crits 
+                    (id, user_id, crit_reply_id, message, created_on)
+            VALUES
+                    (NULL, ?,?,?, current_timestamp())
+            `;
+            connection.query(crit_query, [req.session.UserId, replyCrit, req.body.replyCrit], function(err, result) {
+                if (err) throw err;
+                res.redirect('/crit/' + replyCrit);
+            });
+        }
     } else {
         res.send("You're not logged in!")
     }
@@ -147,7 +156,7 @@ const connection = mysql.createConnection({
     host     : process.env.DB_HOST,
     user     : process.env.DB_USER,
     password : process.env.DB_PASS,
-    database : 'critter',
+    database : process.env.DB_SCHEMA,
     port     : process.env.DB_PORT
 });
 connection.connect();
