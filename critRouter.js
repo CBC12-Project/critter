@@ -89,7 +89,7 @@ router.get('/:crit_id',(req, res) => {
                     user: {
                         display_name: result[i].display_name,
                         picture: 'https://www.gravatar.com/avatar/' + md5(result[i].email),
-                        username: '@' + result[i].username
+                        username: result[i].username
                     },
                     crit: {
                         replyCrits: [],

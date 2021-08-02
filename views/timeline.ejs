@@ -16,7 +16,6 @@
             <% } %>
             <!-- displays search results -->
             <% if (mode == 'search') {%>
-                <%# console.log(crit_results) %>
                 <% for (let i = 0; i<crit_results.length; i++){ %>
                     <%- include('partials/single-crit', {crit: crit_results[i].crit, user:crit_results[i].user})%>
                 <% } %>
@@ -36,9 +35,6 @@
                         <button id="reply-crit-btn">Reply!</button>
                     </form>      
             <% } %>
-            <% } %>
-            <% if (mode == 'profile') { %>
-                    <%- include('partials/profile-card', { user: userProfile[0].profile }); %>
             <% } %>
         </div>    
         <%- include('partials/search') %>

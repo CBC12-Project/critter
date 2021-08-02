@@ -1,10 +1,10 @@
 <ul class="sidebar unselectable">
     <!-- logo -->
-    <a href="/">
+    <a href="/" id="crit-logo-a">
         <li class="logo-li">
             <div class="sidebar-div sidebar-logo">
                 <div class="logo">
-                <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png"/>
+                <img id="crit-logo" src="https://img.icons8.com/ios-glyphs/60/000000/bug--v1.png" class="sidebar-img"/>
             </div> 
         </li>    
     </a>
@@ -12,7 +12,7 @@
     <a href="/">
         <li>
             <div class="sidebar-div sidebar-home">
-                <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png"/>
+                <img src="https://img.icons8.com/material-rounded/30/000000/home-page.png" class="sidebar-img"/>
                 <p>Home</p>    
             </div>
         </li>    
@@ -22,7 +22,7 @@
     <a href="/profile">
         <li>
             <div class="sidebar-div sidebar-profile">
-                <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png"/>
+                <img src="https://img.icons8.com/material-rounded/30/000000/user-male-circle.png" class="sidebar-img"/>
                 <p>Profile</p>    
             </div>
         </li>    
@@ -33,7 +33,7 @@
     <a href="/settings">
         <li>
             <div class="sidebar-div sidebar-settings">
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png"/>
+                <img src="https://img.icons8.com/ios-glyphs/30/000000/gear.png" class="sidebar-img"/>
                 <p>Settings</p>
             </div>
         </li>
@@ -43,10 +43,10 @@
     <div id="search-btn">
         <li class="search-li">
             <div class="sidebar-div sidebar-search">
-                <img src="https://img.icons8.com/material-outlined/30/000000/search--v1.png"/>
+                <img src="https://img.icons8.com/material-outlined/30/000000/search--v1.png" class="sidebar-img"/>
                 <p>Search</p>
                 <div class="parent-container login-field">
-                    <div class="login card fade" id="search-field">
+                    <div class="login card fade login-field" id="search-field">
                         <form action="/search" method="GET">
                             <input id="search" name="search" type="text" placeholder="Search..." value="">
                             <button id="search-btn">Search</button>
@@ -61,7 +61,7 @@
     <div id="login-btn">
         <li>
             <div class="sidebar-div">
-                <img src="https://img.icons8.com/windows/30/000000/user-male-circle.png "class="login-img"/>
+                <img src="https://img.icons8.com/windows/30/000000/user-male-circle.png" class="login-img sidebar-img"/>
                 <p>Login</p>
                 <div class="parent-container login-field">
                     <div class="login card fade login-field" id="login-field">
@@ -79,7 +79,7 @@
     <div id="signup-btn">
         <li>
             <div class="sidebar-div">
-                <img src="https://img.icons8.com/windows/32/000000/add-user-male--v1.png" class="login-img"/>
+                <img src="https://img.icons8.com/windows/32/000000/add-user-male--v1.png" class="login-img sidebar-img"/>
                 <p>Sign Up</p>
                 <div class="parent-container login-field">
                     <div class="login card fade login-field" id="signup-field">
@@ -100,7 +100,7 @@
     <div id="logout-btn">
         <li>
             <div class="sidebar-div">
-                <img src="https://img.icons8.com/ios-filled/30/000000/login-rounded-right.png" class="login-img"/>
+                <img src="https://img.icons8.com/ios-filled/30/000000/login-rounded-right.png" class="login-img sidebar-img"/>
                 <p>@<%= username %></p>
                 <div class="parent-container">
                     <div class="login card fade login-field" id="logout-field">

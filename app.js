@@ -129,7 +129,7 @@ app.get('/search', (req, res) => {
 				user: {
 					display_name: results[i].display_name,
 					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
-					username: '@' + results[i].username
+					username: results[i].username
 				},
 				crit: {
 					id: results[i].id,

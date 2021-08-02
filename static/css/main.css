@@ -80,8 +80,10 @@ textarea:focus{
         cursor: pointer;
         border-radius: 2rem;
         padding: 1rem;
-        padding-right: 5rem;
-        min-width: 0;
+        padding-right: 0;
+        padding-left: 0 !important;  
+        min-width: 2rem;
+        width: 2rem;
         margin: -1rem 0 -1rem 0;
     }
 
@@ -91,6 +93,11 @@ textarea:focus{
 
     .sidebar-div > img {
         padding-right: .5rem;
+    }
+
+    .login-field {
+        width: auto !important; 
+        min-width: 0 !important;
     }
 
     li > #login-field > form {
@@ -403,29 +410,24 @@ textarea:focus{
 
     #create-crit {
         border: none;
-        border-radius: 6px;
+        border-radius: 1rem;
         color: black;
-        box-shadow: 5px 5px hsl(0, 53%, 69%);
-        padding: 5px;
-        width: 75%;
-        display: flex;
-        flex-direction: row;
+        padding: 1rem;
+        width: 90%;
     }
 
     #create-crit-btn {
         background-color:white;
         border: none;
         border-radius: 6px;
-        color: rgb(111, 108, 108);
-        box-shadow: 5px 5px hsl(0, 53%, 69%);
-        padding: 10px;
-        margin: 7% 0 0 5%;
+        margin: 1rem;
+        padding: 1rem;
+        width: 10%;
+        background: hsl(180, 46%, 82%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
-
-    #crit-logo {
-        /* margin: 0 0 0 15%; */
-    }
-
 
 
     #reply-crit {
@@ -456,6 +458,9 @@ textarea:focus{
         .sidebar-div > p {
             display: none;
         }
+        #crit-logo {
+            margin: -25%;
+        }
     }
 
     @media screen and (max-width: 600px) {
@@ -471,9 +476,14 @@ textarea:focus{
             box-shadow: 0 -2px 10px hsl(180, 46%, 82%);
             margin-left: 0;
         }
+        .sidebar-img {
+            left: 50%;
+            top: 50%;
+        }
         .sidebar-div {
             /* border: 1px solid black; */
             padding-right: 0;
+            
         }
         .sidebar > a > li {
             padding: 1rem;
@@ -493,7 +503,7 @@ textarea:focus{
         main > .search {
             display: none;
         }
-        .logo-li {
+        #crit-logo-a {
             display: none;
         }
         .search-li {
@@ -509,9 +519,9 @@ textarea:focus{
             bottom: 100px;
             left: 50%;
         }
-        .sidebar-div > img {
+        /* .sidebar-div > img {
             padding-right: 0;
-        }    
+        }     */
         #crit-logo {
             margin-left: 0;
         }
@@ -525,10 +535,10 @@ textarea:focus{
     }
 
     @media screen and (max-width: 400px) {
-        /* .sidebar > a > li {
-            width: 20%;
-        } */
-        .sidebar-div > img {
-            width: 200%;
+        .sidebar-img {
+            /* width: 20%; */
+            /* min-width: none; */
+            height: 100%;
+            min-height: none;
         }
     }
