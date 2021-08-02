@@ -266,8 +266,7 @@ app.get('/profile', (req, res) => {
 				}
 			});
 		};
-		let mode = 'profile' 
-		res.render('timeline', {userProfile: userProfile, mode});
+		res.render('profile', {userProfile: userProfile});
 		})
 	});
 
@@ -295,8 +294,7 @@ app.get('/profile', (req, res) => {
 					}
 				});
 			};
-			let mode = 'profile'
-			res.render('timeline', {userProfile: toProfile, mode});
+			res.render('timeline', {userProfile: toProfile});
 			})
 		});
 
