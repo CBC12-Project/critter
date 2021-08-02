@@ -8,7 +8,7 @@ const validator = require("email-validator");
 require('dotenv').config();
 const md5 = require('md5');
 app.use(express.urlencoded({extended:true}));
-const md5 = require('md5')
+
 
 app.use(session({
 	secret: 'secret',
@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
 					likes: results[i].likes,
 					replies: results[i].replies,
 					message: results[i].message,
-					isLiked: results[i].isLiked
+					isLiked: results[i].isLiked 
 				}
 			})
 		}
@@ -98,7 +98,7 @@ app.get('/search', (req, res) => {
     SELECT 
         crits.id, crits.user_id, users.display_name, 
         users.username, users.email, crits.crit_reply_id,
-        crits.message, crits.created_on 
+        crits.message, crits.created_on, 
 		    count(crit_replies.id) AS replies,
         ifnull(
           (
@@ -264,9 +264,66 @@ app.get('/profile', (req, res) => {
 					username:results[i].username
 				}
 			});
-		};res.render('profile', {userProfile: userProfile});
-		})
-	});
+		};
+
+		let profile_crit_query = `
+			SELECT 
+				crits.id, crits.user_id, users.display_name, 
+				users.username, users.email, crits.crit_reply_id,
+				crits.message, crits.created_on, 
+				count(crit_replies.id) AS replies,
+				ifnull(
+					(
+						SELECT count(crit_likes.id) 
+						FROM crit_likes 
+						WHERE crit_likes.crit_id = crits.id 
+						GROUP BY crit_likes.crit_id
+					), 0
+				) AS likes,
+				ifnull(user_liked.id, 0) AS isLiked
+			FROM crits 
+			LEFT JOIN crits AS crit_replies
+				ON crit_replies.crit_reply_id = crits.id 
+			LEFT JOIN crit_likes
+				ON crit_likes.crit_id = crits.id
+			LEFT JOIN users 
+				ON crits.user_id = users.id
+			LEFT JOIN crit_likes AS user_liked
+				ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
+			WHERE crits.crit_reply_id is null AND users.id = ?
+			GROUP BY crits.id
+			ORDER BY crits.created_on DESC
+			LIMIT 10
+		`;
+		let user_id = req.session.UserId || 0;
+		connection.query(profile_crit_query,[user_id, user_id] , (err, result) => {
+			if ( err ) {
+				console.error(err);
+				throw err;
+			}
+
+			let critsProfile = [];
+			for (let i = 0; i<result.length; i++){
+				critsProfile.push({
+					user: {
+						display_name: result[i].display_name,
+						username:result[i].username,
+						picture: 'https://www.gravatar.com/avatar/' + md5(result[i].email)
+					},
+					crit: {
+						id: result[i].id,
+						created_on: result[i].created_on,
+						likes: result[i].likes,
+						replies: result[i].replies,
+						message: result[i].message,
+						isLiked: result[i].isLiked 
+					}
+				});
+			}
+		res.render('profile', {userProfile: userProfile}, {critsProfile: critsProfile});
+		});
+	})
+});
 
 
 	
@@ -294,7 +351,6 @@ app.get('/profile', (req, res) => {
 			};res.render('profile', {userProfile: toProfile});
 			})
 		});
-
 
 
 
