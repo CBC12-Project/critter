@@ -97,13 +97,30 @@ app.get('/search', (req, res) => {
     SELECT 
         crits.id, crits.user_id, users.display_name, 
         users.username, users.email, crits.crit_reply_id,
-        crits.message, crits.created_on 
+        crits.message, crits.created_on, 
+		count(crit_replies.id) AS replies,
+        ifnull(
+        (
+            SELECT count(crit_likes.id) 
+            FROM crit_likes 
+            WHERE crit_likes.crit_id = crits.id 
+            GROUP BY crit_likes.crit_id
+        ), 0
+        ) AS likes,
+        ifnull(user_liked.id, 0) AS isLiked
     FROM crits 
+	LEFT JOIN crits AS crit_replies
+		ON crit_replies.crit_reply_id = crits.id 
+	LEFT JOIN crit_likes
+		ON crit_likes.crit_id = crits.id
     LEFT JOIN users 
-    ON crits.user_id = users.id 
+		ON crits.user_id = users.id 
+	LEFT JOIN crit_likes AS user_liked
+        ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
     WHERE crits.message 
     lIKE ?`;
-	connection.query(search_query, searchParam, (err, results) => {
+	let user_id = req.session.UserId || 0;
+	connection.query(search_query, [user_id, searchParam], (err, results) => {
 		let crit_results = [];
 		for(let i = 0; i < results.length; i++){
 			crit_results.push({
@@ -115,9 +132,10 @@ app.get('/search', (req, res) => {
 				crit: {
 					id: results[i].id,
 					created_on: results[i].created_on,
-					likes: 0,
-					replies: 0,
-					message: results[i].message
+					likes: results[i].likes,
+					replies: results[i].replies,
+					message: results[i].message,
+					isLiked: results[i].isLiked
 				}
 			});
         };
