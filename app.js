@@ -325,7 +325,20 @@ app.get('/profile', (req, res) => {
 					}
 				});
 			}
-
+				let follow_query = `SELECT * FROM followers`;
+				connection.query(follow_query ,(err, results) => {
+					if (err) {
+						console.error(err);
+						throw err;
+					}
+					let following = user_id == req.session.UserId && following_id == 1;
+					if(following){
+						
+					}else {
+						return false
+					}
+					
+				});
 			res.render('profile', {userProfile: userProfile, critsProfile: critsProfile});
 		});
 	});

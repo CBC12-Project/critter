@@ -430,6 +430,12 @@ textarea:focus{
         margin-top: 30%;
     }
 
+    /* follow button */
+    i.fas.fa-user-friends {
+        margin-left: 100%;
+    }
+    
+
     @media screen and (max-width: 1000px) {
         .sidebar {
             width: 50px;
