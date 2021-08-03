@@ -3,7 +3,7 @@
         <div class="crit-pfp"><img src="<%= user.picture %>?s=26"></div>
         <p class="crit-name"><%= user.display_name %></p>
         <p class="crit-handle"><a href="/profile/<%= userProfile[0].profile.username%>">@<%= user.username %></a></p>
-        <% if ( user.id != userId ) { %> 
+        <% if ( userId && (user.id != userId) ) { %> 
 			<% if(isFollowing){%>
 			<a id="" href="/user/<%= user.id %>/unfollow"><i style="color: darkred;" class="fas fa-user-friends"></i>Unfollow</a>
 			<% } else { %> 

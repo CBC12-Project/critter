@@ -2,9 +2,11 @@
 <html lang="en">
     <%- include('partials/head.ejs',{page:{name:'Home'}}) %>  
 <body>
-    <%-include('partials/sidebar') %>
+
 
 <main>
+	<%- include('partials/sidebar') %>
+
     <div class="timeline">
     <%- include('partials/profile-card', { user: userProfile[0].profile, isFollowing: isFollowing }); %>
     
@@ -13,6 +15,9 @@
             <%- include('partials/single-crit', {crit: critsProfile[i].crit, user: critsProfile[i].user}) %>
         <% } %>
     </div>
+	
+	<%- include('partials/search') %>
+
 </main>
 
 </body>
