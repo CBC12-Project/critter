@@ -6,7 +6,7 @@
 
 <main>
     <div class="timeline">
-    <%- include('partials/profile-card', { user: userProfile[0].profile }); %>
+    <%- include('partials/profile-card', { user: userProfile[0].profile, isFollowing: isFollowing }); %>
     
         
         <% for (let i = 0; i < critsProfile.length; i++) { %>
