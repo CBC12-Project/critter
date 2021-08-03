@@ -1,4 +1,3 @@
-
 const express = require('express');
 const app = express();
 const mysql = require('mysql');
@@ -90,7 +89,6 @@ app.get('/', (req, res) => {
 });
 
 //search route 
-
 app.get('/search', (req, res) => {
     let searchParam = `%${req.query.search}%`;
 	let search_query = `
@@ -98,7 +96,7 @@ app.get('/search', (req, res) => {
         crits.id, crits.user_id, users.display_name, 
         users.username, users.email, crits.crit_reply_id,
         crits.message, crits.created_on, 
-		    count(crit_replies.id) AS replies,
+		count(crit_replies.id) AS replies,
         ifnull(
         (
             SELECT count(crit_likes.id) 
@@ -145,6 +143,7 @@ app.get('/search', (req, res) => {
 		res.render('timeline', {crit_results:crit_results, mode});
 	});
 });
+
 //sign up 
 app.post('/signup', async (req, res) => {
 	if (validator.validate(req.body.email) && (req.body.username) && (req.body.display_name)) {
@@ -193,6 +192,7 @@ app.post('/signup', async (req, res) => {
 		res.send('Invalid!');
 	}
 });
+
 // authenticate
 app.post('/auth', async (req, res) => {
 	let loginEmail = `${req.body.email}`
@@ -222,6 +222,7 @@ app.post('/auth', async (req, res) => {
 		};
 	});
 });
+
 // log out
 app.post('/logout', (req, res) => {
 	if (req.session) {
@@ -242,9 +243,6 @@ app.get('/welcome', (req, res) => {
 	res.render('newusers.ejs');
 });
 
-
-
-
 //route for profile
 app.get('/profile', (req, res) => {
 	let profile_query = `
@@ -256,6 +254,7 @@ app.get('/profile', (req, res) => {
 			username = ?
 		`;
 	
+	// get the user information for the profile I'm viewing
 	connection.query(profile_query,  req.session.username, (err, results) =>{
 		if ( err ) {
 			console.error(err);
@@ -265,9 +264,10 @@ app.get('/profile', (req, res) => {
 		for (let i = 0; i<results.length; i++){
 			userProfile.push({
 				profile:{
+					id: results[i].id,
 					display_name: results[i].display_name,
 					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
-					username:results[i].username
+					username: results[i].username
 				}
 			});
 		};
@@ -301,6 +301,8 @@ app.get('/profile', (req, res) => {
 			LIMIT 10
 		`;
 		let user_id = req.session.UserId || 0;
+
+		// get the timeline of the user i'm viewing
 		connection.query(profile_crit_query,[user_id, user_id] , (err, result) => {
 			if ( err ) {
 				console.error(err);
@@ -325,59 +327,119 @@ app.get('/profile', (req, res) => {
 					}
 				});
 			}
-				let follow_query = `SELECT * FROM followers`;
-				connection.query(follow_query ,(err, results) => {
-					if (err) {
-						console.error(err);
-						throw err;
-					}
-					let following = user_id == req.session.UserId && following_id == 1;
-					if(following){
-						
-					}else {
-						return false
-					}
-					
-				});
-			res.render('profile', {userProfile: userProfile, critsProfile: critsProfile});
+
+			let follow_query = `SELECT id FROM followers WHERE user_id = ? AND following_id = ?`;
+			// see if I (logged in) am following this user
+			connection.query(follow_query, [req.session.UserId, req.session.UserId], (err, results) => {
+				if (err) {
+					console.error(err);
+					throw err;
+				}
+				res.render('profile', {userProfile: userProfile, critsProfile: critsProfile, isFollowing: results.length });	
+			});			
 		});
 	});
 });
 
+// user @handle route
+app.get('/profile/:username', (req, res) => {
+	let toProfile = ` 
+		SELECT 
+			id, username, display_name, email
+		FROM users 
+		WHERE username = ?
+	`;
 
-	
-	// user @handle route
-	
-	app.get('/profile/:username', (req, res) => {
-		let toProfile = ` SELECT id, username, display_name, email
-		From users 
-		WHERE username = ?`;
-		
-		connection.query(toProfile, req.params.username, (err, results) =>{
+	let profile_user_id = null; 
+
+	// get the user information for the profile I'm viewing
+	connection.query(toProfile, req.params.username, (err, results) =>{
+		if ( err ) {
+			console.error(err);
+			throw err;
+		}
+		let toProfile = [];
+		for (let i = 0; i<results.length; i++){
+			profile_user_id = results[i].id;
+			toProfile.push({
+				profile:{
+					id: results[i].id,
+					display_name: results[i].display_name,
+					picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
+					username: results[i].username
+				}
+			});
+		};
+
+		let profile_crit_query = `
+			SELECT 
+				crits.id, crits.user_id, users.display_name, 
+				users.username, users.email, crits.crit_reply_id,
+				crits.message, crits.created_on, 
+				count(crit_replies.id) AS replies,
+				ifnull(
+					(
+						SELECT count(crit_likes.id) 
+						FROM crit_likes 
+						WHERE crit_likes.crit_id = crits.id 
+						GROUP BY crit_likes.crit_id
+					), 0
+				) AS likes,
+				ifnull(user_liked.id, 0) AS isLiked
+			FROM crits 
+			LEFT JOIN crits AS crit_replies
+				ON crit_replies.crit_reply_id = crits.id 
+			LEFT JOIN crit_likes
+				ON crit_likes.crit_id = crits.id
+			LEFT JOIN users 
+				ON crits.user_id = users.id
+			LEFT JOIN crit_likes AS user_liked
+				ON user_liked.user_id = ? AND user_liked.crit_id = crits.id
+			WHERE crits.crit_reply_id is null AND users.username = ?
+			GROUP BY crits.id
+			ORDER BY crits.created_on DESC
+			LIMIT 10
+		`;
+		let user_id = req.session.UserId || 0;
+
+		// get the timeline of the user i'm viewing
+		connection.query(profile_crit_query,[user_id, req.params.username] , (err, result) => {
 			if ( err ) {
 				console.error(err);
 				throw err;
 			}
-			let toProfile = [];
-			for (let i = 0; i<results.length; i++){
-				toProfile.push({
-					profile:{
-						display_name: results[i].display_name,
-						picture: 'https://www.gravatar.com/avatar/' + md5(results[i].email),
-						username: results[i].username
+
+			let critsProfile = [];
+			for (let i = 0; i<result.length; i++){
+				critsProfile.push({
+					user: {
+						display_name: result[i].display_name,
+						username:result[i].username,
+						picture: 'https://www.gravatar.com/avatar/' + md5(result[i].email)
+					},
+					crit: {
+						id: result[i].id,
+						created_on: result[i].created_on,
+						likes: result[i].likes,
+						replies: result[i].replies,
+						message: result[i].message,
+						isLiked: result[i].isLiked 
 					}
 				});
-			};
-			res.render('timeline', {userProfile: toProfile});
-			})
+			}
+
+			let follow_query = `SELECT id FROM followers WHERE user_id = ? AND following_id = ?`;
+			// see if I (logged in) am following this user
+			connection.query(follow_query, [req.session.UserId, profile_user_id], (err, results) => {
+				if (err) {
+					console.error(err);
+					throw err;
+				}
+				res.render('profile', {userProfile: toProfile, critsProfile: critsProfile, isFollowing: results.length });	
+			});
 		});
-
-
-
-
-
-
-
+	});
+});
 
 app.all('/user/:following_id/follow', (req, res) => {
 	let query = `
@@ -525,11 +587,11 @@ app.get('*', (req, res) => {
 });
 
 const connection = mysql.createConnection({
-        host     : process.env.DB_HOST,
-        user     : process.env.DB_USER,
-        password : process.env.DB_PASS,
-        database : process.env.DB_SCHEMA,
-        port     : process.env.DB_PORT
+	host     : process.env.DB_HOST,
+	user     : process.env.DB_USER,
+	password : process.env.DB_PASS,
+	database : process.env.DB_SCHEMA,
+	port     : process.env.DB_PORT
 });
 connection.connect();
 
